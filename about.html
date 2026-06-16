@@ -126,36 +126,46 @@ nav {
 
 /* ── HERO ── */
 .hero {
-  padding: 64px 40px 0;
+  padding: 56px 40px 0;
   border-bottom: 1px solid var(--border-light);
-  min-height: 70vh;
+  min-height: 74vh;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  justify-content: center;
   position: relative;
 }
-.hero-eyebrow {
-  font-size: 12px;          /* canonical section-label type: 12 / 600 / 0.1em / --mid */
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+.hero-grid {
+  display: grid;
+  grid-template-columns: 7fr 5fr;
+  gap: 56px;
+  align-items: center;
+  padding: 48px 0 56px;
+}
+
+/* terminal command eyebrow — replaces the home page's dash-rule eyebrow */
+.hero-cmd {
+  font-family: var(--mono);
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  margin-bottom: 30px;
   color: var(--mid);
-  margin-bottom: 28px;
   display: flex;
   align-items: center;
-  gap: 10px;
-  position: relative;
+  gap: 8px;
 }
-.hero-eyebrow::before { content:''; width:24px; height:1px; background:var(--border); }
+.hero-cmd .hc-user { color: var(--brand); font-weight: 600; }
+.hero-cmd .hc-path { color: var(--border); }
+.hero-cmd .hc-sym  { color: var(--brand); font-weight: 600; }
+
 .hero h1 {
   font-family: var(--mono);
-  font-size: clamp(26px, 3.5vw, 48px);
+  font-size: clamp(28px, 3.4vw, 46px);
   font-weight: 400;
-  line-height: 1.2;
+  line-height: 1.18;
   letter-spacing: -0.02em;
   color: var(--mid);
-  max-width: 24ch;              /* HIG: constrain to ~35-50 chars, hero can be tighter */
-  margin-bottom: 28px;
+  max-width: 18ch;
+  margin-bottom: 26px;
   position: relative;
 }
 .hero h1 .cycle {
@@ -169,37 +179,74 @@ nav {
   font-weight: 400;
   color: var(--muted);
   line-height: 1.65;
-  max-width: 54ch;
+  max-width: 48ch;
   position: relative;
-  margin-bottom: 40px;
 }
-.hero-stats {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  border-top: 1px solid var(--border-light);
+
+/* whoami terminal card — the about page's signature header element */
+.hero-card {
+  border: 1px solid var(--border-light);
+  background: var(--off);
+  align-self: center;
+}
+.hero-card-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 16px;
   background: var(--white);
-  position: relative;
-  margin-top: 40px;
-  margin-left: -40px;
-  margin-right: -40px;
+  border-bottom: 1px solid var(--border-light);
 }
-.hero-stat {
-  padding: 20px 40px;
-  border-right: 1px solid var(--border-light);
+.hcb-dots { display: flex; gap: 6px; }
+.hcb-dots i {
+  width: 8px; height: 8px;
+  background: var(--border);
+  display: block;
 }
-.hero-stat:last-child { border-right: none; }
-.stat-val {
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  color: var(--mid);
-  text-transform: uppercase;
-  margin-bottom: 4px;
-}
-.stat-lbl {
-  font-size: 13px;
-  font-weight: 400;
+.hcb-dots i:first-child { background: var(--brand); }
+.hcb-title {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
   color: var(--muted);
+}
+.hcb-title::before { content: '~/'; color: var(--border); }
+.spec-row {
+  display: grid;
+  grid-template-columns: 84px 1fr;
+  gap: 14px;
+  padding: 13px 16px;
+  border-bottom: 1px solid var(--border-light);
+  align-items: baseline;
+}
+.spec-row dt {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.spec-row dd {
+  font-family: var(--mono);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--dark);
+  letter-spacing: -0.01em;
+}
+.spec-row dd .spec-at { color: var(--brand); }
+.spec-prompt {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 13px 16px;
+}
+.spec-prompt .s-prefix { color: var(--brand); font-weight: 600; }
+.spec-caret {
+  display: inline-block;
+  width: 7px; height: 14px;
+  background: var(--brand);
+  animation: caret 0.9s steps(1) infinite;
 }
 
 /* ── SECTION DIVIDER BAR ── (clean white band) */
@@ -489,11 +536,10 @@ footer {
   .rail-left, .rail-right { display: none; }
   .page-wrap { margin-left: 0; margin-right: 0; }
   nav, .hero, footer { padding-left: 24px; padding-right: 24px; }
-  .hero h1 { font-size: clamp(24px, 7vw, 38px); max-width: 100%; }
-  .hero-stats { grid-template-columns: repeat(2, 1fr); margin-left: -24px; margin-right: -24px; }
-  .hero-stat:nth-child(2) { border-right: none; }
-  .hero-stat:nth-child(3) { border-top: 1px solid var(--border-light); }
-  .hero-stat:nth-child(4) { border-top: 1px solid var(--border-light); border-right: none; }
+  .hero { min-height: auto; padding-top: 40px; }
+  .hero h1 { font-size: clamp(24px, 7vw, 36px); max-width: 100%; }
+  .hero-grid { grid-template-columns: 1fr; gap: 32px; padding: 32px 0 44px; }
+  .hero-card { align-self: stretch; }
   .div-bar { padding: 0 24px; }
   .status-tag { padding: 14px 24px; }
   .story { grid-template-columns: 1fr; }
@@ -537,34 +583,37 @@ footer {
 
 <!-- ── HERO ── -->
 <div class="hero">
-  <div class="hero-eyebrow">About Me</div>
-  <h1>
-    Hi, I'm Adrian.<br>
-    I design the tools<br>
-    other <span class="cycle">builders</span> use
-  </h1>
-  <p class="hero-bio">
-    I'm happiest making complex, technical things feel calm and obvious, the kind
-    of design that quietly disappears into someone's day. I got here by chasing
-    that feeling, not a job title.
-  </p>
-  <div class="hero-stats">
-    <div class="hero-stat">
-      <div class="stat-val">Based in</div>
-      <div class="stat-lbl">Los Angeles, CA</div>
+  <div class="hero-grid">
+    <div class="hero-main">
+      <div class="hero-cmd">
+        <span class="hc-user">adrian@la</span><span class="hc-path">~</span><span class="hc-sym">$</span> cat about.md
+      </div>
+      <h1>
+        Hi, I'm Adrian.<br>
+        I design the tools<br>
+        other <span class="cycle">builders</span> use
+      </h1>
+      <p class="hero-bio">
+        I'm happiest making complex, technical things feel calm and obvious, the kind
+        of design that quietly disappears into someone's day. I got here by chasing
+        that feeling, not a job title.
+      </p>
     </div>
-    <div class="hero-stat">
-      <div class="stat-val">Currently</div>
-      <div class="stat-lbl">Meta · Internal tools</div>
-    </div>
-    <div class="hero-stat">
-      <div class="stat-val">Previously</div>
-      <div class="stat-lbl">Amazon · Microsoft</div>
-    </div>
-    <div class="hero-stat">
-      <div class="stat-val">Studio</div>
-      <div class="stat-lbl">FruitBat Design, LLC</div>
-    </div>
+    <aside class="hero-card" aria-label="Quick facts">
+      <div class="hero-card-bar">
+        <span class="hcb-dots"><i></i><i></i><i></i></span>
+        <span class="hcb-title">whoami</span>
+      </div>
+      <dl>
+        <div class="spec-row"><dt>name</dt><dd>Adrian Mucha</dd></div>
+        <div class="spec-row"><dt>role</dt><dd>Product Designer</dd></div>
+        <div class="spec-row"><dt>location</dt><dd>Los Angeles, CA</dd></div>
+        <div class="spec-row"><dt>now</dt><dd>Internal tools <span class="spec-at">@</span> Meta</dd></div>
+        <div class="spec-row"><dt>prev</dt><dd>Amazon · Microsoft</dd></div>
+        <div class="spec-row"><dt>studio</dt><dd>FruitBat Design, LLC</dd></div>
+      </dl>
+      <div class="spec-prompt"><span class="s-prefix">&gt;&gt;&gt;</span><span class="spec-caret"></span></div>
+    </aside>
   </div>
 </div>
 
