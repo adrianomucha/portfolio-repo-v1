@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Designing the interface an AI lives inside · Adrian Mucha</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600&family=Geist:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+
+/* ── RESET & TOKENS ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --white: #ffffff;
+  --off: #fafaf8;
+  --mid: #3a423a;
+  --muted: #737373;
+  --dark: #1c1e21;
+  --border: #b0b5b1;
+  --border-light: #e2e5e2;
+  --accent: #e8ff83;
+  --accent-dark: #3a423a;
+  --brand: #5865f2;
+  --mono: "Geist Mono", monospace;
+  --sans: "Geist", sans-serif;
+  --rail: 40px;              /* width of each side rail */
+}
+
+html, body {
+  background: var(--white);
+  color: var(--mid);
+  font-family: var(--mono);
+  font-size: 17px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  text-wrap: pretty;        /* inherited: avoids single-word widows in all body copy */
+}
+/* display headings: balance line lengths (also widow-free) */
+.art-title, .cta-headline, .next-title {
+  text-wrap: balance;
+}
+a { text-decoration: none; color: inherit; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+svg { display: block; }
+
+/* ── SIDE RAILS - fixed, both sides ── */
+.rail-left,
+.rail-right {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  width: var(--rail);
+  z-index: 300;
+  pointer-events: none;
+  background: var(--white);
+}
+.rail-left  { left: 0; border-right: 1px solid var(--border-light); }
+.rail-right { right: 0; border-left: 1px solid var(--border-light); }
+
+/* inner second line on each rail */
+.rail-left::after {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0;
+  right: 12px;
+  width: 1px;
+  background: var(--border-light);
+}
+.rail-right::after {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0;
+  left: 12px;
+  width: 1px;
+  background: var(--border-light);
+}
+
+/* reading-progress fill on the left rail — terminal-style scrub bar */
+.rail-progress {
+  position: absolute;
+  left: 0; top: 0;
+  width: 3px;
+  height: 0;
+  background: var(--brand);
+  z-index: 1;
+}
+
+/* ── PAGE WRAPPER - inset from both rails ── */
+.page-wrap {
+  margin-left: var(--rail);
+  margin-right: var(--rail);
+}
+
+/* ── NAV ── */
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+  height: 56px;
+  border-bottom: 1px solid var(--border-light);
+  position: sticky;
+  top: 0;
+  background: var(--white);
+  z-index: 250;
+}
+.nav-logo {
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--dark);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.nav-sep { color: var(--border); }
+.nav-role { color: var(--muted); font-weight: 400; }
+.nav-links { display: flex; gap: 32px; align-items: center; }
+.nav-link {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--muted);
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  transition: color 0.15s;
+}
+.nav-link:hover { color: var(--dark); }
+.nav-num { color: var(--border); }
+.nav-link:hover .nav-num { color: var(--brand); }
+.nav-link.current { color: var(--dark); font-weight: 500; }
+.nav-link.current .nav-num { color: var(--brand); }
+
+/* ── BREADCRUMB / BACK BAR ── */
+.crumb {
+  display: flex;
+  align-items: center;
+  height: 52px;
+  padding: 0 40px;
+  border-bottom: 1px solid var(--border-light);
+}
+.crumb-back {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  transition: color 0.15s, gap 0.15s;
+}
+.crumb-back:hover { color: var(--dark); gap: 13px; }
+.crumb-back .cb-arrow { color: var(--brand); font-weight: 600; }
+.crumb-path { margin-left: auto; font-size: 12px; color: var(--border); white-space: nowrap; }
+.crumb-path b { color: var(--muted); font-weight: 500; }
+
+/* ── ARTICLE HEADER ── */
+.art-head {
+  padding: 56px 40px 48px;
+  border-bottom: 1px solid var(--border-light);
+}
+.art-cmd {
+  font-family: var(--mono);
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  margin-bottom: 30px;
+  color: var(--mid);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.art-cmd .hc-user { color: var(--brand); font-weight: 600; }
+.art-cmd .hc-path { color: var(--border); }
+.art-cmd .hc-sym  { color: var(--brand); font-weight: 600; }
+.art-cat {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent-dark);
+  background: var(--accent);
+  border: 1px solid var(--accent-dark);
+  padding: 4px 10px;
+  width: fit-content;
+  margin-bottom: 24px;
+}
+.art-title {
+  font-family: var(--mono);
+  font-size: clamp(28px, 4vw, 52px);
+  font-weight: 400;
+  line-height: 1.16;
+  letter-spacing: -0.025em;
+  color: var(--mid);
+  max-width: 20ch;
+  margin-bottom: 26px;
+}
+.art-dek {
+  font-family: var(--sans);
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--muted);
+  line-height: 1.6;
+  max-width: 58ch;
+}
+
+/* byline strip — full-width divided meta row, echoes the home page hero stats */
+.art-meta {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border-bottom: 1px solid var(--border-light);
+}
+.art-meta-cell {
+  padding: 18px 40px;
+  border-right: 1px solid var(--border-light);
+}
+.art-meta-cell:last-child { border-right: none; }
+.amc-k {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 5px;
+}
+.amc-v {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--dark);
+  letter-spacing: -0.01em;
+}
+.amc-v .av-at { color: var(--brand); }
+
+/* ── ARTICLE BODY ── (two-column: sticky TOC rail + prose) */
+.art-grid {
+  display: grid;
+  grid-template-columns: 3fr 9fr;   /* TOC 3/12, prose 9/12 */
+  border-bottom: 1px solid var(--border-light);
+}
+.art-toc {
+  border-right: 1px solid var(--border-light);
+  padding: 48px 32px 48px 40px;
+}
+.art-toc-inner { position: sticky; top: 84px; display: flex; flex-direction: column; gap: 14px; }
+.art-toc-lbl {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--mid);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+.art-toc-lbl .db-arrow { color: var(--brand); }
+.art-toc a {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.4;
+  display: flex;
+  gap: 9px;
+  transition: color 0.15s;
+}
+.art-toc a:hover, .art-toc a.active { color: var(--dark); }
+.art-toc a .tn { color: var(--border); flex-shrink: 0; }
+.art-toc a:hover .tn, .art-toc a.active .tn { color: var(--brand); }
+
+.art-prose {
+  padding: 48px 40px 64px;
+  max-width: 100%;
+}
+.art-prose > * { max-width: 68ch; }
+.art-prose h2 {
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--mid);
+  margin: 48px 0 18px;
+  padding-top: 28px;
+  border-top: 1px solid var(--border-light);
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+.art-prose h2:first-child { margin-top: 0; padding-top: 0; border-top: none; }
+.art-prose h2 .h-num { color: var(--brand); font-weight: 600; }
+.art-prose p {
+  font-family: var(--sans);
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--mid);
+  line-height: 1.75;
+  margin-bottom: 22px;
+}
+.art-prose p.lead {
+  font-size: 21px;
+  font-weight: 500;
+  color: var(--mid);
+  line-height: 1.55;
+  letter-spacing: -0.01em;
+}
+.art-prose a.inline {
+  color: var(--brand);
+  border-bottom: 1px solid rgba(88,101,242,0.35);
+  transition: border-color 0.15s;
+}
+.art-prose a.inline:hover { border-color: var(--brand); }
+.art-prose strong { color: var(--dark); font-weight: 600; }
+.art-prose ul { list-style: none; margin: 0 0 22px; padding: 0; }
+.art-prose li {
+  font-family: var(--sans);
+  font-size: 18px;
+  color: var(--mid);
+  line-height: 1.7;
+  padding-left: 26px;
+  margin-bottom: 12px;
+  position: relative;
+}
+.art-prose li::before {
+  content: '//';
+  position: absolute;
+  left: 0;
+  color: var(--brand);
+  font-family: var(--mono);
+  font-size: 14px;
+  font-weight: 600;
+}
+/* pull-quote — terminal log card */
+.art-quote {
+  font-family: var(--mono);
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--dark);
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+  background: var(--off);
+  border: 1px solid var(--border-light);
+  border-left: 3px solid var(--brand);
+  padding: 24px 28px;
+  margin: 32px 0;
+  max-width: 68ch;
+}
+.art-quote::before { content: '>>> '; color: var(--brand); }
+/* fenced code-ish callout */
+.art-code {
+  font-family: var(--mono);
+  font-size: 14px;
+  color: var(--mid);
+  background: var(--off);
+  border: 1px solid var(--border-light);
+  padding: 20px 24px;
+  margin: 28px 0;
+  max-width: 68ch;
+  line-height: 1.7;
+  overflow-x: auto;
+  white-space: pre;          /* preserve the line breaks in the snippet */
+  tab-size: 2;
+}
+.art-code .ac-c { color: var(--muted); }
+.art-code .ac-p { color: var(--brand); font-weight: 600; }
+
+/* ── END / SIGNOFF ── */
+.art-end {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 40px;
+  padding-top: 28px;
+  border-top: 1px solid var(--border-light);
+  max-width: 68ch;
+  font-size: 13px;
+  color: var(--muted);
+  letter-spacing: 0.02em;
+}
+.art-end .s-prefix { color: var(--brand); font-weight: 600; }
+.art-end .end-caret {
+  display: inline-block;
+  width: 7px; height: 14px;
+  background: var(--brand);
+  animation: caret 0.9s steps(1) infinite;
+  vertical-align: -2px;
+}
+@keyframes caret { 0%,49%{opacity:1} 50%,100%{opacity:0} }
+
+/* ── TAGS ROW ── */
+.art-tags {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 24px 40px;
+  border-bottom: 1px solid var(--border-light);
+}
+.art-tags-lbl {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--mid);
+  margin-right: 6px;
+}
+.art-tag {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 4px 9px;
+  border: 1px solid var(--border-light);
+  color: var(--muted);
+}
+
+/* ── NEXT POST ── */
+.next {
+  display: grid;
+  grid-template-columns: 3fr 9fr;
+  border-bottom: 1px solid var(--border-light);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.next:hover { background: var(--off); }
+.next-lbl {
+  padding: 40px;
+  border-right: 1px solid var(--border-light);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+.next-lbl .db-arrow { color: var(--brand); }
+.next-body {
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: relative;
+}
+.next-cat {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.next-title {
+  font-family: var(--sans);
+  font-size: 24px;
+  font-weight: 500;
+  color: var(--mid);
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+  max-width: 26ch;
+  transition: color 0.15s;
+}
+.next:hover .next-title { color: var(--dark); }
+.next-arrow {
+  position: absolute;
+  top: 40px; right: 40px;
+  font-size: 18px;
+  color: var(--border);
+  transition: color 0.15s, transform 0.15s;
+}
+.next:hover .next-arrow { color: var(--mid); transform: translate(3px,-3px); }
+
+/* ── CTA ── */
+.cta {
+  border-bottom: 1px solid var(--border-light);
+  background: var(--accent);
+  position: relative;
+  overflow: hidden;
+}
+.cta-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 240px;
+}
+.cta-l {
+  padding: 48px 40px;
+  border-right: 1px solid rgba(58,66,58,0.18);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+}
+.cta-eyebrow {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--mid);
+  margin-bottom: 12px;
+}
+.cta-eyebrow .cta-arrow { color: var(--brand); }
+.cta-headline {
+  font-size: clamp(40px, 5.5vw, 68px);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.0;
+  color: var(--accent-dark);
+}
+.cta-headline::after {
+  content: '';
+  display: inline-block;
+  width: 0.45em;
+  height: 0.72em;
+  margin-left: 0.14em;
+  background: var(--accent-dark);
+  animation: caret 0.9s steps(1) infinite;
+}
+.cta-r {
+  padding: 48px 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+}
+.cta-log {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 28px;
+  font-size: 15px;
+  letter-spacing: -0.01em;
+  color: var(--accent-dark);
+}
+.cta-log-line { display: flex; gap: 10px; }
+.s-prefix { color: var(--brand); font-weight: 600; }
+.cta-log .s-prefix { flex-shrink: 0; }
+.cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent-dark);
+  border-bottom: 1.5px solid var(--accent-dark);
+  padding-bottom: 2px;
+  transition: gap 0.15s;
+  width: fit-content;
+}
+.cta-btn:hover { gap: 14px; }
+
+/* ── FOOTER ── */
+footer {
+  padding: 20px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.foot-l, .foot-r {
+  font-size: 13px;
+  color: var(--muted);
+}
+.foot-r a { color: var(--mid); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .rail-left, .rail-right { display: none; }
+  .page-wrap { margin-left: 0; margin-right: 0; }
+  nav, .crumb, .art-head, .art-tags, footer { padding-left: 24px; padding-right: 24px; }
+  .nav-sep, .nav-role { display: none; }
+  .nav-links { gap: 18px; }
+  .crumb-path { display: none; }            /* drop the long file path on phones */
+  .crumb-back { white-space: nowrap; }
+  .art-title { font-size: clamp(26px, 7vw, 38px); max-width: 100%; }
+  .art-meta { grid-template-columns: repeat(2, 1fr); }
+  .art-meta-cell { padding: 16px 24px; }
+  .art-meta-cell:nth-child(2) { border-right: none; }
+  .art-meta-cell:nth-child(3), .art-meta-cell:nth-child(4) { border-top: 1px solid var(--border-light); }
+  .art-grid { grid-template-columns: 1fr; }
+  .art-toc { display: none; }   /* TOC rail collapses on mobile */
+  .art-prose { padding: 36px 24px 48px; }
+  .art-prose > *, .art-quote, .art-code, .art-end { max-width: 100%; }
+  .next { grid-template-columns: 1fr; }
+  .next-lbl { border-right: none; border-bottom: 1px solid var(--border-light); padding: 28px 24px; }
+  .next-body { padding: 28px 24px; }
+  .next-arrow { display: none; }
+  .cta-inner { grid-template-columns: 1fr; }
+  .cta-l { border-right: none; border-bottom: 1px solid rgba(58,66,58,0.18); }
+  footer { flex-direction: column; gap: 8px; align-items: flex-start; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── SIDE RAILS ── -->
+<div class="rail-left"  aria-hidden="true"><div class="rail-progress" id="progress"></div></div>
+<div class="rail-right" aria-hidden="true"></div>
+
+<!-- ── PAGE WRAP ── -->
+<div class="page-wrap">
+
+<!-- ── NAV ── -->
+<nav>
+  <a href="index.html" class="nav-logo">
+    Adrian Mucha <span class="nav-sep">/</span>
+    <span class="nav-role">Product Designer</span>
+  </a>
+  <div class="nav-links">
+    <a href="index.html" class="nav-link">
+      <span class="nav-num">00</span> Work
+    </a>
+    <a href="about.html" class="nav-link">
+      <span class="nav-num">01</span> About Me
+    </a>
+    <a href="blog.html" class="nav-link current">
+      <span class="nav-num">02</span> Blog
+    </a>
+  </div>
+</nav>
+
+<!-- ── BACK / BREADCRUMB ── -->
+<div class="crumb">
+  <a href="blog.html" class="crumb-back"><span class="cb-arrow">&lt;&lt;&lt;</span> Back to all notes</a>
+  <span class="crumb-path">~/writing/<b>designing-for-the-model.md</b></span>
+</div>
+
+<!-- ── ARTICLE HEADER ── -->
+<header class="art-head">
+  <div class="art-cmd">
+    <span class="hc-user">adrian@la</span><span class="hc-path">~/writing</span><span class="hc-sym">$</span> cat designing-for-the-model.md
+  </div>
+  <div class="art-cat">Design for AI</div>
+  <h1 class="art-title">Designing the interface an AI lives inside</h1>
+  <p class="art-dek">
+    Copilot panels, agent dashboards, operator consoles. The hard part was never the
+    model, it's the surface around it, and how to make a probabilistic system feel
+    trustworthy without pretending it's certain.
+  </p>
+</header>
+
+<!-- ── BYLINE / META ── -->
+<div class="art-meta">
+  <div class="art-meta-cell">
+    <div class="amc-k">Written by</div>
+    <div class="amc-v">Adrian Mucha</div>
+  </div>
+  <div class="art-meta-cell">
+    <div class="amc-k">Published</div>
+    <div class="amc-v">June 2026</div>
+  </div>
+  <div class="art-meta-cell">
+    <div class="amc-k">Read time</div>
+    <div class="amc-v">7 min</div>
+  </div>
+  <div class="art-meta-cell">
+    <div class="amc-k">Filed under</div>
+    <div class="amc-v">Design for AI</div>
+  </div>
+</div>
+
+<!-- ── ARTICLE BODY ── -->
+<div class="art-grid">
+
+  <!-- TOC rail -->
+  <aside class="art-toc" aria-label="Table of contents">
+    <div class="art-toc-inner">
+      <div class="art-toc-lbl"><span class="db-arrow">&gt;&gt;&gt;</span> On this page</div>
+      <a href="#s1" data-toc><span class="tn">01</span> The model isn't the product</a>
+      <a href="#s2" data-toc><span class="tn">02</span> Show the work, not the magic</a>
+      <a href="#s3" data-toc><span class="tn">03</span> Design for being wrong</a>
+      <a href="#s4" data-toc><span class="tn">04</span> What I'd tell my past self</a>
+    </div>
+  </aside>
+
+  <!-- prose -->
+  <article class="art-prose">
+    <p class="lead">
+      Every team I've worked with wanted to talk about the model first. The interface,
+      they figured, was the easy part: drop a text box on the page and let the magic
+      happen. It never works out that way.
+    </p>
+    <p>
+      The model is a capability. The interface is the product. The gap between those
+      two sentences is where most AI features quietly fail, and it's where almost all
+      of the design work actually lives.
+    </p>
+
+    <h2 id="s1"><span class="h-num">01</span> The model isn't the product</h2>
+    <p>
+      When I designed internal tooling at Meta, the underlying model could do far more
+      than anyone used it for. Capability was never the bottleneck. <strong>Trust was.</strong>
+      People won't hand a real decision to a system they can't read, predict, or correct.
+    </p>
+    <p>
+      So the first questions were never about prompts or parameters. They were about
+      surface: how much to reveal, when to interrupt, what to do when the model is
+      confidently, fluently wrong. Those are interface decisions, and they decide
+      whether anyone ever uses the thing twice.
+    </p>
+    <blockquote class="art-quote">
+      A model that's right 90% of the time is a demo. An interface that handles the
+      other 10% gracefully is a product.
+    </blockquote>
+
+    <h2 id="s2"><span class="h-num">02</span> Show the work, not the magic</h2>
+    <p>
+      The instinct with AI is to hide the machinery and present a clean answer. That
+      reads beautifully in a demo and erodes trust in production. The interfaces that
+      actually got adopted did the opposite, they showed their work:
+    </p>
+    <ul>
+      <li>Surface the sources, so a person can sanity-check the claim in two seconds.</li>
+      <li>Expose confidence honestly, including when it's low, instead of one flat tone.</li>
+      <li>Make every AI action reversible, so trying it costs nothing.</li>
+    </ul>
+    <p>
+      None of that is a model improvement. It's all interface, and it's what moved a
+      tool from "neat" to "I use this every day."
+    </p>
+    <div class="art-code"><span class="ac-c"># the pattern, roughly</span>
+<span class="ac-p">if</span> confidence &lt; threshold:
+    show_reasoning()        <span class="ac-c"># let them audit it</span>
+    offer_easy_undo()       <span class="ac-c"># make trying it free</span>
+<span class="ac-p">else</span>:
+    act() <span class="ac-c"># but still leave a trail</span></div>
+
+    <h2 id="s3"><span class="h-num">03</span> Design for being wrong</h2>
+    <p>
+      Deterministic software has bugs. Probabilistic software has a confidence
+      distribution, which means being wrong isn't an edge case, it's a Tuesday. The
+      whole experience has to assume the model will miss and stay calm when it does.
+    </p>
+    <p>
+      Practically, that meant designing the failure states first, not last: the empty
+      result, the low-confidence answer, the "I'm not sure, here's what I'd check."
+      When those states feel considered, the occasional wrong answer reads as honesty
+      rather than betrayal.
+    </p>
+
+    <h2 id="s4"><span class="h-num">04</span> What I'd tell my past self</h2>
+    <p>
+      Start from the surface, not the model. Sketch the moment a person reads the
+      output and decides whether to trust it, because that moment is the product. The
+      model will keep getting better on its own. The interface only gets better if a
+      designer fights for it.
+    </p>
+    <p>
+      That's the throughline across everything I've shipped in this space: the AI is
+      the easy half. The honest, legible, forgiving surface around it is the work.
+    </p>
+
+    <div class="art-end">
+      <span class="s-prefix">///</span> End of note. Thanks for reading.<span class="end-caret"></span>
+    </div>
+  </article>
+</div>
+
+<!-- ── TAGS ── -->
+<div class="art-tags">
+  <span class="art-tags-lbl">Tags</span>
+  <span class="art-tag">AI Interface</span>
+  <span class="art-tag">Trust</span>
+  <span class="art-tag">Internal Tooling</span>
+  <span class="art-tag">Meta</span>
+</div>
+
+<!-- ── NEXT POST ── -->
+<a class="next" href="post.html">
+  <div class="next-lbl"><span class="db-arrow">&gt;&gt;&gt;</span> Next note</div>
+  <div class="next-body">
+    <span class="next-cat">Ship with AI</span>
+    <h3 class="next-title">Shipping production code as a designer with Claude Code</h3>
+    <span class="next-arrow">&#8599;</span>
+  </div>
+</a>
+
+<!-- ── CTA ── -->
+<div class="cta">
+  <div class="cta-inner">
+    <div class="cta-l">
+      <div class="cta-eyebrow"><span class="cta-arrow">&gt;&gt;&gt;</span> Did this land?</div>
+      <div class="cta-headline">Say<br>hi</div>
+    </div>
+    <div class="cta-r">
+      <div class="cta-log">
+        <span class="cta-log-line"><span class="s-prefix">///</span> No newsletter, no funnel.</span>
+        <span class="cta-log-line"><span class="s-prefix">///</span> Just email me if a note lands.</span>
+        <span class="cta-log-line"><span class="s-prefix">///</span> I always write back.</span>
+      </div>
+      <a href="#" class="cta-btn" data-email>Contact me &rarr;</a>
+    </div>
+  </div>
+</div>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <span class="foot-l">Adrian Mucha (FruitBat Design, LLC) · © 2026</span>
+</footer>
+
+<script>
+  // ── EMAIL (assembled at runtime so scrapers can't harvest the plaintext) ──
+  (function () {
+    const user = 'adrian', domain = 'adrianmucha' + '.' + 'us';
+    const addr = user + '@' + domain;
+    document.querySelectorAll('[data-email]').forEach(function (el) {
+      el.setAttribute('href', 'mailto:' + addr);
+    });
+  })();
+
+  // ── READING PROGRESS BAR (left rail) ──
+  const progress = document.getElementById('progress');
+  function onScroll() {
+    const h = document.documentElement;
+    const max = h.scrollHeight - h.clientHeight;
+    const pct = max > 0 ? (h.scrollTop || document.body.scrollTop) / max : 0;
+    progress.style.height = (pct * 100) + 'vh';
+
+    // ── active TOC highlight ──
+    let activeId = null;
+    document.querySelectorAll('.art-prose h2').forEach(function (sec) {
+      if (sec.getBoundingClientRect().top <= 120) activeId = sec.id;
+    });
+    document.querySelectorAll('[data-toc]').forEach(function (a) {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + activeId);
+    });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // ── smooth-scroll TOC, offset for the sticky nav ──
+  document.querySelectorAll('[data-toc]').forEach(function (a) {
+    a.addEventListener('click', function (e) {
+      const target = document.querySelector(a.getAttribute('href'));
+      if (!target) return;
+      e.preventDefault();
+      const y = target.getBoundingClientRect().top + window.scrollY - 80;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    });
+  });
+</script>
+
+</div><!-- /page-wrap -->
+
+</body>
+</html>
