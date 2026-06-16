@@ -743,27 +743,30 @@ footer {
   max-width: 520px;
   position: relative;
 }
-.modal-tag {
+.modal-tag {                /* canonical section-label, like every eyebrow on the page */
   font-size: 12px;
-  font-weight: 500;
+  font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--muted);
-  margin-bottom: 28px;
+  color: var(--mid);
+  margin-bottom: 22px;
 }
-.modal-title {
-  font-size: 32px;
-  font-weight: 400;
-  letter-spacing: -0.01em;
-  line-height: 1.2;
-  color: var(--dark);
-  margin-bottom: 14px;
+.modal-tag .m-arrow { color: var(--brand); }   /* indigo >>> prompt */
+.modal-title {              /* sans display heading, matches .about-left h2 / card titles */
+  font-family: var(--sans);
+  font-size: 30px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+  color: var(--mid);
+  margin-bottom: 16px;
 }
-.modal-sub {
+.modal-sub {                /* sans body copy, like all descriptions on the page */
+  font-family: var(--sans);
   font-size: 16px;
   color: var(--muted);
-  line-height: 1.7;
-  margin-bottom: 40px;
+  line-height: 1.6;
+  margin-bottom: 36px;
 }
 .modal-sub a { color: var(--mid); border-bottom: 1px solid var(--border); }
 .modal-row { display: flex; gap: 10px; margin-bottom: 12px; }
@@ -817,6 +820,8 @@ footer {
   .rail-left, .rail-right { display: none; }
   .page-wrap { margin-left: 0; margin-right: 0; }
   nav, .hero, footer { padding-left: 24px; padding-right: 24px; }
+  .nav-sep, .nav-role { display: none; }   /* free up room so all 3 links fit on phones */
+  .nav-links { gap: 18px; }
   .work-hdr { padding-left: 24px; padding-right: 24px; }
   .hero h1 { font-size: clamp(24px, 7vw, 38px); max-width: 100%; }
   .pillars { grid-template-columns: 1fr; }
@@ -1132,7 +1137,7 @@ footer {
       <svg class="c-br" viewBox="0 0 13 13" fill="none"><path d="M0.5 12.5V0.5H12.5" stroke="#b0b5b1"/></svg>
     </div>
     <span class="modal-close" onclick="closeModal()">×</span>
-    <div class="modal-tag">&gt;&gt;&gt; restricted</div>
+    <div class="modal-tag"><span class="m-arrow">&gt;&gt;&gt;</span> restricted</div>
     <div class="modal-title" id="modal-title">Case study</div>
     <p class="modal-sub">
       Password is in the top right corner of my resume.<br>
