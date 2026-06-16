@@ -1108,7 +1108,7 @@ footer {
         <span class="cta-log-line"><span class="s-prefix">///</span> Great design moves people.</span>
         <span class="cta-log-line"><span class="s-prefix">///</span> Let's build something that matters.</span>
       </div>
-      <a href="mailto:adrian@adrianmucha.us" class="cta-btn">Contact me →</a>
+      <a href="#" class="cta-btn" data-email>Contact me →</a>
     </div>
   </div>
 </div>
@@ -1132,7 +1132,7 @@ footer {
     <div class="modal-title" id="modal-title">Case study</div>
     <p class="modal-sub">
       Password is in the top right corner of my resume.<br>
-      No resume? <a href="mailto:adrian@adrianmucha.us">Email me ↗</a>
+      No resume? <a href="#" data-email>Email me ↗</a>
     </p>
     <div class="modal-row">
       <input type="password" id="pw" class="modal-input" placeholder="enter password" autocomplete="off">
@@ -1143,6 +1143,15 @@ footer {
 </div>
 
 <script>
+  // ── EMAIL (assembled at runtime so scrapers can't harvest the plaintext) ──
+  (function () {
+    const user = 'adrian', domain = 'adrianmucha' + '.' + 'us';
+    const addr = user + '@' + domain;
+    document.querySelectorAll('[data-email]').forEach(function (el) {
+      el.setAttribute('href', 'mailto:' + addr);
+    });
+  })();
+
   const PASSWORD = '112233';
   let currentTarget = null;
 
