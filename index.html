@@ -652,16 +652,26 @@ nav {
   font-weight: 500;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--accent-dark);
-  opacity: 0.55;
+  color: rgba(58, 66, 58, 0.6);   /* muted accent-dark via alpha so the >>> stays crisp */
   margin-bottom: 12px;
 }
+.cta-eyebrow .cta-arrow { color: var(--brand); }   /* indigo prompt, matches divider + status bar */
 .cta-headline {
   font-size: clamp(40px, 5.5vw, 68px);
   font-weight: 400;
   letter-spacing: -0.02em;
   line-height: 1.0;
   color: var(--accent-dark);
+}
+/* blinking block cursor — terminal-prompt feel, like the status bar */
+.cta-headline::after {
+  content: '';
+  display: inline-block;
+  width: 0.45em;
+  height: 0.72em;
+  margin-left: 0.14em;
+  background: var(--accent-dark);
+  animation: caret 0.9s steps(1) infinite;
 }
 .cta-r {
   padding: 48px 40px;
@@ -1077,7 +1087,7 @@ footer {
 <div class="cta">
   <div class="cta-inner">
     <div class="cta-l">
-      <div class="cta-eyebrow">&gt;&gt;&gt; Let's work together</div>
+      <div class="cta-eyebrow"><span class="cta-arrow">&gt;&gt;&gt;</span> Let's work together</div>
       <div class="cta-headline">Let's<br>talk</div>
     </div>
     <div class="cta-r">
