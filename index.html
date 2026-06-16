@@ -131,6 +131,8 @@ nav {
 .nav-link:hover { color: var(--dark); }
 .nav-num { color: var(--border); }
 .nav-link:hover .nav-num { color: var(--brand); }
+.nav-link.current { color: var(--dark); font-weight: 500; }
+.nav-link.current .nav-num { color: var(--brand); }
 
 /* ── HERO ── */
 .hero {
@@ -736,9 +738,9 @@ footer {
 .modal {
   background: var(--white);
   border: 1px solid var(--border);
-  padding: 40px;
+  padding: 56px;
   width: 100%;
-  max-width: 420px;
+  max-width: 520px;
   position: relative;
 }
 .modal-tag {
@@ -747,29 +749,30 @@ footer {
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--muted);
-  margin-bottom: 20px;
+  margin-bottom: 28px;
 }
 .modal-title {
-  font-size: 28px;
+  font-size: 32px;
   font-weight: 400;
   letter-spacing: -0.01em;
   line-height: 1.2;
   color: var(--dark);
-  margin-bottom: 8px;
+  margin-bottom: 14px;
 }
 .modal-sub {
-  font-size: 15px;
+  font-size: 16px;
   color: var(--muted);
-  line-height: 1.6;
-  margin-bottom: 28px;
+  line-height: 1.7;
+  margin-bottom: 40px;
 }
 .modal-sub a { color: var(--mid); border-bottom: 1px solid var(--border); }
-.modal-row { display: flex; gap: 8px; margin-bottom: 10px; }
+.modal-row { display: flex; gap: 10px; margin-bottom: 12px; }
 .modal-input {
   flex: 1;
-  padding: 11px 14px;
+  min-width: 0;            /* allow the input to shrink so the row never overflows */
+  padding: 15px 18px;
   font-family: var(--mono);
-  font-size: 15px;
+  font-size: 16px;
   border: 1px solid var(--border);
   background: var(--white);
   color: var(--dark);
@@ -779,7 +782,7 @@ footer {
 .modal-input:focus { border-color: var(--dark); }
 .modal-input.err { border-color: #C0392B; }
 .modal-btn {
-  padding: 11px 20px;
+  padding: 15px 26px;
   font-family: var(--mono);
   font-size: 13px;
   font-weight: 600;
@@ -800,8 +803,8 @@ footer {
 }
 .modal-close {
   position: absolute;
-  top: 16px; right: 16px;
-  font-size: 20px;
+  top: 22px; right: 22px;
+  font-size: 22px;
   color: var(--muted);
   cursor: pointer;
   line-height: 1;
@@ -839,6 +842,10 @@ footer {
   footer { flex-direction: column; gap: 8px; align-items: flex-start; }
   .div-bar { padding: 0 24px; }
   .status-tag { padding: 14px 24px; }
+  /* modal: breathing room on small screens without overflowing */
+  .modal-backdrop { padding: 20px; }
+  .modal { padding: 36px 28px; }
+  .modal-title { font-size: 26px; }
 }
 </style>
 </head>
@@ -858,8 +865,14 @@ footer {
     <span class="nav-role">Product Designer</span>
   </a>
   <div class="nav-links">
+    <a href="index.html" class="nav-link current">
+      <span class="nav-num">00</span> Work
+    </a>
     <a href="about.html" class="nav-link">
       <span class="nav-num">01</span> About Me
+    </a>
+    <a href="blog.html" class="nav-link">
+      <span class="nav-num">02</span> Blog
     </a>
   </div>
 </nav>
