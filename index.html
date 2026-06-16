@@ -35,6 +35,11 @@ html, body {
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   min-height: 100vh;
+  text-wrap: pretty;        /* inherited: avoids single-word widows in all body copy */
+}
+/* display headings: balance line lengths (also widow-free) */
+.hero h1, .pillars-lbl h2, .about-left h2, .cta-headline, .modal-title {
+  text-wrap: balance;
 }
 a { text-decoration: none; color: inherit; }
 button { font-family: inherit; cursor: pointer; border: none; background: none; }
