@@ -474,24 +474,50 @@ nav {
 /* ── PARTNER LOGOS ── */
 .logos-section { border-bottom: 1px solid var(--border-light); }
 .logos-head {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 40px;
+  height: 88px;
+  border-top: 1px solid var(--border-light);
   border-bottom: 1px solid var(--border-light);
-  background: repeating-linear-gradient(
-    to right, var(--border-light) 0, var(--border-light) 1px, transparent 1px, transparent 10px
+  overflow: hidden;
+  /* full-width vertical ruler ticks */
+  background-image: repeating-linear-gradient(
+    to right, var(--border-light) 0, var(--border-light) 1px, transparent 1px, transparent 12px
   );
-  background-size: 10px 100%;
+}
+/* diagonal hatch end-caps — mirrored, 40px wide to echo the side rails */
+.logos-head::before,
+.logos-head::after {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0;
+  width: var(--rail);
+  z-index: 1;
+  background-color: var(--white);
+  background-image: repeating-linear-gradient(
+    45deg, var(--border-light) 0, var(--border-light) 1px, transparent 1px, transparent 7px
+  );
+}
+.logos-head::before { left: 0;  border-right: 1px solid var(--border-light); }
+.logos-head::after {
+  right: 0;
+  border-left: 1px solid var(--border-light);
+  background-image: repeating-linear-gradient(
+    -45deg, var(--border-light) 0, var(--border-light) 1px, transparent 1px, transparent 7px
+  );
 }
 .logos-head-label {
+  position: relative;
+  z-index: 2;
   font-size: 12px;
   font-weight: 500;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--muted);
   background: var(--white);
-  padding: 0 20px;
+  padding: 8px 28px;   /* white knockout around the label */
 }
 .logos-grid {
   display: grid;
