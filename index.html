@@ -1092,18 +1092,19 @@ footer {
       <div class="card-arrow">↗</div>
     </div>
 
-    <!-- Coming soon -->
-    <div class="card soon">
-      <div class="card-badge">Ship with AI</div>
+    <!-- Amazon -->
+    <div class="card" onclick="openModal('amazon')">
+      <div class="card-badge">Product Innovation</div>
+      <div class="card-lock">🔒 Password protected</div>
       <div class="card-body">
-        <div class="card-co">Independent · In progress</div>
-        <div class="card-title">A live project built and deployed with AI coding tools</div>
+        <div class="card-co">Amazon · Contract</div>
+        <div class="card-title">Transforming Fulfillment: Amazon's Innovation in Motion</div>
         <div class="card-tags">
-          <span class="card-tag">Claude Code</span>
-          <span class="card-tag">Cursor</span>
-          <span class="card-tag">v0</span>
+          <span class="card-tag">Fulfillment</span>
+          <span class="card-tag">Logistics</span>
         </div>
       </div>
+      <div class="card-arrow">↗</div>
     </div>
 
   </div>
@@ -1236,12 +1237,14 @@ footer {
     meta: 'https://adrianmucha.us/password',
     microsoft: '#',
     paypal: '#',
+    amazon: '#',
   };
 
   const titles = {
     meta: 'Meta · Data Center & AI Work',
     microsoft: 'Microsoft · Planner AI Features',
     paypal: 'PayPal · AI in the Design Process',
+    amazon: 'Amazon · Fulfillment Innovation',
   };
 
   function openModal(id) {
