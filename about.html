@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About · Adrian Mucha</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600&family=Geist:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+
+/* ── RESET & TOKENS ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --white: #ffffff;
+  --off: #fafaf8;
+  --mid: #3a423a;
+  --muted: #737373;
+  --dark: #1c1e21;
+  --border: #b0b5b1;
+  --border-light: #e2e5e2;
+  --accent: #e8ff83;
+  --accent-dark: #3a423a;
+  --brand: #5865f2;
+  --mono: "Geist Mono", monospace;
+  --sans: "Geist", sans-serif;
+  --rail: 40px;              /* width of each side rail */
+}
+
+html, body {
+  background: var(--white);
+  color: var(--mid);
+  font-family: var(--mono);
+  font-size: 17px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  text-wrap: pretty;        /* inherited: avoids single-word widows in all body copy */
+}
+/* display headings: balance line lengths (also widow-free) */
+.hero h1, .story-lead, .pillars-lbl h2, .cta-headline {
+  text-wrap: balance;
+}
+a { text-decoration: none; color: inherit; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+svg { display: block; }
+
+/* ── SIDE RAILS - fixed, both sides ── */
+.rail-left,
+.rail-right {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  width: var(--rail);
+  z-index: 300;
+  pointer-events: none;
+  background: var(--white);
+}
+.rail-left  { left: 0; border-right: 1px solid var(--border-light); }
+.rail-right { right: 0; border-left: 1px solid var(--border-light); }
+
+/* inner second line on each rail */
+.rail-left::after {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0;
+  right: 12px;
+  width: 1px;
+  background: var(--border-light);
+}
+.rail-right::after {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0;
+  left: 12px;
+  width: 1px;
+  background: var(--border-light);
+}
+
+/* ── PAGE WRAPPER - inset from both rails ── */
+.page-wrap {
+  margin-left: var(--rail);
+  margin-right: var(--rail);
+}
+
+/* ── NAV ── */
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+  height: 56px;
+  border-bottom: 1px solid var(--border-light);
+  position: sticky;
+  top: 0;
+  background: var(--white);
+  z-index: 250;
+}
+.nav-logo {
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--dark);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.nav-sep { color: var(--border); }
+.nav-role { color: var(--muted); font-weight: 400; }
+.nav-links { display: flex; gap: 32px; align-items: center; }
+.nav-link {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--muted);
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  transition: color 0.15s;
+}
+.nav-link:hover { color: var(--dark); }
+.nav-num { color: var(--border); }
+.nav-link:hover .nav-num { color: var(--brand); }
+/* current page marker */
+.nav-link.current { color: var(--dark); font-weight: 500; }
+.nav-link.current .nav-num { color: var(--brand); }
+
+/* ── HERO ── */
+.hero {
+  padding: 64px 40px 0;
+  border-bottom: 1px solid var(--border-light);
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  position: relative;
+}
+.hero-eyebrow {
+  font-size: 12px;          /* canonical section-label type: 12 / 600 / 0.1em / --mid */
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--mid);
+  margin-bottom: 28px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+}
+.hero-eyebrow::before { content:''; width:24px; height:1px; background:var(--border); }
+.hero h1 {
+  font-family: var(--mono);
+  font-size: clamp(26px, 3.5vw, 48px);
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--mid);
+  max-width: 24ch;              /* HIG: constrain to ~35-50 chars, hero can be tighter */
+  margin-bottom: 28px;
+  position: relative;
+}
+.hero h1 .cycle {
+  color: var(--brand);
+  background: rgba(88,101,242,0.07);
+  padding: 0 6px;
+}
+.hero-bio {
+  font-family: var(--sans);
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--muted);
+  line-height: 1.65;
+  max-width: 54ch;
+  position: relative;
+  margin-bottom: 40px;
+}
+.hero-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border-top: 1px solid var(--border-light);
+  background: var(--white);
+  position: relative;
+  margin-top: 40px;
+  margin-left: -40px;
+  margin-right: -40px;
+}
+.hero-stat {
+  padding: 20px 40px;
+  border-right: 1px solid var(--border-light);
+}
+.hero-stat:last-child { border-right: none; }
+.stat-val {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--mid);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.stat-lbl {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--muted);
+}
+
+/* ── SECTION DIVIDER BAR ── (clean white band) */
+.div-bar {
+  display: flex;
+  align-items: center;
+  height: 96px;
+  padding: 0 40px;
+  border-bottom: 1px solid var(--border-light);   /* top line is the previous section's border-bottom - avoid doubling */
+}
+.div-bar-label {
+  font-size: 12px;          /* canonical section-label type */
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--mid);
+  white-space: nowrap;
+}
+.div-bar-label .db-arrow { color: var(--brand); }   /* indigo prompt, matches the status bar */
+
+/* ── STORY ── */
+.story {
+  display: grid;
+  grid-template-columns: 3fr 9fr;   /* label = 3/12 (25%), prose = 9/12 */
+  border-bottom: 1px solid var(--border-light);
+}
+.story-lbl {
+  padding: 48px 40px;
+  border-right: 1px solid var(--border-light);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.story-lbl .sec-num {
+  font-size: 12px;          /* canonical section-label type (numeric, so no uppercase) */
+  font-weight: 600;
+  color: var(--mid);
+  letter-spacing: 0.1em;
+}
+.story-lbl h2 {
+  font-family: var(--sans);
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--mid);
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+  max-width: 14ch;
+}
+.story-body {
+  padding: 48px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.story-lead {
+  font-family: var(--sans);
+  font-size: 21px;
+  font-weight: 500;
+  color: var(--mid);
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+  max-width: 50ch;
+}
+.story-body p {
+  font-family: var(--sans);
+  font-size: 17px;
+  font-weight: 400;
+  color: var(--muted);
+  line-height: 1.75;
+  max-width: 64ch;
+}
+
+/* ── STATUS BAR ── */
+.status-bar {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid var(--border-light);
+}
+.status-tag {
+  padding: 14px 40px;
+  border-right: 1px solid var(--border-light);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.s-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--brand);
+  animation: blink 2s steps(1) infinite;
+}
+@keyframes blink { 0%,49%{opacity:1} 50%,100%{opacity:0.3} }
+.status-typing {
+  padding: 14px 24px;
+  font-size: 13px;
+  color: var(--dark);
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.s-prefix { color: var(--brand); font-weight: 600; }
+.s-arrow  { color: var(--brand); font-weight: 600; }
+/* blinking block cursor - terminal style */
+.s-text::after {
+  content: '';
+  display: inline-block;
+  width: 7px;
+  height: 14px;
+  margin-left: 3px;
+  vertical-align: -2px;
+  background: var(--brand);
+  animation: caret 0.9s steps(1) infinite;
+}
+@keyframes caret { 0%,49%{opacity:1} 50%,100%{opacity:0} }
+
+/* ── PRINCIPLES (pillars layout) ── */
+.pillars {
+  display: grid;
+  grid-template-columns: 3fr 9fr;   /* label = 3/12 (25%), content = 9/12 */
+  border-bottom: 1px solid var(--border-light);
+}
+.pillars-lbl {
+  padding: 40px;
+  border-right: 1px solid var(--border-light);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.pillars-lbl .sec-num {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--mid);
+  letter-spacing: 0.1em;
+}
+.pillars-lbl h2 {
+  font-family: var(--sans);
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--mid);
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+  max-width: 16ch;
+}
+.pillars-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+.pillar {
+  padding: 40px 28px;
+  border-right: 1px solid var(--border-light);
+}
+.pillar:last-child { border-right: none; }
+.pillar-num {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--muted);
+  letter-spacing: 0.08em;
+  margin-bottom: 18px;
+}
+.pillar-title {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--mid);
+  margin-bottom: 12px;
+}
+.pillar-desc {
+  font-family: var(--sans);
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--muted);
+  line-height: 1.65;
+  max-width: 36ch;
+}
+
+/* ── CTA ── */
+.cta {
+  border-bottom: 1px solid var(--border-light);   /* top line comes from the previous section's border-bottom — avoid doubling */
+  background: var(--accent);
+  position: relative;
+  overflow: hidden;
+}
+.cta-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;   /* divider at 50% */
+  min-height: 240px;
+}
+.cta-l {
+  padding: 48px 40px;
+  border-right: 1px solid rgba(58,66,58,0.18);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+}
+.cta-eyebrow {
+  font-size: 12px;          /* canonical section-label type (--mid == --accent-dark, reads on lime) */
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--mid);
+  margin-bottom: 12px;
+}
+.cta-eyebrow .cta-arrow { color: var(--brand); }   /* indigo prompt, matches divider + status bar */
+.cta-headline {
+  font-size: clamp(40px, 5.5vw, 68px);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.0;
+  color: var(--accent-dark);
+}
+/* blinking block cursor — terminal-prompt feel, like the status bar */
+.cta-headline::after {
+  content: '';
+  display: inline-block;
+  width: 0.45em;
+  height: 0.72em;
+  margin-left: 0.14em;
+  background: var(--accent-dark);
+  animation: caret 0.9s steps(1) infinite;
+}
+.cta-r {
+  padding: 48px 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+}
+.cta-log {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+  font-size: 15px;
+  letter-spacing: -0.01em;
+  color: var(--accent-dark);
+}
+.cta-log-line { display: flex; gap: 10px; }
+.cta-log .s-prefix { flex-shrink: 0; }   /* indigo /// prompt, reused from the status bar */
+.cta-note {
+  font-family: var(--sans);
+  font-size: 15px;
+  color: var(--accent-dark);
+  line-height: 1.6;
+  margin-bottom: 28px;
+  opacity: 0.85;
+}
+.cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent-dark);
+  border-bottom: 1.5px solid var(--accent-dark);
+  padding-bottom: 2px;
+  transition: gap 0.15s;
+  width: fit-content;
+}
+.cta-btn:hover { gap: 14px; }
+
+/* ── FOOTER ── */
+footer {
+  padding: 20px 40px;   /* top line comes from .cta's border-bottom — avoid doubling */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.foot-l, .foot-r {
+  font-size: 13px;
+  color: var(--muted);
+}
+.foot-r a { color: var(--mid); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .rail-left, .rail-right { display: none; }
+  .page-wrap { margin-left: 0; margin-right: 0; }
+  nav, .hero, footer { padding-left: 24px; padding-right: 24px; }
+  .hero h1 { font-size: clamp(24px, 7vw, 38px); max-width: 100%; }
+  .hero-stats { grid-template-columns: repeat(2, 1fr); margin-left: -24px; margin-right: -24px; }
+  .hero-stat:nth-child(2) { border-right: none; }
+  .hero-stat:nth-child(3) { border-top: 1px solid var(--border-light); }
+  .hero-stat:nth-child(4) { border-top: 1px solid var(--border-light); border-right: none; }
+  .div-bar { padding: 0 24px; }
+  .status-tag { padding: 14px 24px; }
+  .story { grid-template-columns: 1fr; }
+  .story-lbl { border-right: none; border-bottom: 1px solid var(--border-light); padding: 40px 24px; }
+  .story-body { padding: 40px 24px; }
+  .pillars { grid-template-columns: 1fr; }
+  .pillars-lbl { border-right: none; border-bottom: 1px solid var(--border-light); }
+  .pillars-grid { grid-template-columns: 1fr; }
+  .pillar { border-right: none; border-bottom: 1px solid var(--border-light); }
+  .pillar:last-child { border-bottom: none; }
+  .cta-inner { grid-template-columns: 1fr; }
+  .cta-l { border-right: none; border-bottom: 1px solid rgba(58,66,58,0.18); }
+  footer { flex-direction: column; gap: 8px; align-items: flex-start; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── SIDE RAILS ── -->
+<div class="rail-left"  aria-hidden="true"></div>
+<div class="rail-right" aria-hidden="true"></div>
+
+<!-- ── PAGE WRAP ── -->
+<div class="page-wrap">
+
+<!-- ── NAV ── -->
+<nav>
+  <a href="index.html" class="nav-logo">
+    Adrian Mucha <span class="nav-sep">/</span>
+    <span class="nav-role">Product Designer</span>
+  </a>
+  <div class="nav-links">
+    <a href="index.html" class="nav-link">
+      <span class="nav-num">00</span> Work
+    </a>
+    <a href="about.html" class="nav-link current">
+      <span class="nav-num">01</span> About Me
+    </a>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<div class="hero">
+  <div class="hero-eyebrow">About Me</div>
+  <h1>
+    A designer exploring the<br>
+    space where systems, AI,<br>
+    and usability <span class="cycle">meet</span>
+  </h1>
+  <p class="hero-bio">
+    Currently crafting internal tools at Meta, where I shape the systems
+    and AI experiences engineers reach for every day. I've always been driven
+    by the feeling of making something that works beautifully.
+  </p>
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="stat-val">Based in</div>
+      <div class="stat-lbl">Los Angeles, CA</div>
+    </div>
+    <div class="hero-stat">
+      <div class="stat-val">Currently</div>
+      <div class="stat-lbl">Meta · Internal tools</div>
+    </div>
+    <div class="hero-stat">
+      <div class="stat-val">Worked at</div>
+      <div class="stat-lbl">Meta · Amazon · Microsoft</div>
+    </div>
+    <div class="hero-stat">
+      <div class="stat-val">Studio</div>
+      <div class="stat-lbl">FruitBat Design, LLC</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── STORY DIVIDER ── -->
+<div class="div-bar">
+  <span class="div-bar-label"><span class="db-arrow">&gt;&gt;&gt;</span> The story so far</span>
+</div>
+
+<!-- ── STORY ── -->
+<div class="story">
+  <div class="story-lbl">
+    <span class="sec-num">01 &gt;&gt;&gt;</span>
+    <h2>How I got here</h2>
+  </div>
+  <div class="story-body">
+    <p class="story-lead">
+      I've always been curious about how things work. Growing up, I'd spend
+      hours taking apart gadgets, sketching interfaces, and trying to understand
+      what made something feel right.
+    </p>
+    <p>
+      It wasn't about following a clear path; it was about chasing the feeling
+      of creating something that worked beautifully. That curiosity eventually
+      led me into product design.
+    </p>
+    <p>
+      Over the years, I've worked across some of the most complex systems at
+      Meta, Amazon, and Microsoft, shaping products that help people work faster,
+      think clearly, and feel more connected to what they're building. Each project
+      taught me that design isn't just problem-solving, it's about creating momentum
+      and meaning through clarity.
+    </p>
+    <p>
+      I live in Los Angeles now, where I try to balance precision at work with
+      movement in life. I find ideas while longboarding along the coast or during
+      slow mornings at a local café when the city feels calm and full of potential.
+      These moments remind me that the best work often starts when you stop forcing it.
+    </p>
+    <p>
+      I'm driven by a love for design that feels alive, the kind that blends logic
+      with emotion and tools with experience. Whether it's building for engineers
+      or designing systems that scale, I aim to make technology feel more human
+      and effortless.
+    </p>
+  </div>
+</div>
+
+<!-- ── STATUS BAR ── -->
+<div class="status-bar">
+  <div class="status-tag">
+    <span class="s-dot"></span>
+    OFF THE CLOCK <span class="s-arrow">&gt;&gt;&gt;</span>
+  </div>
+  <div class="status-typing">
+    <span class="s-prefix">///</span>
+    <span class="s-text" id="s-text"></span>
+  </div>
+</div>
+
+<!-- ── PRINCIPLES ── -->
+<div class="pillars">
+  <div class="pillars-lbl">
+    <span class="sec-num">02 &gt;&gt;&gt;</span>
+    <h2>What I<br>believe</h2>
+  </div>
+  <div class="pillars-grid">
+    <div class="pillar">
+      <div class="pillar-num">001 /</div>
+      <div class="pillar-title">Clarity creates momentum</div>
+      <p class="pillar-desc">Design isn't just problem-solving. It's about creating momentum and meaning through clarity.</p>
+    </div>
+    <div class="pillar">
+      <div class="pillar-num">002 /</div>
+      <div class="pillar-title">Make it feel human</div>
+      <p class="pillar-desc">Whether I'm building for engineers or designing systems that scale, I aim to make technology feel more human and effortless.</p>
+    </div>
+    <div class="pillar">
+      <div class="pillar-num">003 /</div>
+      <div class="pillar-title">Don't force it</div>
+      <p class="pillar-desc">The best work often starts when you stop forcing it, on a longboard by the coast or over a slow morning coffee.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ── CTA ── -->
+<div class="cta">
+  <div class="cta-inner">
+    <div class="cta-l">
+      <div class="cta-eyebrow"><span class="cta-arrow">&gt;&gt;&gt;</span> Let's work together</div>
+      <div class="cta-headline">Let's<br>talk</div>
+    </div>
+    <div class="cta-r">
+      <div class="cta-log">
+        <span class="cta-log-line"><span class="s-prefix">///</span> Good design moves fast.</span>
+        <span class="cta-log-line"><span class="s-prefix">///</span> Great design moves people.</span>
+        <span class="cta-log-line"><span class="s-prefix">///</span> Let's build something that matters.</span>
+      </div>
+      <p class="cta-note">DMs are open. Feel free to reach out.</p>
+      <a href="#" class="cta-btn" data-email>Contact me →</a>
+    </div>
+  </div>
+</div>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <span class="foot-l">Adrian Mucha (FruitBat Design, LLC) · © 2026</span>
+</footer>
+
+<script>
+  // ── EMAIL (assembled at runtime so scrapers can't harvest the plaintext) ──
+  (function () {
+    const user = 'adrian', domain = 'adrianmucha' + '.' + 'us';
+    const addr = user + '@' + domain;
+    document.querySelectorAll('[data-email]').forEach(function (el) {
+      el.setAttribute('href', 'mailto:' + addr);
+    });
+  })();
+
+  // ── STATUS TYPING ── (personality, off-the-clock notes)
+  const statuses = [
+    'Longboarding the coast · finding ideas in motion',
+    'Slow mornings at a local café',
+    'Taking gadgets apart since day one',
+    'Blending logic with emotion · tools with experience',
+  ];
+  const sEl = document.getElementById('s-text');
+  let si = 0, sci = 0, sdel = false;
+  function statusTick() {
+    const s = statuses[si];
+    if (!sdel) {
+      sci++;
+      sEl.textContent = s.slice(0, sci);
+      if (sci >= s.length) { sdel = true; setTimeout(statusTick, 2200); return; }
+      setTimeout(statusTick, 35 + Math.random() * 20);
+    } else {
+      sci--;
+      sEl.textContent = s.slice(0, sci);
+      if (sci <= 0) { sdel = false; si = (si + 1) % statuses.length; setTimeout(statusTick, 250); return; }
+      setTimeout(statusTick, 18);
+    }
+  }
+  setTimeout(statusTick, 600);
+</script>
+
+</div><!-- /page-wrap -->
+
+</body>
+</html>
