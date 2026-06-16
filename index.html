@@ -500,6 +500,37 @@ nav {
 .card:hover .card-art { opacity: 1; color: var(--muted); }   /* lines firm up */
 .card:hover .card-art .led { fill: var(--brand); }           /* status LEDs light indigo */
 
+/* full-color photo treatment for a case-study card */
+.card-photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  transition: transform 0.5s ease;
+}
+.card.has-photo:hover .card-photo { transform: scale(1.04); }   /* subtle zoom on hover */
+.card-photo-scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  /* photo shows up top, fades to white where the label/title/tags sit */
+  background: linear-gradient(to bottom,
+    rgba(255,255,255,0) 0%,
+    rgba(255,255,255,0) 34%,
+    rgba(255,255,255,0.55) 60%,
+    rgba(255,255,255,0.92) 82%,
+    #ffffff 100%);
+}
+.card.has-photo .card-lock {        /* frosted backdrop so the lock reads over the image */
+  background: rgba(255,255,255,0.72);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  padding: 4px 8px;
+}
+
 /* ── PARTNER LOGOS ── */
 .logos-section { border-bottom: 1px solid var(--border-light); }
 .logos-head {
@@ -1093,7 +1124,9 @@ footer {
     </div>
 
     <!-- Amazon -->
-    <div class="card" onclick="openModal('amazon')">
+    <div class="card has-photo" onclick="openModal('amazon')">
+      <img class="card-photo" src="photos/amazon.png" alt="" aria-hidden="true">
+      <div class="card-photo-scrim"></div>
       <div class="card-badge">Product Innovation</div>
       <div class="card-lock">🔒 Password protected</div>
       <div class="card-body">
