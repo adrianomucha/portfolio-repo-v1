@@ -143,11 +143,11 @@ nav {
   position: relative;
 }
 .hero-eyebrow {
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0.12em;
+  font-size: 12px;          /* canonical section-label type: 12 / 600 / 0.1em / --mid */
+  font-weight: 600;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--mid);
   margin-bottom: 28px;
   display: flex;
   align-items: center;
@@ -219,11 +219,11 @@ nav {
   border-bottom: 1px solid var(--border-light);   /* top line is the hero's border-bottom - avoid doubling */
 }
 .div-bar-label {
-  font-size: 13px;
+  font-size: 12px;          /* canonical section-label type */
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--dark);
+  color: var(--mid);
   white-space: nowrap;
 }
 .div-bar-label .db-arrow { color: var(--brand); }   /* indigo prompt, matches the status bar */
@@ -242,10 +242,10 @@ nav {
   gap: 8px;
 }
 .pillars-lbl .sec-num {
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--muted);
-  letter-spacing: 0.08em;
+  font-size: 12px;          /* canonical section-label type (numeric, so no uppercase) */
+  font-weight: 600;
+  color: var(--mid);
+  letter-spacing: 0.1em;
 }
 .pillars-lbl h2 {
   font-family: var(--sans);
@@ -367,11 +367,11 @@ nav {
   margin-bottom: 0;
 }
 .work-hdr-title {
-  font-size: 12px;
+  font-size: 12px;          /* canonical section-label type */
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--mid);
 }
 .work-hdr-count {
   font-size: 12px;
@@ -516,11 +516,11 @@ nav {
 .logos-head-label {
   position: relative;
   z-index: 2;
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0.12em;
+  font-size: 12px;          /* canonical section-label type (stays centered — ruler-band caption) */
+  font-weight: 600;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--mid);
   background: var(--white);
   padding: 8px 28px;   /* white knockout around the label */
 }
@@ -583,7 +583,7 @@ nav {
 /* eyebrow label — matches the right column's item titles, anchors the left column */
 .about-eyebrow {
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: 12px;          /* canonical section-label type */
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -658,11 +658,11 @@ nav {
   position: relative;
 }
 .cta-eyebrow {
-  font-size: 12px;
-  font-weight: 500;
+  font-size: 12px;          /* canonical section-label type (--mid == --accent-dark, reads on lime) */
+  font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: rgba(58, 66, 58, 0.6);   /* muted accent-dark via alpha so the >>> stays crisp */
+  color: var(--mid);
   margin-bottom: 12px;
 }
 .cta-eyebrow .cta-arrow { color: var(--brand); }   /* indigo prompt, matches divider + status bar */
