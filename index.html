@@ -546,26 +546,17 @@ nav {
 .logo-cell:last-child { border-right: none; }
 .logo-cell svg, .logo-cell img { max-width: 100%; height: auto; }
 
-/* Logo wordmarks as centered text */
-.logo-name {
-  font-family: var(--mono);
-  font-weight: 600;
-  font-size: 30px;
-  letter-spacing: -0.01em;
-  color: var(--mid);
-  text-align: center;
-  white-space: nowrap;
+/* Real brand logos: monochrome ink at rest, true brand color on hover.
+   Per-logo heights are set inline so the mixed aspect ratios read at one
+   optical size (wordmarks wider, symbols taller). */
+.logo-img {
+  width: auto;
+  max-width: 82%;
+  filter: grayscale(1);
+  opacity: 0.5;
+  transition: filter 0.2s ease, opacity 0.2s ease;
 }
-.logo-name.featured { font-size: 46px; }
-.logo-name-sm {
-  font-family: var(--mono);
-  font-weight: 400;
-  font-size: clamp(15px, 1.5vw, 21px);
-  letter-spacing: 0;
-  color: #9ca3a0;
-  text-align: center;
-  white-space: nowrap;
-}
+.logo-cell:hover .logo-img { filter: grayscale(0); opacity: 1; }
 
 /* ── ABOUT STRIP ── */
 .about-strip {
@@ -1042,31 +1033,31 @@ footer {
   <div class="logos-grid">
     <!-- Microsoft (left) -->
     <div class="logo-cell" style="border-right:1px solid var(--border-light)">
-      <span class="logo-name">Microsoft</span>
+      <img class="logo-img" src="logos/microsoft.svg" alt="Microsoft" style="height:30px">
     </div>
     <!-- Meta (center, featured) -->
     <div class="logo-cell" style="border-right:1px solid var(--border-light)">
-      <span class="logo-name featured">Meta</span>
+      <img class="logo-img" src="logos/meta.svg" alt="Meta" style="height:44px">
     </div>
     <!-- Amazon (right) -->
     <div class="logo-cell">
-      <span class="logo-name">Amazon</span>
+      <img class="logo-img" src="logos/amazon.svg" alt="Amazon" style="height:32px">
     </div>
   </div>
 
   <!-- Row 2: also worked at - 4 equal columns -->
   <div class="logos-row2">
     <div class="logo-cell" style="border-right:1px solid var(--border-light)">
-      <span class="logo-name-sm">PayPal</span>
+      <img class="logo-img" src="logos/paypal.svg" alt="PayPal" style="height:26px">
     </div>
     <div class="logo-cell" style="border-right:1px solid var(--border-light)">
-      <span class="logo-name-sm">DoorDash</span>
+      <img class="logo-img" src="logos/doordash.svg" alt="DoorDash" style="height:18px">
     </div>
     <div class="logo-cell" style="border-right:1px solid var(--border-light)">
-      <span class="logo-name-sm">American Express</span>
+      <img class="logo-img" src="logos/americanexpress.svg" alt="American Express" style="height:42px">
     </div>
     <div class="logo-cell">
-      <span class="logo-name-sm">Zendesk</span>
+      <img class="logo-img" src="logos/zendesk.svg" alt="Zendesk" style="height:24px">
     </div>
   </div>
 </div>
