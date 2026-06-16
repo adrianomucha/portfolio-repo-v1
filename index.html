@@ -292,7 +292,7 @@ nav {
 .pillar-cos { display: flex; flex-direction: column; gap: 5px; }
 .pillar-co {
   display: flex;
-  align-items: center;
+  align-items: flex-start;   /* dot aligns to the first line on multi-line items */
   gap: 7px;
   font-size: 13px;
   color: var(--muted);
@@ -303,6 +303,7 @@ nav {
   border-radius: 50%;
   background: var(--border);
   flex-shrink: 0;
+  margin-top: 8px;           /* optically center the dot on the first line's text */
 }
 
 /* ── STATUS BAR ── */
