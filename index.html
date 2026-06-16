@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Design Work — Adrian Mucha</title>
+<title>AI Design Work · Adrian Mucha</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600&family=Geist:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -45,7 +45,7 @@ a { text-decoration: none; color: inherit; }
 button { font-family: inherit; cursor: pointer; border: none; background: none; }
 svg { display: block; }
 
-/* ── SIDE RAILS — fixed, both sides ── */
+/* ── SIDE RAILS - fixed, both sides ── */
 .rail-left,
 .rail-right {
   position: fixed;
@@ -77,7 +77,7 @@ svg { display: block; }
   background: var(--border-light);
 }
 
-/* ── PAGE WRAPPER — inset from both rails ── */
+/* ── PAGE WRAPPER - inset from both rails ── */
 .page-wrap {
   margin-left: var(--rail);
   margin-right: var(--rail);
@@ -216,7 +216,7 @@ nav {
   align-items: center;
   height: 96px;
   padding: 0 40px;
-  border-bottom: 1px solid var(--border-light);   /* top line is the hero's border-bottom — avoid doubling */
+  border-bottom: 1px solid var(--border-light);   /* top line is the hero's border-bottom - avoid doubling */
 }
 .div-bar-label {
   font-size: 13px;
@@ -342,7 +342,7 @@ nav {
 }
 .s-prefix { color: var(--brand); font-weight: 600; }
 .s-arrow  { color: var(--brand); font-weight: 600; }
-/* blinking block cursor — terminal style */
+/* blinking block cursor - terminal style */
 .s-text::after {
   content: '';
   display: inline-block;
@@ -491,7 +491,7 @@ nav {
     to right, var(--border-light) 0, var(--border-light) 1px, transparent 1px, transparent 12px
   );
 }
-/* diagonal hatch end-caps — mirrored, 40px wide to echo the side rails */
+/* diagonal hatch end-caps - mirrored, 40px wide to echo the side rails */
 .logos-head::before,
 .logos-head::after {
   content: '';
@@ -525,12 +525,12 @@ nav {
 }
 .logos-grid {
   display: grid;
-  grid-template-columns: 3fr 6fr 3fr;   /* side / center / side — dividers at 25% & 75% */
+  grid-template-columns: 3fr 6fr 3fr;   /* side / center / side - dividers at 25% & 75% */
   gap: 0;
 }
 .logos-row2 {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);  /* dividers at 25/50/75 — matches grid */
+  grid-template-columns: repeat(4, 1fr);  /* dividers at 25/50/75 - matches grid */
   border-top: 1px solid var(--border-light);
 }
 .logo-cell {
@@ -569,7 +569,7 @@ nav {
 /* ── ABOUT STRIP ── */
 .about-strip {
   display: grid;
-  grid-template-columns: 6fr 6fr;   /* divider at 50% — matches cards & cta */
+  grid-template-columns: 6fr 6fr;   /* divider at 50% - matches cards & cta */
   border-bottom: 1px solid var(--border-light);
 }
 .about-left {
@@ -580,13 +580,13 @@ nav {
   gap: 24px;
 }
 .about-left h2 {
-  font-family: var(--sans);           /* sans for display text — much more readable */
+  font-family: var(--sans);           /* sans for display text - much more readable */
   font-size: 32px;
   font-weight: 500;
   letter-spacing: -0.02em;
   line-height: 1.2;
   color: var(--mid);
-  max-width: 28ch;                    /* constrain line length — HIG: 35-50 chars */
+  max-width: 28ch;                    /* constrain line length - HIG: 35-50 chars */
 }
 .about-left p {
   font-family: var(--sans);
@@ -636,7 +636,7 @@ nav {
 }
 .cta-inner {
   display: grid;
-  grid-template-columns: 1fr 1fr;   /* divider at 50% — matches cards & about */
+  grid-template-columns: 1fr 1fr;   /* divider at 50% - matches cards & about */
   min-height: 240px;
 }
 .cta-l {
@@ -857,7 +857,7 @@ footer {
   <div class="hero-eyebrow">AI Design Work</div>
   <h1>
     I design AI products<br>
-    and ship them — at<br>
+    and ship them at<br>
     <span class="cycle" id="cycle-word">Meta</span>
   </h1>
   <p class="hero-bio">
@@ -900,7 +900,7 @@ footer {
     <div class="pillar">
       <div class="pillar-num">001 /</div>
       <div class="pillar-title">Design for AI</div>
-      <p class="pillar-desc">The interfaces AI systems live inside — copilot panels, internal tools, agent dashboards, operator consoles.</p>
+      <p class="pillar-desc">The interfaces AI systems live inside: copilot panels, internal tools, agent dashboards, operator consoles.</p>
       <div class="pillar-cos">
         <span class="pillar-co">Meta (Metamate / LLaMA tooling)</span>
         <span class="pillar-co">Microsoft (Planner AI)</span>
@@ -909,7 +909,7 @@ footer {
     <div class="pillar">
       <div class="pillar-num">002 /</div>
       <div class="pillar-title">Embed AI in teams</div>
-      <p class="pillar-desc">Setting up AI tools, workflows, and internal tooling inside a design org — changing how a whole team operates.</p>
+      <p class="pillar-desc">Setting up AI tools, workflows, and internal tooling inside a design org, changing how a whole team operates.</p>
       <div class="pillar-cos">
         <span class="pillar-co">PayPal (tools + internal tooling + features)</span>
         <span class="pillar-co">Meta (workflow implementation)</span>
@@ -1017,7 +1017,7 @@ footer {
     <span class="logos-head-label">Companies I've designed AI for</span>
   </div>
 
-  <!-- Row 1: featured — side / center / side (3·6·3) -->
+  <!-- Row 1: featured - side / center / side (3·6·3) -->
   <div class="logos-grid">
     <!-- Microsoft (left) -->
     <div class="logo-cell" style="border-right:1px solid var(--border-light)">
@@ -1033,7 +1033,7 @@ footer {
     </div>
   </div>
 
-  <!-- Row 2: also worked at — 4 equal columns -->
+  <!-- Row 2: also worked at - 4 equal columns -->
   <div class="logos-row2">
     <div class="logo-cell" style="border-right:1px solid var(--border-light)">
       <span class="logo-name-sm">PayPal</span>
@@ -1055,16 +1055,16 @@ footer {
   <div class="about-left">
     <h2>I'm a designer exploring the space where systems, AI, and usability meet.</h2>
     <p>Over the years, I've worked across some of the most complex systems at Meta, Amazon, and Microsoft, shaping products that help people work faster, think clearly, and feel more connected to what they're building.</p>
-    <p>I live in Los Angeles, where I find ideas while longboarding along the coast or during slow mornings at a local café. I'm driven by design that feels alive — the kind that blends logic with emotion and tools with experience.</p>
+    <p>I live in Los Angeles, where I find ideas while longboarding along the coast or during slow mornings at a local café. I'm driven by design that feels alive, the kind that blends logic with emotion and tools with experience.</p>
   </div>
   <div class="about-right">
     <div class="about-item">
       <div class="about-item-title">Designing with Purpose, Not Just Pixels</div>
-      <p class="about-item-desc">I love creating functional, impactful experiences — whether for consumers or engineers — making even complex tools intuitive and enjoyable to use.</p>
+      <p class="about-item-desc">I love creating functional, impactful experiences (whether for consumers or engineers), making even complex tools intuitive and enjoyable to use.</p>
     </div>
     <div class="about-item">
       <div class="about-item-title">Shipping Fast & Iterating</div>
-      <p class="about-item-desc">I believe in momentum. I work quickly, get real feedback, and refine — ensuring designs don't just look good but drive results.</p>
+      <p class="about-item-desc">I believe in momentum. I work quickly, get real feedback, and refine, ensuring designs don't just look good but drive results.</p>
     </div>
     <div class="about-item">
       <div class="about-item-title">Startup Agility with Enterprise Expertise</div>
@@ -1132,9 +1132,9 @@ footer {
   };
 
   const titles = {
-    meta: 'Meta — Data Center & AI Work',
-    microsoft: 'Microsoft — Planner AI Features',
-    paypal: 'PayPal — AI in the Design Process',
+    meta: 'Meta · Data Center & AI Work',
+    microsoft: 'Microsoft · Planner AI Features',
+    paypal: 'PayPal · AI in the Design Process',
   };
 
   function openModal(id) {
