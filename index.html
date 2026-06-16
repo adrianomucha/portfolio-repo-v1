@@ -680,15 +680,17 @@ nav {
   justify-content: space-between;
   position: relative;
 }
-.cta-body {
-  font-family: var(--sans);
-  font-size: 17px;
-  font-weight: 400;
-  color: var(--accent-dark);
-  line-height: 1.65;
-  opacity: 0.8;
+.cta-log {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
   margin-bottom: 28px;
+  font-size: 15px;
+  letter-spacing: -0.01em;
+  color: var(--accent-dark);
 }
+.cta-log-line { display: flex; gap: 10px; }
+.cta-log .s-prefix { flex-shrink: 0; }   /* indigo /// prompt, reused from the status bar */
 .cta-btn {
   display: inline-flex;
   align-items: center;
@@ -1091,11 +1093,11 @@ footer {
       <div class="cta-headline">Let's<br>talk</div>
     </div>
     <div class="cta-r">
-      <p class="cta-body">
-        Good design moves fast.<br>
-        Great design moves people.<br>
-        Let's build something that matters.
-      </p>
+      <div class="cta-log">
+        <span class="cta-log-line"><span class="s-prefix">///</span> Good design moves fast.</span>
+        <span class="cta-log-line"><span class="s-prefix">///</span> Great design moves people.</span>
+        <span class="cta-log-line"><span class="s-prefix">///</span> Let's build something that matters.</span>
+      </div>
       <a href="mailto:adrian@adrianmucha.us" class="cta-btn">Contact me →</a>
     </div>
   </div>
