@@ -1,0 +1,1213 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Design Work — Adrian Mucha</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600&family=Geist:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+
+/* ── RESET & TOKENS ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --white: #ffffff;
+  --off: #fafaf8;
+  --mid: #3a423a;
+  --muted: #737373;
+  --dark: #1c1e21;
+  --border: #b0b5b1;
+  --border-light: #e2e5e2;
+  --accent: #e8ff83;
+  --accent-dark: #3a423a;
+  --brand: #5865f2;
+  --mono: "Geist Mono", monospace;
+  --sans: "Geist", sans-serif;
+  --rail: 40px;              /* width of each side rail */
+}
+
+html, body {
+  background: var(--white);
+  color: var(--mid);
+  font-family: var(--mono);
+  font-size: 17px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+a { text-decoration: none; color: inherit; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+svg { display: block; }
+
+/* ── SIDE RAILS — fixed, both sides ── */
+.rail-left,
+.rail-right {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  width: var(--rail);
+  z-index: 300;
+  pointer-events: none;
+  background: var(--white);
+}
+.rail-left  { left: 0; border-right: 1px solid var(--border-light); }
+.rail-right { right: 0; border-left: 1px solid var(--border-light); }
+
+/* inner second line on each rail */
+.rail-left::after {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0;
+  right: 12px;
+  width: 1px;
+  background: var(--border-light);
+}
+.rail-right::after {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0;
+  left: 12px;
+  width: 1px;
+  background: var(--border-light);
+}
+
+/* ── PAGE WRAPPER — inset from both rails ── */
+.page-wrap {
+  margin-left: var(--rail);
+  margin-right: var(--rail);
+}
+
+/* ── CORNER ACCENTS ── */
+.corners { position: absolute; inset: 0; pointer-events: none; z-index: 2; }
+.corners svg {
+  position: absolute;
+  width: 13px; height: 13px;
+}
+.corners .c-tl { top: 0; left: 0; }
+.corners .c-tr { top: 0; right: 0; transform: rotate(90deg); }
+.corners .c-bl { bottom: 0; left: 0; transform: rotate(-90deg); }
+.corners .c-br { bottom: 0; right: 0; transform: rotate(180deg); }
+
+/* ── NAV ── */
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+  height: 56px;
+  border-bottom: 1px solid var(--border-light);
+  position: sticky;
+  top: 0;
+  background: var(--white);
+  z-index: 250;
+}
+.nav-logo {
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--dark);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.nav-sep { color: var(--border); }
+.nav-role { color: var(--muted); font-weight: 400; }
+.nav-links { display: flex; gap: 32px; align-items: center; }
+.nav-link {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--muted);
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  transition: color 0.15s;
+}
+.nav-link:hover { color: var(--dark); }
+.nav-num { color: var(--border); }
+.nav-link:hover .nav-num { color: var(--brand); }
+
+/* ── HERO ── */
+.hero {
+  padding: 64px 40px 0;
+  border-bottom: 1px solid var(--border-light);
+  min-height: 78vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  position: relative;
+}
+.hero-eyebrow {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 28px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+}
+.hero-eyebrow::before { content:''; width:24px; height:1px; background:var(--border); }
+.hero h1 {
+  font-family: var(--mono);
+  font-size: clamp(26px, 3.5vw, 48px);
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--mid);
+  max-width: 22ch;              /* HIG: constrain to ~35-50 chars, hero can be tighter */
+  margin-bottom: 28px;
+  position: relative;
+}
+.hero h1 .cycle {
+  color: var(--brand);
+  background: rgba(88,101,242,0.07);
+  padding: 0 6px;
+}
+.hero-bio {
+  font-family: var(--sans);
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--muted);
+  line-height: 1.65;
+  max-width: 52ch;
+  position: relative;
+  margin-bottom: 40px;
+}
+.hero-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border-top: 1px solid var(--border-light);
+  background: var(--white);
+  position: relative;
+  margin-top: 40px;
+  margin-left: -40px;
+  margin-right: -40px;
+}
+.hero-stat {
+  padding: 20px 40px;
+  border-right: 1px solid var(--border-light);
+}
+.hero-stat:last-child { border-right: none; }
+.stat-val {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--mid);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.stat-lbl {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--muted);
+}
+
+/* ── SECTION DIVIDER BAR ── */
+.div-bar {
+  border-top: 1px solid var(--border-light);
+  border-bottom: 1px solid var(--border-light);
+  height: 34px;
+  display: flex;
+  align-items: center;
+  padding: 0 40px;
+  position: relative;
+  overflow: hidden;
+}
+.div-bar-label {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.div-bar::after {
+  content: '';
+  position: absolute;
+  top: 0; right: 0;
+  width: 60%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    to right, var(--border-light) 0, var(--border-light) 1px, transparent 1px, transparent 10px
+  );
+}
+
+/* ── PILLARS ── */
+.pillars {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  border-bottom: 1px solid var(--border-light);
+}
+.pillars-lbl {
+  padding: 40px;
+  border-right: 1px solid var(--border-light);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.pillars-lbl .sec-num {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--muted);
+  letter-spacing: 0.08em;
+}
+.pillars-lbl h2 {
+  font-family: var(--sans);
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--mid);
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+  max-width: 16ch;
+}
+.pillars-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+.pillar {
+  padding: 40px 28px;
+  border-right: 1px solid var(--border-light);
+}
+.pillar:last-child { border-right: none; }
+.pillar-num {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--muted);
+  letter-spacing: 0.08em;
+  margin-bottom: 18px;
+}
+.pillar-title {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--mid);
+  margin-bottom: 12px;
+}
+.pillar-desc {
+  font-family: var(--sans);
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--muted);
+  line-height: 1.65;
+  margin-bottom: 20px;
+  max-width: 36ch;
+}
+.pillar-cos { display: flex; flex-direction: column; gap: 5px; }
+.pillar-co {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 13px;
+  color: var(--muted);
+}
+.pillar-co::before {
+  content: '';
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: var(--border);
+  flex-shrink: 0;
+}
+
+/* ── STATUS BAR ── */
+.status-bar {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid var(--border-light);
+}
+.status-tag {
+  padding: 14px 40px;
+  border-right: 1px solid var(--border-light);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.s-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--brand);
+  animation: blink 2s steps(1) infinite;
+}
+@keyframes blink { 0%,49%{opacity:1} 50%,100%{opacity:0.3} }
+.status-typing {
+  padding: 14px 24px;
+  font-size: 13px;
+  color: var(--mid);
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.s-prefix { color: var(--muted); }
+.s-text::after { content:'|'; animation: caret 0.9s steps(1) infinite; }
+@keyframes caret { 0%,49%{opacity:1} 50%,100%{opacity:0} }
+
+/* ── WORK SECTION ── */
+.work-section { padding: 0 40px 80px; }
+.work-hdr {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 28px 0 24px;
+  border-bottom: 1px solid var(--border-light);
+  margin-bottom: 28px;
+}
+.work-hdr-title {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.work-hdr-count {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* ── CARDS ── */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  background: var(--border-light);
+  border: 1px solid var(--border-light);
+}
+.card {
+  background: var(--white);
+  padding: 32px;
+  position: relative;
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.card:hover { background: var(--off); }
+.card.soon { background: var(--off); cursor: default; }
+
+/* card grid texture */
+.card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(to right, rgba(58,66,58,0.035) 0, rgba(58,66,58,0.035) 1px, transparent 1px, transparent 48px),
+    repeating-linear-gradient(to bottom, rgba(58,66,58,0.035) 0, rgba(58,66,58,0.035) 1px, transparent 1px, transparent 48px);
+  pointer-events: none;
+}
+
+.card-badge {
+  position: absolute;
+  top: 20px; right: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border: 1px solid var(--accent-dark);
+  color: var(--accent-dark);
+  background: var(--accent);
+  z-index: 2;
+}
+.card-lock {
+  position: absolute;
+  top: 20px; left: 20px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  z-index: 2;
+}
+.card-body { position: relative; z-index: 2; }
+.card-co {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.card-title {
+  font-family: var(--sans);
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--mid);
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+  margin-bottom: 16px;
+}
+.soon .card-title { color: var(--muted); font-style: italic; }
+.card-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+.card-tag {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 4px 9px;
+  border: 1px solid var(--border-light);
+  color: var(--muted);
+}
+.card-arrow {
+  position: absolute;
+  bottom: 20px; right: 20px;
+  font-size: 18px;
+  color: var(--border);
+  z-index: 2;
+  transition: color 0.15s, transform 0.15s;
+}
+.card:not(.soon):hover .card-arrow { color: var(--mid); transform: translate(3px,-3px); }
+
+/* ── PARTNER LOGOS ── */
+.logos-section { border-bottom: 1px solid var(--border-light); }
+.logos-head {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  border-bottom: 1px solid var(--border-light);
+  background: repeating-linear-gradient(
+    to right, var(--border-light) 0, var(--border-light) 1px, transparent 1px, transparent 10px
+  );
+  background-size: 10px 100%;
+}
+.logos-head-label {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  background: var(--white);
+  padding: 0 20px;
+}
+.logos-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+}
+.logos-row2 {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  border-top: 1px solid var(--border-light);
+}
+.logo-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 32px;
+  border-right: 1px solid var(--border-light);
+  min-height: 140px;
+}
+.logos-row2 .logo-cell { min-height: 120px; padding: 32px 24px; }
+.logo-cell:last-child { border-right: none; }
+.logo-cell svg, .logo-cell img { max-width: 100%; height: auto; }
+
+/* Logo wordmarks as SVG text — clean, no external deps */
+.logo-svg { width: 100%; max-width: 160px; }
+.logo-svg-sm { width: 100%; max-width: 110px; }
+
+/* ── ABOUT STRIP ── */
+.about-strip {
+  display: grid;
+  grid-template-columns: 5fr 4fr;   /* asymmetric — left column wider */
+  border-bottom: 1px solid var(--border-light);
+}
+.about-left {
+  padding: 72px 56px 72px 40px;
+  border-right: 1px solid var(--border-light);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.about-left h2 {
+  font-family: var(--sans);           /* sans for display text — much more readable */
+  font-size: 32px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  color: var(--mid);
+  max-width: 28ch;                    /* constrain line length — HIG: 35-50 chars */
+}
+.about-left p {
+  font-family: var(--sans);
+  font-size: 17px;
+  font-weight: 400;
+  color: var(--muted);
+  line-height: 1.7;
+  max-width: 52ch;
+}
+.about-right {
+  padding: 72px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.about-item {
+  padding: 28px 0;
+  border-bottom: 1px solid var(--border-light);
+}
+.about-item:first-child { padding-top: 0; }
+.about-item:last-child { border-bottom: none; }
+.about-item-title {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--mid);
+  margin-bottom: 10px;
+}
+.about-item-desc {
+  font-family: var(--sans);
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--muted);
+  line-height: 1.65;
+  max-width: 44ch;
+}
+
+/* ── CTA ── */
+.cta {
+  margin: 40px;
+  border: 1px solid var(--accent-dark);
+  background: var(--accent);
+  position: relative;
+  overflow: hidden;
+}
+.cta-lines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: repeating-linear-gradient(
+    to right, rgba(58,66,58,0.07) 0, rgba(58,66,58,0.07) 1px, transparent 1px, transparent 10px
+  );
+  background-size: 10px 100%;
+}
+.cta-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 220px;
+}
+.cta-l {
+  padding: 48px 40px;
+  border-right: 1px solid rgba(58,66,58,0.18);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+}
+.cta-eyebrow {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent-dark);
+  opacity: 0.55;
+  margin-bottom: 12px;
+}
+.cta-headline {
+  font-size: clamp(40px, 5.5vw, 68px);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.0;
+  color: var(--accent-dark);
+}
+.cta-r {
+  padding: 48px 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+}
+.cta-body {
+  font-family: var(--sans);
+  font-size: 17px;
+  font-weight: 400;
+  color: var(--accent-dark);
+  line-height: 1.65;
+  opacity: 0.8;
+  margin-bottom: 28px;
+}
+.cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent-dark);
+  border-bottom: 1.5px solid var(--accent-dark);
+  padding-bottom: 2px;
+  transition: gap 0.15s;
+  width: fit-content;
+}
+.cta-btn:hover { gap: 14px; }
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid var(--border-light);
+  padding: 20px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.foot-l, .foot-r {
+  font-size: 13px;
+  color: var(--muted);
+}
+.foot-r a { color: var(--mid); }
+
+/* ── PASSWORD MODAL ── */
+.modal-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(28,30,33,0.6);
+  backdrop-filter: blur(6px);
+  z-index: 500;
+  align-items: center;
+  justify-content: center;
+}
+.modal-backdrop.open { display: flex; }
+.modal {
+  background: var(--white);
+  border: 1px solid var(--border);
+  padding: 40px;
+  width: 100%;
+  max-width: 420px;
+  position: relative;
+}
+.modal-tag {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 20px;
+}
+.modal-title {
+  font-size: 28px;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  color: var(--dark);
+  margin-bottom: 8px;
+}
+.modal-sub {
+  font-size: 15px;
+  color: var(--muted);
+  line-height: 1.6;
+  margin-bottom: 28px;
+}
+.modal-sub a { color: var(--mid); border-bottom: 1px solid var(--border); }
+.modal-row { display: flex; gap: 8px; margin-bottom: 10px; }
+.modal-input {
+  flex: 1;
+  padding: 11px 14px;
+  font-family: var(--mono);
+  font-size: 15px;
+  border: 1px solid var(--border);
+  background: var(--white);
+  color: var(--dark);
+  outline: none;
+  transition: border-color 0.15s;
+}
+.modal-input:focus { border-color: var(--dark); }
+.modal-input.err { border-color: #C0392B; }
+.modal-btn {
+  padding: 11px 20px;
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: var(--accent);
+  color: var(--accent-dark);
+  border: 1px solid var(--accent-dark);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.modal-btn:hover { background: var(--mid); color: var(--white); border-color: var(--mid); }
+.modal-err {
+  font-size: 13px;
+  color: #C0392B;
+  display: none;
+  letter-spacing: 0.02em;
+}
+.modal-close {
+  position: absolute;
+  top: 16px; right: 16px;
+  font-size: 20px;
+  color: var(--muted);
+  cursor: pointer;
+  line-height: 1;
+  padding: 4px 8px;
+}
+.modal-close:hover { color: var(--dark); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .rail-left, .rail-right { display: none; }
+  .page-wrap { margin-left: 0; margin-right: 0; }
+  nav, .hero, .work-section, .cta, footer { padding-left: 24px; padding-right: 24px; }
+  .cta { margin: 24px; }
+  .hero h1 { font-size: clamp(24px, 7vw, 38px); max-width: 100%; }
+  .pillars { grid-template-columns: 1fr; }
+  .pillars-lbl { border-right: none; border-bottom: 1px solid var(--border-light); }
+  .pillars-grid { grid-template-columns: 1fr; }
+  .pillar { border-right: none; border-bottom: 1px solid var(--border-light); }
+  .pillar:last-child { border-bottom: none; }
+  .cards { grid-template-columns: 1fr; }
+  .logos-grid { grid-template-columns: 1fr; }
+  .logos-row2 { grid-template-columns: repeat(3, 1fr); }
+  .about-strip { grid-template-columns: 1fr; }
+  .about-left { padding: 48px 24px; border-right: none; border-bottom: 1px solid var(--border-light); }
+  .about-right { padding: 40px 24px; }
+  .cta-inner { grid-template-columns: 1fr; }
+  .cta-l { border-right: none; border-bottom: 1px solid rgba(58,66,58,0.18); }
+  .hero-stats { grid-template-columns: repeat(2, 1fr); margin-left: -24px; margin-right: -24px; }
+  .hero-stat:nth-child(2) { border-right: none; }
+  .hero-stat:nth-child(3) { border-top: 1px solid var(--border-light); }
+  .hero-stat:nth-child(4) { border-top: 1px solid var(--border-light); border-right: none; }
+  footer { flex-direction: column; gap: 8px; align-items: flex-start; }
+  .div-bar { padding: 0 24px; }
+  .status-tag { padding: 14px 24px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── SIDE RAILS ── -->
+<div class="rail-left"  aria-hidden="true"></div>
+<div class="rail-right" aria-hidden="true"></div>
+
+<!-- ── PAGE WRAP ── -->
+<div class="page-wrap">
+
+<!-- ── NAV ── -->
+<nav>
+  <a href="https://adrianmucha.us" class="nav-logo">
+    Adrian Mucha <span class="nav-sep">/</span>
+    <span class="nav-role">Product Designer</span>
+  </a>
+  <div class="nav-links">
+    <a href="https://adrianmucha.us/about-me" class="nav-link">
+      <span class="nav-num">01</span> About Me
+    </a>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<div class="hero">
+  <div class="hero-eyebrow">AI Design Work</div>
+  <h1>
+    I design AI products<br>
+    and ship them — at<br>
+    <span class="cycle" id="cycle-word">Meta</span>
+  </h1>
+  <p class="hero-bio">
+    A designer exploring the space where systems, AI, and usability meet.
+    I've worked across Meta, PayPal, and Microsoft shaping products that help people
+    work faster, think clearly, and feel more connected to what they're building.
+  </p>
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="stat-val">3 companies</div>
+      <div class="stat-lbl">Meta · PayPal · Microsoft</div>
+    </div>
+    <div class="hero-stat">
+      <div class="stat-val">3 pillars</div>
+      <div class="stat-lbl">Design · Ship · Embed</div>
+    </div>
+    <div class="hero-stat">
+      <div class="stat-val">All showable</div>
+      <div class="stat-lbl">Screens + outcomes</div>
+    </div>
+    <div class="hero-stat">
+      <div class="stat-val">Based in</div>
+      <div class="stat-lbl">Los Angeles, CA</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── PILLARS BAR ── -->
+<div class="div-bar">
+  <span class="div-bar-label">&gt;&gt;&gt; Three ways I work with AI</span>
+</div>
+
+<!-- ── PILLARS ── -->
+<div class="pillars">
+  <div class="pillars-lbl">
+    <span class="sec-num">01 &gt;&gt;&gt;</span>
+    <h2>How I work<br>with AI</h2>
+  </div>
+  <div class="pillars-grid">
+    <div class="pillar">
+      <div class="pillar-num">001 /</div>
+      <div class="pillar-title">Design for AI</div>
+      <p class="pillar-desc">The interfaces AI systems live inside — copilot panels, internal tools, agent dashboards, operator consoles.</p>
+      <div class="pillar-cos">
+        <span class="pillar-co">Meta (Metamate / LLaMA tooling)</span>
+        <span class="pillar-co">Microsoft (Planner AI)</span>
+      </div>
+    </div>
+    <div class="pillar">
+      <div class="pillar-num">002 /</div>
+      <div class="pillar-title">Embed AI in teams</div>
+      <p class="pillar-desc">Setting up AI tools, workflows, and internal tooling inside a design org — changing how a whole team operates.</p>
+      <div class="pillar-cos">
+        <span class="pillar-co">PayPal (tools + internal tooling + features)</span>
+        <span class="pillar-co">Meta (workflow implementation)</span>
+      </div>
+    </div>
+    <div class="pillar">
+      <div class="pillar-num">003 /</div>
+      <div class="pillar-title">Ship with AI</div>
+      <p class="pillar-desc">Using Claude Code, Cursor, and v0 to go from design to production independently. No handoff, no waiting.</p>
+      <div class="pillar-cos">
+        <span class="pillar-co">Independent work · in progress</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── STATUS BAR ── -->
+<div class="status-bar">
+  <div class="status-tag">
+    <span class="s-dot"></span>
+    SYSTEM STATUS &gt;&gt;&gt;
+  </div>
+  <div class="status-typing">
+    <span class="s-prefix">///</span>
+    <span class="s-text" id="s-text"></span>
+  </div>
+</div>
+
+<!-- ── WORK CARDS ── -->
+<div class="work-section">
+  <div class="work-hdr">
+    <span class="work-hdr-title">Case studies</span>
+    <span class="work-hdr-count">004 items</span>
+  </div>
+  <div class="cards">
+
+    <!-- Meta -->
+    <div class="card" onclick="openModal('meta')">
+      <div class="card-badge">Design for AI</div>
+      <div class="card-lock">🔒 Password protected</div>
+      <div class="card-body">
+        <div class="card-co">Meta · Full-time</div>
+        <div class="card-title">Data center efficiency: The key to unlocking Meta's growth potential</div>
+        <div class="card-tags">
+          <span class="card-tag">AI Interface</span>
+          <span class="card-tag">DCIM</span>
+          <span class="card-tag">Internal Tooling</span>
+        </div>
+      </div>
+      <div class="card-arrow">↗</div>
+    </div>
+
+    <!-- Microsoft -->
+    <div class="card" onclick="openModal('microsoft')">
+      <div class="card-badge">Design for AI</div>
+      <div class="card-lock">🔒 Password protected</div>
+      <div class="card-body">
+        <div class="card-co">Microsoft · Contract</div>
+        <div class="card-title">Evolving Microsoft Planner into a Trusted AI PM Agent</div>
+        <div class="card-tags">
+          <span class="card-tag">AI Features</span>
+          <span class="card-tag">Product Design</span>
+          <span class="card-tag">Contract</span>
+        </div>
+      </div>
+      <div class="card-arrow">↗</div>
+    </div>
+
+    <!-- PayPal -->
+    <div class="card" onclick="openModal('paypal')">
+      <div class="card-badge">Embed AI in teams</div>
+      <div class="card-lock">🔒 Password protected</div>
+      <div class="card-body">
+        <div class="card-co">PayPal · Full-time</div>
+        <div class="card-title">[Add your case study title]</div>
+        <div class="card-tags">
+          <span class="card-tag">Workflow Design</span>
+          <span class="card-tag">AI Tooling</span>
+          <span class="card-tag">Product Features</span>
+        </div>
+      </div>
+      <div class="card-arrow">↗</div>
+    </div>
+
+    <!-- Coming soon -->
+    <div class="card soon">
+      <div class="card-badge">Ship with AI</div>
+      <div class="card-body">
+        <div class="card-co">Independent · In progress</div>
+        <div class="card-title">A live project built and deployed with AI coding tools</div>
+        <div class="card-tags">
+          <span class="card-tag">Claude Code</span>
+          <span class="card-tag">Cursor</span>
+          <span class="card-tag">v0</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── PARTNER LOGOS ── -->
+<div class="logos-section">
+  <div class="logos-head">
+    <span class="logos-head-label">Companies I've designed AI for</span>
+  </div>
+
+  <!-- Row 1: featured 3 -->
+  <div class="logos-grid">
+    <!-- Meta -->
+    <div class="logo-cell" style="border-right:1px solid var(--border-light)">
+      <svg class="logo-svg" viewBox="0 0 200 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <text x="0" y="44" font-family="Geist Mono, monospace" font-size="42" font-weight="600" fill="#3a423a">Meta</text>
+      </svg>
+    </div>
+    <!-- PayPal -->
+    <div class="logo-cell" style="border-right:1px solid var(--border-light)">
+      <svg class="logo-svg" viewBox="0 0 200 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <text x="0" y="44" font-family="Geist Mono, monospace" font-size="36" font-weight="600" fill="#3a423a">PayPal</text>
+      </svg>
+    </div>
+    <!-- Microsoft -->
+    <div class="logo-cell">
+      <svg class="logo-svg" viewBox="0 0 240 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <text x="0" y="44" font-family="Geist Mono, monospace" font-size="30" font-weight="600" fill="#3a423a">Microsoft</text>
+      </svg>
+    </div>
+  </div>
+
+  <!-- Row 2: also worked at -->
+  <div class="logos-row2">
+    <div class="logo-cell" style="border-right:1px solid var(--border-light)">
+      <svg class="logo-svg-sm" viewBox="0 0 160 48" fill="none">
+        <text x="0" y="36" font-family="Geist Mono, monospace" font-size="28" font-weight="400" fill="#9ca3a0">Amazon</text>
+      </svg>
+    </div>
+    <div class="logo-cell" style="border-right:1px solid var(--border-light)">
+      <svg class="logo-svg-sm" viewBox="0 0 180 48" fill="none">
+        <text x="0" y="36" font-family="Geist Mono, monospace" font-size="22" font-weight="400" fill="#9ca3a0">Am. Express</text>
+      </svg>
+    </div>
+    <div class="logo-cell" style="border-right:1px solid var(--border-light)">
+      <svg class="logo-svg-sm" viewBox="0 0 160 48" fill="none">
+        <text x="0" y="36" font-family="Geist Mono, monospace" font-size="26" font-weight="400" fill="#9ca3a0">AllianceBern.</text>
+      </svg>
+    </div>
+    <div class="logo-cell" style="border-right:1px solid var(--border-light)">
+      <svg class="logo-svg-sm" viewBox="0 0 160 48" fill="none">
+        <text x="0" y="36" font-family="Geist Mono, monospace" font-size="28" font-weight="400" fill="#9ca3a0">LinkedIn</text>
+      </svg>
+    </div>
+    <div class="logo-cell">
+      <svg class="logo-svg-sm" viewBox="0 0 120 48" fill="none">
+        <text x="0" y="36" font-family="Geist Mono, monospace" font-size="28" font-weight="400" fill="#9ca3a0">+ more</text>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<!-- ── ABOUT STRIP ── -->
+<div class="about-strip">
+  <div class="about-left">
+    <h2>I'm a designer exploring the space where systems, AI, and usability meet.</h2>
+    <p>Over the years, I've worked across some of the most complex systems at Meta, Amazon, and Microsoft, shaping products that help people work faster, think clearly, and feel more connected to what they're building.</p>
+    <p>I live in Los Angeles, where I find ideas while longboarding along the coast or during slow mornings at a local café. I'm driven by design that feels alive — the kind that blends logic with emotion and tools with experience.</p>
+  </div>
+  <div class="about-right">
+    <div class="about-item">
+      <div class="about-item-title">Designing with Purpose, Not Just Pixels</div>
+      <p class="about-item-desc">I love creating functional, impactful experiences — whether for consumers or engineers — making even complex tools intuitive and enjoyable to use.</p>
+    </div>
+    <div class="about-item">
+      <div class="about-item-title">Shipping Fast & Iterating</div>
+      <p class="about-item-desc">I believe in momentum. I work quickly, get real feedback, and refine — ensuring designs don't just look good but drive results.</p>
+    </div>
+    <div class="about-item">
+      <div class="about-item-title">Startup Agility with Enterprise Expertise</div>
+      <p class="about-item-desc">Whether it's scaling a design system or crafting a scrappy MVP, I adapt my approach to fit the needs of the product and team.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ── CTA ── -->
+<div class="cta">
+  <div class="cta-lines"></div>
+  <div class="corners">
+    <svg class="c-tl" viewBox="0 0 13 13" fill="none"><path d="M0.5 12.5V0.5H12.5" stroke="#3a423a" stroke-opacity="0.3"/></svg>
+    <svg class="c-tr" viewBox="0 0 13 13" fill="none"><path d="M0.5 12.5V0.5H12.5" stroke="#3a423a" stroke-opacity="0.3"/></svg>
+    <svg class="c-bl" viewBox="0 0 13 13" fill="none"><path d="M0.5 12.5V0.5H12.5" stroke="#3a423a" stroke-opacity="0.3"/></svg>
+    <svg class="c-br" viewBox="0 0 13 13" fill="none"><path d="M0.5 12.5V0.5H12.5" stroke="#3a423a" stroke-opacity="0.3"/></svg>
+  </div>
+  <div class="cta-inner">
+    <div class="cta-l">
+      <div class="cta-eyebrow">&gt;&gt;&gt; Let's work together</div>
+      <div class="cta-headline">Let's<br>talk</div>
+    </div>
+    <div class="cta-r">
+      <p class="cta-body">
+        Good design moves fast.<br>
+        Great design moves people.<br>
+        Let's build something that matters.
+      </p>
+      <a href="mailto:adrian@adrianmucha.us" class="cta-btn">Contact me →</a>
+    </div>
+  </div>
+</div>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <span class="foot-l">Adrian Mucha (FruitBat Design, LLC) · © 2026</span>
+  <span class="foot-r"><a href="mailto:adrian@adrianmucha.us">adrian@adrianmucha.us</a></span>
+</footer>
+
+<!-- ── PASSWORD MODAL ── -->
+<div class="modal-backdrop" id="modal" onclick="handleBackdrop(event)">
+  <div class="modal">
+    <div class="corners">
+      <svg class="c-tl" viewBox="0 0 13 13" fill="none"><path d="M0.5 12.5V0.5H12.5" stroke="#b0b5b1"/></svg>
+      <svg class="c-tr" viewBox="0 0 13 13" fill="none"><path d="M0.5 12.5V0.5H12.5" stroke="#b0b5b1"/></svg>
+      <svg class="c-bl" viewBox="0 0 13 13" fill="none"><path d="M0.5 12.5V0.5H12.5" stroke="#b0b5b1"/></svg>
+      <svg class="c-br" viewBox="0 0 13 13" fill="none"><path d="M0.5 12.5V0.5H12.5" stroke="#b0b5b1"/></svg>
+    </div>
+    <span class="modal-close" onclick="closeModal()">×</span>
+    <div class="modal-tag">&gt;&gt;&gt; restricted</div>
+    <div class="modal-title" id="modal-title">Case study</div>
+    <p class="modal-sub">
+      Password is in the top right corner of my resume.<br>
+      No resume? <a href="mailto:adrian@adrianmucha.us">Email me ↗</a>
+    </p>
+    <div class="modal-row">
+      <input type="password" id="pw" class="modal-input" placeholder="enter password" autocomplete="off">
+      <button class="modal-btn" onclick="checkPW()">Enter →</button>
+    </div>
+    <div class="modal-err" id="modal-err">&gt; incorrect password</div>
+  </div>
+</div>
+
+<script>
+  const PASSWORD = '112233';
+  let currentTarget = null;
+
+  const destinations = {
+    meta: 'https://adrianmucha.us/password',
+    microsoft: '#',
+    paypal: '#',
+  };
+
+  const titles = {
+    meta: 'Meta — Data Center & AI Work',
+    microsoft: 'Microsoft — Planner AI Features',
+    paypal: 'PayPal — AI in the Design Process',
+  };
+
+  function openModal(id) {
+    currentTarget = id;
+    document.getElementById('modal-title').textContent = titles[id];
+    document.getElementById('modal').classList.add('open');
+    document.getElementById('pw').focus();
+  }
+
+  function closeModal() {
+    document.getElementById('modal').classList.remove('open');
+    document.getElementById('pw').value = '';
+    document.getElementById('pw').classList.remove('err');
+    document.getElementById('modal-err').style.display = 'none';
+    currentTarget = null;
+  }
+
+  function handleBackdrop(e) {
+    if (e.target === document.getElementById('modal')) closeModal();
+  }
+
+  function checkPW() {
+    const input = document.getElementById('pw');
+    if (input.value.trim() === PASSWORD) {
+      closeModal();
+      window.location.href = destinations[currentTarget] || '#';
+    } else {
+      input.classList.add('err');
+      document.getElementById('modal-err').style.display = 'block';
+      input.value = '';
+      input.focus();
+    }
+  }
+
+  document.getElementById('pw').addEventListener('keydown', e => {
+    if (e.key === 'Enter') checkPW();
+    if (e.key === 'Escape') closeModal();
+  });
+
+  // ── HERO TYPING ──
+  const words = ['Meta', 'PayPal', 'Microsoft'];
+  const el = document.getElementById('cycle-word');
+  let wi = 0, ci = words[0].length, del = false;
+  // start already showing first word
+  el.textContent = words[0];
+  function heroTick() {
+    const w = words[wi];
+    if (!del) {
+      ci++;
+      el.textContent = w.slice(0, ci);
+      if (ci >= w.length) { del = true; setTimeout(heroTick, 1400); return; }
+      setTimeout(heroTick, 80 + Math.random() * 30);
+    } else {
+      ci--;
+      el.textContent = w.slice(0, ci);
+      if (ci <= 0) { del = false; wi = (wi + 1) % words.length; setTimeout(heroTick, 300); return; }
+      setTimeout(heroTick, 50);
+    }
+  }
+  setTimeout(heroTick, 2000);
+
+  // ── STATUS TYPING ──
+  const statuses = [
+    'AI interface design · Meta scale',
+    'Workflow implementation · PayPal design org',
+    'AI features shipped · Microsoft Planner',
+    'Independent build · AI coding tools · in progress',
+  ];
+  const sEl = document.getElementById('s-text');
+  let si = 0, sci = 0, sdel = false;
+  function statusTick() {
+    const s = statuses[si];
+    if (!sdel) {
+      sci++;
+      sEl.textContent = s.slice(0, sci);
+      if (sci >= s.length) { sdel = true; setTimeout(statusTick, 2200); return; }
+      setTimeout(statusTick, 35 + Math.random() * 20);
+    } else {
+      sci--;
+      sEl.textContent = s.slice(0, sci);
+      if (sci <= 0) { sdel = false; si = (si + 1) % statuses.length; setTimeout(statusTick, 250); return; }
+      setTimeout(statusTick, 18);
+    }
+  }
+  setTimeout(statusTick, 600);
+</script>
+
+</div><!-- /page-wrap -->
+
+</body>
+</html>
