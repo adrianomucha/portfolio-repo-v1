@@ -328,14 +328,25 @@ nav {
 .status-typing {
   padding: 14px 24px;
   font-size: 13px;
-  color: var(--mid);
+  color: var(--dark);
   flex: 1;
   display: flex;
   align-items: center;
   gap: 6px;
 }
-.s-prefix { color: var(--muted); }
-.s-text::after { content:'|'; animation: caret 0.9s steps(1) infinite; }
+.s-prefix { color: var(--brand); font-weight: 600; }
+.s-arrow  { color: var(--brand); font-weight: 600; }
+/* blinking block cursor — terminal style */
+.s-text::after {
+  content: '';
+  display: inline-block;
+  width: 7px;
+  height: 14px;
+  margin-left: 3px;
+  vertical-align: -2px;
+  background: var(--brand);
+  animation: caret 0.9s steps(1) infinite;
+}
 @keyframes caret { 0%,49%{opacity:1} 50%,100%{opacity:0} }
 
 /* ── WORK SECTION ── */
@@ -913,7 +924,7 @@ footer {
 <div class="status-bar">
   <div class="status-tag">
     <span class="s-dot"></span>
-    SYSTEM STATUS &gt;&gt;&gt;
+    SYSTEM STATUS <span class="s-arrow">&gt;&gt;&gt;</span>
   </div>
   <div class="status-typing">
     <span class="s-prefix">///</span>
