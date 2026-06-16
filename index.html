@@ -579,6 +579,16 @@ nav {
   flex-direction: column;
   gap: 24px;
 }
+/* eyebrow label — matches the right column's item titles, anchors the left column */
+.about-eyebrow {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--mid);
+}
+.about-eyebrow .db-arrow { color: var(--brand); }
 .about-left h2 {
   font-family: var(--sans);           /* sans for display text - much more readable */
   font-size: 32px;
@@ -1063,6 +1073,7 @@ footer {
 <!-- ── ABOUT STRIP ── -->
 <div class="about-strip">
   <div class="about-left">
+    <div class="about-eyebrow"><span class="db-arrow">&gt;&gt;&gt;</span> About me</div>
     <h2>I'm a designer exploring the space where systems, AI, and usability meet.</h2>
     <p>Over the years, I've worked across some of the most complex systems at Meta, Amazon, and Microsoft, shaping products that help people work faster, think clearly, and feel more connected to what they're building.</p>
     <p>I live in Los Angeles, where I find ideas while longboarding along the coast or during slow mornings at a local café. I'm driven by design that feels alive, the kind that blends logic with emotion and tools with experience.</p>
