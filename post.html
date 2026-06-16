@@ -158,14 +158,14 @@ nav {
 
 /* ── ARTICLE HEADER ── */
 .art-head {
-  padding: 56px 40px 48px;
+  padding: 64px 40px 56px;
   border-bottom: 1px solid var(--border-light);
 }
 .art-cmd {
   font-family: var(--mono);
   font-size: 13px;
   letter-spacing: 0.04em;
-  margin-bottom: 30px;
+  margin-bottom: 34px;
   color: var(--mid);
   display: flex;
   align-items: center;
@@ -186,15 +186,17 @@ nav {
   width: fit-content;
   margin-bottom: 24px;
 }
+/* sans display title — far more scannable than mono at this size; the mono
+   `$ cat …` command above it carries the terminal identity instead */
 .art-title {
-  font-family: var(--mono);
-  font-size: clamp(28px, 4vw, 52px);
-  font-weight: 400;
-  line-height: 1.16;
-  letter-spacing: -0.025em;
-  color: var(--mid);
-  max-width: 20ch;
-  margin-bottom: 26px;
+  font-family: var(--sans);
+  font-size: clamp(30px, 4vw, 52px);
+  font-weight: 600;
+  line-height: 1.08;
+  letter-spacing: -0.035em;
+  color: var(--dark);
+  max-width: 18ch;
+  margin-bottom: 28px;
 }
 .art-dek {
   font-family: var(--sans);
@@ -205,32 +207,18 @@ nav {
   max-width: 58ch;
 }
 
-/* byline strip — full-width divided meta row, echoes the home page hero stats */
-.art-meta {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
+/* byline — one quiet line. Date + read time only; the category already shows
+   in the chip above, and "written by" is needless ceremony on a personal site */
+.art-byline {
+  padding: 20px 40px;
   border-bottom: 1px solid var(--border-light);
-}
-.art-meta-cell {
-  padding: 18px 40px;
-  border-right: 1px solid var(--border-light);
-}
-.art-meta-cell:last-child { border-right: none; }
-.amc-k {
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+  font-family: var(--mono);
+  font-size: 13px;
+  letter-spacing: 0.02em;
   color: var(--muted);
-  margin-bottom: 5px;
 }
-.amc-v {
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--dark);
-  letter-spacing: -0.01em;
-}
-.amc-v .av-at { color: var(--brand); }
+.art-byline b { color: var(--mid); font-weight: 500; }
+.art-byline .sep { color: var(--border); margin: 0 8px; }
 
 /* ── ARTICLE BODY ── (two-column: sticky TOC rail + prose) */
 .art-grid {
@@ -240,7 +228,7 @@ nav {
 }
 .art-toc {
   border-right: 1px solid var(--border-light);
-  padding: 48px 32px 48px 40px;
+  padding: 56px 32px 56px 40px;
 }
 .art-toc-inner { position: sticky; top: 84px; display: flex; flex-direction: column; gap: 14px; }
 .art-toc-lbl {
@@ -268,10 +256,10 @@ nav {
 .art-toc a:hover .tn, .art-toc a.active .tn { color: var(--brand); }
 
 .art-prose {
-  padding: 48px 40px 64px;
+  padding: 56px 48px 88px;
   max-width: 100%;
 }
-.art-prose > * { max-width: 68ch; }
+.art-prose > * { max-width: 66ch; }
 .art-prose h2 {
   font-family: var(--mono);
   font-size: 13px;
@@ -279,12 +267,13 @@ nav {
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--mid);
-  margin: 48px 0 18px;
-  padding-top: 28px;
+  margin: 60px 0 22px;
+  padding-top: 36px;
   border-top: 1px solid var(--border-light);
   display: flex;
   align-items: baseline;
   gap: 12px;
+  scroll-margin-top: 88px;   /* anchored jumps clear the sticky nav */
 }
 .art-prose h2:first-child { margin-top: 0; padding-top: 0; border-top: none; }
 .art-prose h2 .h-num { color: var(--brand); font-weight: 600; }
@@ -293,8 +282,8 @@ nav {
   font-size: 18px;
   font-weight: 400;
   color: var(--mid);
-  line-height: 1.75;
-  margin-bottom: 22px;
+  line-height: 1.8;
+  margin-bottom: 26px;
 }
 .art-prose p.lead {
   font-size: 21px;
@@ -302,6 +291,7 @@ nav {
   color: var(--mid);
   line-height: 1.55;
   letter-spacing: -0.01em;
+  margin-bottom: 34px;
 }
 .art-prose a.inline {
   color: var(--brand);
@@ -422,6 +412,7 @@ nav {
   transition: background 0.15s;
 }
 .next:hover { background: var(--off); }
+.next:focus-visible { outline: 2px solid var(--brand); outline-offset: -2px; }
 .next-lbl {
   padding: 40px;
   border-right: 1px solid var(--border-light);
@@ -566,16 +557,12 @@ footer {
 @media (max-width: 900px) {
   .rail-left, .rail-right { display: none; }
   .page-wrap { margin-left: 0; margin-right: 0; }
-  nav, .crumb, .art-head, .art-tags, footer { padding-left: 24px; padding-right: 24px; }
+  nav, .crumb, .art-head, .art-byline, .art-tags, footer { padding-left: 24px; padding-right: 24px; }
   .nav-sep, .nav-role { display: none; }
   .nav-links { gap: 18px; }
   .crumb-path { display: none; }            /* drop the long file path on phones */
   .crumb-back { white-space: nowrap; }
   .art-title { font-size: clamp(26px, 7vw, 38px); max-width: 100%; }
-  .art-meta { grid-template-columns: repeat(2, 1fr); }
-  .art-meta-cell { padding: 16px 24px; }
-  .art-meta-cell:nth-child(2) { border-right: none; }
-  .art-meta-cell:nth-child(3), .art-meta-cell:nth-child(4) { border-top: 1px solid var(--border-light); }
   .art-grid { grid-template-columns: 1fr; }
   .art-toc { display: none; }   /* TOC rail collapses on mobile */
   .art-prose { padding: 36px 24px 48px; }
@@ -638,25 +625,8 @@ footer {
   </p>
 </header>
 
-<!-- ── BYLINE / META ── -->
-<div class="art-meta">
-  <div class="art-meta-cell">
-    <div class="amc-k">Written by</div>
-    <div class="amc-v">Adrian Mucha</div>
-  </div>
-  <div class="art-meta-cell">
-    <div class="amc-k">Published</div>
-    <div class="amc-v">June 2026</div>
-  </div>
-  <div class="art-meta-cell">
-    <div class="amc-k">Read time</div>
-    <div class="amc-v">7 min</div>
-  </div>
-  <div class="art-meta-cell">
-    <div class="amc-k">Filed under</div>
-    <div class="amc-v">Design for AI</div>
-  </div>
-</div>
+<!-- ── BYLINE ── -->
+<div class="art-byline"><b>June 2026</b><span class="sep">·</span>7 min read</div>
 
 <!-- ── ARTICLE BODY ── -->
 <div class="art-grid">

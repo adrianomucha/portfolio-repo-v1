@@ -129,14 +129,14 @@ nav {
   border-bottom: 1px solid var(--border-light);
   position: relative;
 }
-.hero-inner { padding: 52px 0 56px; }
+.hero-inner { padding: 80px 0 88px; }   /* generous air above & below the hero copy */
 
 /* terminal command eyebrow — shared with the about page */
 .hero-cmd {
   font-family: var(--mono);
   font-size: 13px;
   letter-spacing: 0.04em;
-  margin-bottom: 30px;
+  margin-bottom: 34px;
   color: var(--mid);
   display: flex;
   align-items: center;
@@ -154,7 +154,7 @@ nav {
   letter-spacing: -0.02em;
   color: var(--mid);
   max-width: 20ch;
-  margin-bottom: 26px;
+  margin-bottom: 32px;
   position: relative;
 }
 .hero h1 .cycle {
@@ -172,18 +172,16 @@ nav {
   position: relative;
 }
 
-/* ── FILTER BAR ── */
+/* ── FILTER BAR ── (scrolls with the page — only the nav stays pinned, so the
+   chips never float over the featured post or stack into a tall sticky band) */
 .filters {
   display: flex;
   align-items: center;
   gap: 16px;
   flex-wrap: wrap;
-  padding: 16px 40px;
+  padding: 20px 40px;
   border-bottom: 1px solid var(--border-light);
   background: var(--white);
-  position: sticky;
-  top: 56px;                /* sit just under the nav */
-  z-index: 200;
 }
 .filters-lbl {
   font-size: 12px;          /* canonical section-label type */
@@ -221,12 +219,13 @@ nav {
   display: grid;
   grid-template-columns: 4fr 8fr;   /* meta 4/12, body 8/12 */
   border-bottom: 1px solid var(--border-light);
-  cursor: pointer;
   transition: background 0.15s;
+  position: relative;               /* anchors the stretched title link */
 }
 .post-feat:hover { background: var(--off); }
+.post-feat:focus-within { outline: 2px solid var(--brand); outline-offset: -2px; }
 .post-feat-meta {
-  padding: 44px 40px;
+  padding: 56px 40px;
   border-right: 1px solid var(--border-light);
   display: flex;
   flex-direction: column;
@@ -271,12 +270,11 @@ nav {
   letter-spacing: -0.01em;
 }
 .post-feat-body {
-  padding: 44px 40px;
+  padding: 56px 40px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 18px;
-  position: relative;
+  gap: 22px;
 }
 .post-feat-cat {
   font-size: 12px;
@@ -287,13 +285,16 @@ nav {
 }
 .post-feat-title {
   font-family: var(--sans);
-  font-size: clamp(26px, 3vw, 36px);
-  font-weight: 500;
-  color: var(--mid);
-  letter-spacing: -0.02em;
-  line-height: 1.2;
+  font-size: clamp(28px, 3.2vw, 38px);
+  font-weight: 600;             /* heaviest, darkest thing on the page — it wins the eye */
+  color: var(--dark);
+  letter-spacing: -0.025em;
+  line-height: 1.18;
   max-width: 22ch;
 }
+.post-feat-title a { color: inherit; }
+/* stretched link — the whole featured card is clickable, but a real <a> carries it */
+.post-feat-title a::after { content: ''; position: absolute; inset: 0; z-index: 1; }
 .post-feat-excerpt {
   font-family: var(--sans);
   font-size: 17px;
@@ -340,14 +341,14 @@ nav {
   display: grid;
   grid-template-columns: 3fr 9fr;   /* meta 3/12, body 9/12 */
   border-bottom: 1px solid var(--border-light);
-  cursor: pointer;
   transition: background 0.15s;
   position: relative;
 }
 .post:last-child { border-bottom: none; }
 .post:hover { background: var(--off); }
+.post:focus-within { outline: 2px solid var(--brand); outline-offset: -2px; }
 .post-meta {
-  padding: 34px 40px;
+  padding: 44px 40px;
   border-right: 1px solid var(--border-light);
   display: flex;
   flex-direction: column;
@@ -367,10 +368,10 @@ nav {
   color: var(--mid);
 }
 .post-body {
-  padding: 34px 40px;
+  padding: 44px 40px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
 }
 .post-cat {
   font-size: 11px;
@@ -389,6 +390,9 @@ nav {
   max-width: 34ch;
   transition: color 0.15s;
 }
+.post-title a { color: inherit; }
+/* stretched link — the whole row is the click target */
+.post-title a::after { content: ''; position: absolute; inset: 0; z-index: 1; }
 .post:hover .post-title { color: var(--dark); }
 .post-excerpt {
   font-family: var(--sans);
@@ -403,7 +407,9 @@ nav {
   align-items: center;
   gap: 10px;
   flex-wrap: wrap;
-  margin-top: 4px;
+  margin-top: 8px;
+  position: relative;       /* lift tags above the stretched link so they read as part of the row */
+  z-index: 2;
 }
 .post-tags { display: flex; gap: 6px; flex-wrap: wrap; }
 .post-tag {
@@ -423,7 +429,7 @@ nav {
 }
 .post-arrow {
   position: absolute;
-  top: 34px; right: 40px;
+  top: 44px; right: 40px;
   font-size: 18px;
   color: var(--border);
   transition: color 0.15s, transform 0.15s;
@@ -590,7 +596,7 @@ footer {
   nav, .hero, footer { padding-left: 24px; padding-right: 24px; }
   .nav-sep, .nav-role { display: none; }   /* free up room so all 3 links fit on phones */
   .nav-links { gap: 18px; }
-  .filters { padding-left: 24px; padding-right: 24px; top: 56px; }
+  .filters { padding-left: 24px; padding-right: 24px; }
   .list-hdr { padding-left: 24px; padding-right: 24px; }
   .hero h1 { font-size: clamp(24px, 7vw, 38px); max-width: 100%; }
   .hero-inner { padding: 36px 0 44px; }
@@ -676,7 +682,7 @@ footer {
 </div>
 
 <!-- ── FEATURED POST ── -->
-<article class="post-feat" data-cat="design-ai" onclick="openPost('designing-for-the-model')">
+<article class="post-feat" data-cat="design-ai">
   <div class="post-feat-meta">
     <span class="post-feat-flag">Latest</span>
     <span class="post-feat-coord"><b>001</b> &middot; June 2026</span>
@@ -688,11 +694,10 @@ footer {
   </div>
   <div class="post-feat-body">
     <span class="post-feat-cat">Design for AI</span>
-    <h2 class="post-feat-title">Designing the interface an AI lives inside</h2>
+    <h2 class="post-feat-title"><a href="post.html">Designing the interface an AI lives inside</a></h2>
     <p class="post-feat-excerpt">
-      Copilot panels, agent dashboards, operator consoles. The hard part isn't the
-      model, it's the surface around it: how much to show, when to interrupt, and how
-      to make a probabilistic system feel trustworthy without pretending it's certain.
+      The hard part was never the model — it's the surface around it, and how to make
+      a probabilistic system feel trustworthy without pretending it's certain.
     </p>
     <span class="post-feat-link">Read the note &rarr;</span>
   </div>
@@ -707,18 +712,17 @@ footer {
 <div class="post-list" id="post-list">
 
   <!-- 002 -->
-  <article class="post" data-cat="ship" onclick="openPost('shipping-as-a-designer')">
+  <article class="post" data-cat="ship">
     <div class="post-meta">
       <span class="post-num">002 <span class="pn-slash">/</span></span>
       <span class="post-date">May 2026</span>
     </div>
     <div class="post-body">
       <span class="post-cat">Ship with AI</span>
-      <h3 class="post-title">Shipping production code as a designer with Claude Code</h3>
+      <h3 class="post-title"><a href="post.html">Shipping production code as a designer with Claude Code</a></h3>
       <p class="post-excerpt">
-        Going from Figma to a deployed change without a handoff. Where AI coding tools
-        actually saved me time, where they confidently wrote the wrong thing, and the
-        review habits that keep it honest.
+        Figma to deployed, no handoff — where AI coding tools saved real time, and
+        where they confidently wrote the wrong thing.
       </p>
       <div class="post-foot">
         <div class="post-tags">
@@ -733,18 +737,17 @@ footer {
   </article>
 
   <!-- 003 -->
-  <article class="post" data-cat="embed" onclick="openPost('embedding-ai-in-a-design-org')">
+  <article class="post" data-cat="embed">
     <div class="post-meta">
       <span class="post-num">003 <span class="pn-slash">/</span></span>
       <span class="post-date">Apr 2026</span>
     </div>
     <div class="post-body">
       <span class="post-cat">Embed AI in teams</span>
-      <h3 class="post-title">How I embedded AI tooling across a design org</h3>
+      <h3 class="post-title"><a href="post.html">How I embedded AI tooling across a design org</a></h3>
       <p class="post-excerpt">
-        Tools don't change a team. Defaults do. A look at the workflows, internal
-        tooling, and small frictions I removed to get a whole design org reaching for
-        AI without being told to.
+        Tools don't change a team — defaults do. The workflows and frictions I changed
+        to get a whole org reaching for AI on its own.
       </p>
       <div class="post-foot">
         <div class="post-tags">
@@ -759,18 +762,17 @@ footer {
   </article>
 
   <!-- 004 -->
-  <article class="post" data-cat="process" onclick="openPost('terminal-aesthetic')">
+  <article class="post" data-cat="process">
     <div class="post-meta">
       <span class="post-num">004 <span class="pn-slash">/</span></span>
       <span class="post-date">Mar 2026</span>
     </div>
     <div class="post-body">
       <span class="post-cat">Process</span>
-      <h3 class="post-title">Why my portfolio reads like a command line</h3>
+      <h3 class="post-title"><a href="post.html">Why my portfolio reads like a command line</a></h3>
       <p class="post-excerpt">
-        A short defense of the terminal aesthetic: monospace, side rails, blinking
-        carets, and proportional grids. How a tiny design system makes a site feel
-        built rather than templated.
+        A short defense of monospace, side rails, and blinking carets — and how a tiny
+        system makes a site feel built, not templated.
       </p>
       <div class="post-foot">
         <div class="post-tags">
@@ -837,14 +839,8 @@ footer {
   })();
 
   // ── POST NAVIGATION ──
-  // One article template lives at post.html. As more posts ship, give each its
-  // own file and map the slug here (e.g. { 'shipping-as-a-designer': 'shipping.html' }).
-  const POST_URLS = {
-    'designing-for-the-model': 'post.html',
-  };
-  function openPost(slug) {
-    window.location.href = POST_URLS[slug] || 'post.html';
-  }
+  // Cards are real <a href="post.html"> links now. One article template lives at
+  // post.html; as more posts ship, point each card's href at its own file.
 
   // ── CATEGORY FILTER ──
   function filterPosts(btn, cat) {
