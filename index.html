@@ -238,7 +238,7 @@ nav {
 /* ── PILLARS ── */
 .pillars {
   display: grid;
-  grid-template-columns: 260px 1fr;
+  grid-template-columns: 300px 1fr;   /* 300px label → 3×300px cols: rules at 340/640/940, matching hero-stats */
   border-bottom: 1px solid var(--border-light);
 }
 .pillars-lbl {
@@ -268,7 +268,7 @@ nav {
   grid-template-columns: repeat(3, 1fr);
 }
 .pillar {
-  padding: 40px 28px;
+  padding: 40px;   /* 40px inset → text aligns under hero-stat columns above */
   border-right: 1px solid var(--border-light);
 }
 .pillar:last-child { border-right: none; }
@@ -319,6 +319,7 @@ nav {
   border-bottom: 1px solid var(--border-light);
 }
 .status-tag {
+  width: 300px;        /* fixed → divider lands at x=340, continuing the hero-stats/pillars rule */
   padding: 14px 40px;
   border-right: 1px solid var(--border-light);
   font-size: 12px;
@@ -522,7 +523,7 @@ nav {
 /* ── ABOUT STRIP ── */
 .about-strip {
   display: grid;
-  grid-template-columns: 5fr 4fr;   /* asymmetric — left column wider */
+  grid-template-columns: 7fr 5fr;   /* asymmetric, but divider snaps to grid at x=740 */
   border-bottom: 1px solid var(--border-light);
 }
 .about-left {
@@ -785,7 +786,7 @@ footer {
   .hero-stat:nth-child(4) { border-top: 1px solid var(--border-light); border-right: none; }
   footer { flex-direction: column; gap: 8px; align-items: flex-start; }
   .div-bar { padding: 0 24px; }
-  .status-tag { padding: 14px 24px; }
+  .status-tag { width: auto; padding: 14px 24px; }   /* reset desktop grid width on mobile */
 }
 </style>
 </head>
