@@ -238,7 +238,7 @@ nav {
 /* ── PILLARS ── */
 .pillars {
   display: grid;
-  grid-template-columns: 300px 1fr;   /* 300px label → 3×300px cols: rules at 340/640/940, matching hero-stats */
+  grid-template-columns: 3fr 9fr;   /* label = 3/12 (25%), content = 9/12 */
   border-bottom: 1px solid var(--border-light);
 }
 .pillars-lbl {
@@ -268,7 +268,7 @@ nav {
   grid-template-columns: repeat(3, 1fr);
 }
 .pillar {
-  padding: 40px;   /* 40px inset → text aligns under hero-stat columns above */
+  padding: 40px 28px;
   border-right: 1px solid var(--border-light);
 }
 .pillar:last-child { border-right: none; }
@@ -319,7 +319,6 @@ nav {
   border-bottom: 1px solid var(--border-light);
 }
 .status-tag {
-  width: 300px;        /* fixed → divider lands at x=340, continuing the hero-stats/pillars rule */
   padding: 14px 40px;
   border-right: 1px solid var(--border-light);
   font-size: 12px;
@@ -353,14 +352,14 @@ nav {
 @keyframes caret { 0%,49%{opacity:1} 50%,100%{opacity:0} }
 
 /* ── WORK SECTION ── */
-.work-section { padding: 0 40px 80px; }
+.work-section { padding: 0 0 80px; }
 .work-hdr {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 28px 0 24px;
+  padding: 28px 40px 24px;
   border-bottom: 1px solid var(--border-light);
-  margin-bottom: 28px;
+  margin-bottom: 0;
 }
 .work-hdr-title {
   font-size: 12px;
@@ -380,7 +379,7 @@ nav {
   grid-template-columns: repeat(2, 1fr);
   gap: 1px;
   background: var(--border-light);
-  border: 1px solid var(--border-light);
+  border-bottom: 1px solid var(--border-light);
 }
 .card {
   background: var(--white);
@@ -496,12 +495,12 @@ nav {
 }
 .logos-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: 3fr 6fr 3fr;   /* side / center / side — dividers at 25% & 75% */
   gap: 0;
 }
 .logos-row2 {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(4, 1fr);  /* dividers at 25/50/75 — matches grid */
   border-top: 1px solid var(--border-light);
 }
 .logo-cell {
@@ -516,14 +515,31 @@ nav {
 .logo-cell:last-child { border-right: none; }
 .logo-cell svg, .logo-cell img { max-width: 100%; height: auto; }
 
-/* Logo wordmarks as SVG text — clean, no external deps */
-.logo-svg { width: 100%; max-width: 160px; }
-.logo-svg-sm { width: 100%; max-width: 110px; }
+/* Logo wordmarks as centered text */
+.logo-name {
+  font-family: var(--mono);
+  font-weight: 600;
+  font-size: 30px;
+  letter-spacing: -0.01em;
+  color: var(--mid);
+  text-align: center;
+  white-space: nowrap;
+}
+.logo-name.featured { font-size: 46px; }
+.logo-name-sm {
+  font-family: var(--mono);
+  font-weight: 400;
+  font-size: clamp(15px, 1.5vw, 21px);
+  letter-spacing: 0;
+  color: #9ca3a0;
+  text-align: center;
+  white-space: nowrap;
+}
 
 /* ── ABOUT STRIP ── */
 .about-strip {
   display: grid;
-  grid-template-columns: 7fr 5fr;   /* asymmetric, but divider snaps to grid at x=740 */
+  grid-template-columns: 6fr 6fr;   /* divider at 50% — matches cards & cta */
   border-bottom: 1px solid var(--border-light);
 }
 .about-left {
@@ -582,25 +598,16 @@ nav {
 
 /* ── CTA ── */
 .cta {
-  margin: 40px;
-  border: 1px solid var(--accent-dark);
+  border-top: 1px solid var(--border-light);
+  border-bottom: 1px solid var(--border-light);
   background: var(--accent);
   position: relative;
   overflow: hidden;
 }
-.cta-lines {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background-image: repeating-linear-gradient(
-    to right, rgba(58,66,58,0.07) 0, rgba(58,66,58,0.07) 1px, transparent 1px, transparent 10px
-  );
-  background-size: 10px 100%;
-}
 .cta-inner {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  min-height: 220px;
+  grid-template-columns: 1fr 1fr;   /* divider at 50% — matches cards & about */
+  min-height: 240px;
 }
 .cta-l {
   padding: 48px 40px;
@@ -764,8 +771,8 @@ footer {
 @media (max-width: 900px) {
   .rail-left, .rail-right { display: none; }
   .page-wrap { margin-left: 0; margin-right: 0; }
-  nav, .hero, .work-section, .cta, footer { padding-left: 24px; padding-right: 24px; }
-  .cta { margin: 24px; }
+  nav, .hero, footer { padding-left: 24px; padding-right: 24px; }
+  .work-hdr { padding-left: 24px; padding-right: 24px; }
   .hero h1 { font-size: clamp(24px, 7vw, 38px); max-width: 100%; }
   .pillars { grid-template-columns: 1fr; }
   .pillars-lbl { border-right: none; border-bottom: 1px solid var(--border-light); }
@@ -774,7 +781,10 @@ footer {
   .pillar:last-child { border-bottom: none; }
   .cards { grid-template-columns: 1fr; }
   .logos-grid { grid-template-columns: 1fr; }
-  .logos-row2 { grid-template-columns: repeat(3, 1fr); }
+  .logos-grid .logo-cell { border-right: none !important; border-bottom: 1px solid var(--border-light); }
+  .logos-row2 { grid-template-columns: repeat(2, 1fr); }
+  .logos-row2 .logo-cell:nth-child(2) { border-right: none; }
+  .logos-row2 .logo-cell:nth-child(1), .logos-row2 .logo-cell:nth-child(2) { border-bottom: 1px solid var(--border-light); }
   .about-strip { grid-template-columns: 1fr; }
   .about-left { padding: 48px 24px; border-right: none; border-bottom: 1px solid var(--border-light); }
   .about-right { padding: 40px 24px; }
@@ -786,7 +796,7 @@ footer {
   .hero-stat:nth-child(4) { border-top: 1px solid var(--border-light); border-right: none; }
   footer { flex-direction: column; gap: 8px; align-items: flex-start; }
   .div-bar { padding: 0 24px; }
-  .status-tag { width: auto; padding: 14px 24px; }   /* reset desktop grid width on mobile */
+  .status-tag { padding: 14px 24px; }
 }
 </style>
 </head>
@@ -977,54 +987,35 @@ footer {
     <span class="logos-head-label">Companies I've designed AI for</span>
   </div>
 
-  <!-- Row 1: featured 3 -->
+  <!-- Row 1: featured — side / center / side (3·6·3) -->
   <div class="logos-grid">
-    <!-- Meta -->
+    <!-- Microsoft (left) -->
     <div class="logo-cell" style="border-right:1px solid var(--border-light)">
-      <svg class="logo-svg" viewBox="0 0 200 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <text x="0" y="44" font-family="Geist Mono, monospace" font-size="42" font-weight="600" fill="#3a423a">Meta</text>
-      </svg>
+      <span class="logo-name">Microsoft</span>
     </div>
-    <!-- PayPal -->
+    <!-- Meta (center, featured) -->
     <div class="logo-cell" style="border-right:1px solid var(--border-light)">
-      <svg class="logo-svg" viewBox="0 0 200 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <text x="0" y="44" font-family="Geist Mono, monospace" font-size="36" font-weight="600" fill="#3a423a">PayPal</text>
-      </svg>
+      <span class="logo-name featured">Meta</span>
     </div>
-    <!-- Microsoft -->
+    <!-- Amazon (right) -->
     <div class="logo-cell">
-      <svg class="logo-svg" viewBox="0 0 240 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <text x="0" y="44" font-family="Geist Mono, monospace" font-size="30" font-weight="600" fill="#3a423a">Microsoft</text>
-      </svg>
+      <span class="logo-name">Amazon</span>
     </div>
   </div>
 
-  <!-- Row 2: also worked at -->
+  <!-- Row 2: also worked at — 4 equal columns -->
   <div class="logos-row2">
     <div class="logo-cell" style="border-right:1px solid var(--border-light)">
-      <svg class="logo-svg-sm" viewBox="0 0 160 48" fill="none">
-        <text x="0" y="36" font-family="Geist Mono, monospace" font-size="28" font-weight="400" fill="#9ca3a0">Amazon</text>
-      </svg>
+      <span class="logo-name-sm">PayPal</span>
     </div>
     <div class="logo-cell" style="border-right:1px solid var(--border-light)">
-      <svg class="logo-svg-sm" viewBox="0 0 180 48" fill="none">
-        <text x="0" y="36" font-family="Geist Mono, monospace" font-size="22" font-weight="400" fill="#9ca3a0">Am. Express</text>
-      </svg>
+      <span class="logo-name-sm">DoorDash</span>
     </div>
     <div class="logo-cell" style="border-right:1px solid var(--border-light)">
-      <svg class="logo-svg-sm" viewBox="0 0 160 48" fill="none">
-        <text x="0" y="36" font-family="Geist Mono, monospace" font-size="26" font-weight="400" fill="#9ca3a0">AllianceBern.</text>
-      </svg>
-    </div>
-    <div class="logo-cell" style="border-right:1px solid var(--border-light)">
-      <svg class="logo-svg-sm" viewBox="0 0 160 48" fill="none">
-        <text x="0" y="36" font-family="Geist Mono, monospace" font-size="28" font-weight="400" fill="#9ca3a0">LinkedIn</text>
-      </svg>
+      <span class="logo-name-sm">American Express</span>
     </div>
     <div class="logo-cell">
-      <svg class="logo-svg-sm" viewBox="0 0 120 48" fill="none">
-        <text x="0" y="36" font-family="Geist Mono, monospace" font-size="28" font-weight="400" fill="#9ca3a0">+ more</text>
-      </svg>
+      <span class="logo-name-sm">Zendesk</span>
     </div>
   </div>
 </div>
@@ -1054,13 +1045,6 @@ footer {
 
 <!-- ── CTA ── -->
 <div class="cta">
-  <div class="cta-lines"></div>
-  <div class="corners">
-    <svg class="c-tl" viewBox="0 0 13 13" fill="none"><path d="M0.5 12.5V0.5H12.5" stroke="#3a423a" stroke-opacity="0.3"/></svg>
-    <svg class="c-tr" viewBox="0 0 13 13" fill="none"><path d="M0.5 12.5V0.5H12.5" stroke="#3a423a" stroke-opacity="0.3"/></svg>
-    <svg class="c-bl" viewBox="0 0 13 13" fill="none"><path d="M0.5 12.5V0.5H12.5" stroke="#3a423a" stroke-opacity="0.3"/></svg>
-    <svg class="c-br" viewBox="0 0 13 13" fill="none"><path d="M0.5 12.5V0.5H12.5" stroke="#3a423a" stroke-opacity="0.3"/></svg>
-  </div>
   <div class="cta-inner">
     <div class="cta-l">
       <div class="cta-eyebrow">&gt;&gt;&gt; Let's work together</div>
