@@ -478,28 +478,6 @@ nav {
 }
 .card:not(.soon):hover .card-arrow { color: var(--mid); transform: translate(3px,-3px); }
 
-/* case-study line-art motif — sits above the grid texture, below the content */
-.card-art {
-  position: absolute;
-  top: 50px;
-  left: 32px;
-  right: 32px;
-  height: 132px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1;
-  pointer-events: none;
-  color: var(--border);                 /* line ink at rest */
-  opacity: 0.6;
-  transition: color 0.2s ease, opacity 0.2s ease;
-}
-.card-art svg { width: 84%; max-width: 320px; height: auto; }
-.card-art .vent { opacity: 0.55; }
-.card-art .led { fill: var(--border); transition: fill 0.2s ease; }
-.card:hover .card-art { opacity: 1; color: var(--muted); }   /* lines firm up */
-.card:hover .card-art .led { fill: var(--brand); }           /* status LEDs light indigo */
-
 /* full-color photo treatment for a case-study card */
 .card-photo {
   position: absolute;
@@ -516,12 +494,13 @@ nav {
   inset: 0;
   z-index: 1;
   pointer-events: none;
-  /* photo shows up top, fades to white where the label/title/tags sit */
+  /* photo shows up top, fades to white where the label/title/tags sit;
+     ramps to near-opaque early so content reads even over a dark image */
   background: linear-gradient(to bottom,
     rgba(255,255,255,0) 0%,
-    rgba(255,255,255,0) 34%,
-    rgba(255,255,255,0.55) 60%,
-    rgba(255,255,255,0.92) 82%,
+    rgba(255,255,255,0) 30%,
+    rgba(255,255,255,0.72) 53%,
+    rgba(255,255,255,0.97) 73%,
     #ffffff 100%);
 }
 .card.has-photo .card-lock {        /* frosted backdrop so the lock reads over the image */
@@ -883,9 +862,6 @@ footer {
   .pillar { border-right: none; border-bottom: 1px solid var(--border-light); }
   .pillar:last-child { border-bottom: none; }
   .cards { grid-template-columns: 1fr; }
-  /* tighten the case-study motif so it clears the taller wrapped title on phones */
-  .card-art { top: 34px; height: 104px; }
-  .card-art svg { max-width: 220px; }
   .logos-grid { grid-template-columns: 1fr; }
   .logos-grid .logo-cell { border-right: none !important; border-bottom: 1px solid var(--border-light); }
   .logos-row2 { grid-template-columns: repeat(2, 1fr); }
@@ -1033,50 +1009,9 @@ footer {
   <div class="cards">
 
     <!-- Meta -->
-    <div class="card" onclick="openModal('meta')">
-      <div class="card-art" aria-hidden="true">
-        <svg viewBox="0 0 320 150" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <!-- power / network bus across the top -->
-          <g stroke="currentColor" stroke-width="1" stroke-linecap="round">
-            <path d="M35 18 H285"/>
-            <path d="M67 18 V30"/><path d="M160 18 V30"/><path d="M253 18 V30"/>
-          </g>
-          <circle cx="67" cy="18" r="2" fill="currentColor"/>
-          <circle cx="160" cy="18" r="2" fill="currentColor"/>
-          <circle cx="253" cy="18" r="2" fill="currentColor"/>
-          <!-- three server rack cabinets -->
-          <g stroke="currentColor" stroke-width="1">
-            <rect x="35" y="30" width="64" height="110"/>
-            <rect x="128" y="30" width="64" height="110"/>
-            <rect x="221" y="30" width="64" height="110"/>
-            <!-- rack-unit dividers -->
-            <path d="M35 58 H99 M35 85 H99 M35 112 H99"/>
-            <path d="M128 58 H192 M128 85 H192 M128 112 H192"/>
-            <path d="M221 58 H285 M221 85 H285 M221 112 H285"/>
-          </g>
-          <!-- server faceplate vents -->
-          <g class="vent" stroke="currentColor" stroke-width="1" stroke-linecap="round">
-            <path d="M51 44 H91 M51 71 H91 M51 98 H91 M51 126 H91"/>
-            <path d="M144 44 H184 M144 71 H184 M144 98 H184 M144 126 H184"/>
-            <path d="M237 44 H277 M237 71 H277 M237 98 H277 M237 126 H277"/>
-          </g>
-          <!-- status LEDs (light up on hover) -->
-          <g>
-            <circle class="led" cx="43" cy="44" r="2.2"/>
-            <circle class="led" cx="43" cy="98" r="2.2"/>
-            <circle class="led" cx="136" cy="71" r="2.2"/>
-            <circle class="led" cx="136" cy="126" r="2.2"/>
-            <circle class="led" cx="229" cy="44" r="2.2"/>
-            <circle class="led" cx="229" cy="98" r="2.2"/>
-          </g>
-          <!-- cabinet feet -->
-          <g stroke="currentColor" stroke-width="1" stroke-linecap="round">
-            <path d="M45 140 V145 M89 140 V145"/>
-            <path d="M138 140 V145 M182 140 V145"/>
-            <path d="M231 140 V145 M275 140 V145"/>
-          </g>
-        </svg>
-      </div>
+    <div class="card has-photo" onclick="openModal('meta')">
+      <img class="card-photo" src="photos/meta.avif" alt="" aria-hidden="true">
+      <div class="card-photo-scrim"></div>
       <div class="card-badge">Design for AI</div>
       <div class="card-lock">🔒 Password protected</div>
       <div class="card-body">
@@ -1092,7 +1027,9 @@ footer {
     </div>
 
     <!-- Microsoft -->
-    <div class="card" onclick="openModal('microsoft')">
+    <div class="card has-photo" onclick="openModal('microsoft')">
+      <img class="card-photo" src="photos/microsoft.avif" alt="" aria-hidden="true">
+      <div class="card-photo-scrim"></div>
       <div class="card-badge">Design for AI</div>
       <div class="card-lock">🔒 Password protected</div>
       <div class="card-body">
@@ -1125,7 +1062,7 @@ footer {
 
     <!-- Amazon -->
     <div class="card has-photo" onclick="openModal('amazon')">
-      <img class="card-photo" src="photos/amazon.png" alt="" aria-hidden="true">
+      <img class="card-photo" src="photos/amazon.avif" alt="" aria-hidden="true">
       <div class="card-photo-scrim"></div>
       <div class="card-badge">Product Innovation</div>
       <div class="card-lock">🔒 Password protected</div>
