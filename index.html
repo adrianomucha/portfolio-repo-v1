@@ -45,6 +45,10 @@ a { text-decoration: none; color: inherit; }
 button { font-family: inherit; cursor: pointer; border: none; background: none; }
 svg { display: block; }
 
+/* keyboard focus: a visible ring for tab users, suppressed for mouse/touch */
+:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+:focus:not(:focus-visible) { outline: none; }
+
 /* ── SIDE RAILS - fixed, both sides ── */
 .rail-left,
 .rail-right {
@@ -126,6 +130,7 @@ nav {
   display: flex;
   gap: 8px;
   align-items: center;
+  padding: 12px 2px;        /* ~44px tall tap target within the 56px nav */
   transition: color 0.15s;
 }
 .nav-link:hover { color: var(--dark); }
@@ -809,7 +814,6 @@ footer {
   border: 1px solid var(--border);
   background: var(--white);
   color: var(--dark);
-  outline: none;
   transition: border-color 0.15s;
 }
 .modal-input:focus { border-color: var(--dark); }
@@ -836,14 +840,26 @@ footer {
 }
 .modal-close {
   position: absolute;
-  top: 22px; right: 22px;
+  top: 12px; right: 12px;
+  width: 44px; height: 44px;   /* full-size tap target */
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: 22px;
   color: var(--muted);
   cursor: pointer;
   line-height: 1;
-  padding: 4px 8px;
+  padding: 0;
 }
 .modal-close:hover { color: var(--dark); }
+
+/* ── REDUCED MOTION ── steady the blinking cursors, photo zoom, and typewriters */
+@media (prefers-reduced-motion: reduce) {
+  .s-dot, .s-text::after, .cta-headline::after { animation: none; opacity: 1; }
+  .card-photo { transition: filter 0.3s ease, opacity 0.3s ease; }
+  .card.has-photo:hover .card-photo { transform: none; }
+  * { scroll-behavior: auto !important; }
+}
 
 /* ── RESPONSIVE ── */
 @media (max-width: 900px) {
@@ -896,21 +912,23 @@ footer {
 <!-- ── NAV ── -->
 <nav>
   <a href="https://adrianmucha.us" class="nav-logo">
-    Adrian Mucha <span class="nav-sep">/</span>
+    Adrian Mucha <span class="nav-sep" aria-hidden="true">/</span>
     <span class="nav-role">Product Designer</span>
   </a>
   <div class="nav-links">
-    <a href="index.html" class="nav-link current">
-      <span class="nav-num">00</span> Work
+    <a href="index.html" class="nav-link current" aria-current="page">
+      <span class="nav-num" aria-hidden="true">00</span> Work
     </a>
     <a href="about.html" class="nav-link">
-      <span class="nav-num">01</span> About Me
+      <span class="nav-num" aria-hidden="true">01</span> About Me
     </a>
     <a href="blog.html" class="nav-link">
-      <span class="nav-num">02</span> Blog
+      <span class="nav-num" aria-hidden="true">02</span> Blog
     </a>
   </div>
 </nav>
+
+<main>
 
 <!-- ── HERO ── -->
 <div class="hero">
@@ -1001,7 +1019,7 @@ footer {
 <!-- ── WORK CARDS ── -->
 <div class="work-section">
   <div class="work-hdr">
-    <span class="work-hdr-title">Case studies</span>
+    <h2 class="work-hdr-title">Case studies</h2>
     <span class="work-hdr-count">004 items</span>
   </div>
   <div class="cards">
@@ -1025,7 +1043,7 @@ footer {
 
     <!-- Microsoft -->
     <div class="card has-photo" onclick="openModal('microsoft')">
-      <div class="card-media"><img class="card-photo" src="photos/microsoft.avif" alt="" aria-hidden="true"></div>
+      <div class="card-media"><img class="card-photo" src="photos/microsoft.jpeg" alt="" aria-hidden="true"></div>
       <div class="card-badge">Design for AI</div>
       <div class="card-lock">🔒 Password protected</div>
       <div class="card-body">
@@ -1155,6 +1173,8 @@ footer {
     </div>
   </div>
 </div>
+
+</main>
 
 <!-- ── FOOTER ── -->
 <footer>
