@@ -407,6 +407,9 @@ nav {
 }
 .card:hover { background: var(--off); }
 .card.soon { background: var(--off); cursor: default; }
+/* coming-soon photo stays dimmed & static — no hover lift that would imply it's clickable */
+.card.soon .card-photo,
+.card.soon:hover .card-photo { filter: grayscale(1) contrast(1.03); opacity: 0.78; transform: none; }
 
 /* card grid texture */
 .card::before {
@@ -463,6 +466,18 @@ nav {
   margin-bottom: 16px;
 }
 .soon .card-title { color: var(--muted); font-style: italic; }
+/* the real keyboard/AT control — inherits the title's type, stretches over the whole card */
+.card-trigger {
+  font: inherit;
+  color: inherit;
+  letter-spacing: inherit;
+  text-align: left;
+  padding: 0;
+  cursor: pointer;
+}
+.card-trigger::after { content: ''; position: absolute; inset: 0; z-index: 3; }
+.card-trigger:focus-visible { outline: none; }                       /* ring drawn over the card instead */
+.card-trigger:focus-visible::after { outline: 2px solid var(--brand); outline-offset: -3px; }
 .card-tags { display: flex; gap: 6px; flex-wrap: wrap; }
 .card-tag {
   font-size: 11px;
@@ -977,7 +992,7 @@ footer {
   <div class="pillars-grid">
     <div class="pillar">
       <div class="pillar-num">001 /</div>
-      <div class="pillar-title">Design for AI</div>
+      <h3 class="pillar-title">Design for AI</h3>
       <p class="pillar-desc">The interfaces AI systems live inside: copilot panels, internal tools, agent dashboards, operator consoles.</p>
       <div class="pillar-cos">
         <span class="pillar-co">Meta (Metamate / LLaMA tooling)</span>
@@ -986,7 +1001,7 @@ footer {
     </div>
     <div class="pillar">
       <div class="pillar-num">002 /</div>
-      <div class="pillar-title">Embed AI in teams</div>
+      <h3 class="pillar-title">Embed AI in teams</h3>
       <p class="pillar-desc">Setting up AI tools, workflows, and internal tooling inside a design org, changing how a whole team operates.</p>
       <div class="pillar-cos">
         <span class="pillar-co">PayPal (tools + internal tooling + features)</span>
@@ -995,7 +1010,7 @@ footer {
     </div>
     <div class="pillar">
       <div class="pillar-num">003 /</div>
-      <div class="pillar-title">Ship with AI</div>
+      <h3 class="pillar-title">Ship with AI</h3>
       <p class="pillar-desc">Using Claude Code, Cursor, and v0 to go from design to production independently. No handoff, no waiting.</p>
       <div class="pillar-cos">
         <span class="pillar-co">Independent work · in progress</span>
@@ -1025,69 +1040,68 @@ footer {
   <div class="cards">
 
     <!-- Meta -->
-    <div class="card has-photo" onclick="openModal('meta')">
-      <div class="card-media"><img class="card-photo" src="photos/meta-1.jpg" alt="" aria-hidden="true"></div>
+    <div class="card has-photo">
+      <div class="card-media"><img class="card-photo" src="photos/meta-1.jpg" alt="" aria-hidden="true" loading="lazy" decoding="async"></div>
       <div class="card-badge">Design for AI</div>
       <div class="card-lock">🔒 Password protected</div>
       <div class="card-body">
         <div class="card-co">Meta · Full-time</div>
-        <div class="card-title">Data center efficiency: The key to unlocking Meta's growth potential</div>
+        <h3 class="card-title"><button type="button" class="card-trigger" onclick="openModal('meta', this)">Data center efficiency: The key to unlocking Meta's growth potential</button></h3>
         <div class="card-tags">
           <span class="card-tag">AI Interface</span>
           <span class="card-tag">DCIM</span>
           <span class="card-tag">Internal Tooling</span>
         </div>
       </div>
-      <div class="card-arrow">↗</div>
+      <div class="card-arrow" aria-hidden="true">↗</div>
     </div>
 
     <!-- Microsoft -->
-    <div class="card has-photo" onclick="openModal('microsoft')">
-      <div class="card-media"><img class="card-photo" src="photos/microsoft.jpeg" alt="" aria-hidden="true"></div>
+    <div class="card has-photo">
+      <div class="card-media"><img class="card-photo" src="photos/microsoft.jpeg" alt="" aria-hidden="true" loading="lazy" decoding="async"></div>
       <div class="card-badge">Design for AI</div>
       <div class="card-lock">🔒 Password protected</div>
       <div class="card-body">
         <div class="card-co">Microsoft · Contract</div>
-        <div class="card-title">Evolving Microsoft Planner into a Trusted AI PM Agent</div>
+        <h3 class="card-title"><button type="button" class="card-trigger" onclick="openModal('microsoft', this)">Evolving Microsoft Planner into a Trusted AI PM Agent</button></h3>
         <div class="card-tags">
           <span class="card-tag">AI Features</span>
           <span class="card-tag">Product Design</span>
           <span class="card-tag">Contract</span>
         </div>
       </div>
-      <div class="card-arrow">↗</div>
+      <div class="card-arrow" aria-hidden="true">↗</div>
     </div>
 
-    <!-- PayPal -->
-    <div class="card" onclick="openModal('paypal')">
+    <!-- PayPal — case study in progress -->
+    <div class="card has-photo soon">
+      <div class="card-media"><img class="card-photo" src="photos/paypal.png" alt="" aria-hidden="true" loading="lazy" decoding="async"></div>
       <div class="card-badge">Embed AI in teams</div>
-      <div class="card-lock">🔒 Password protected</div>
       <div class="card-body">
         <div class="card-co">PayPal · Full-time</div>
-        <div class="card-title">[Add your case study title]</div>
+        <h3 class="card-title">Case study coming soon</h3>
         <div class="card-tags">
           <span class="card-tag">Workflow Design</span>
           <span class="card-tag">AI Tooling</span>
           <span class="card-tag">Product Features</span>
         </div>
       </div>
-      <div class="card-arrow">↗</div>
     </div>
 
     <!-- Amazon -->
-    <div class="card has-photo" onclick="openModal('amazon')">
-      <div class="card-media"><img class="card-photo" src="photos/amazon.avif" alt="" aria-hidden="true"></div>
+    <div class="card has-photo">
+      <div class="card-media"><img class="card-photo" src="photos/amazon.avif" alt="" aria-hidden="true" loading="lazy" decoding="async"></div>
       <div class="card-badge">Product Innovation</div>
       <div class="card-lock">🔒 Password protected</div>
       <div class="card-body">
         <div class="card-co">Amazon · Contract</div>
-        <div class="card-title">Transforming Fulfillment: Amazon's Innovation in Motion</div>
+        <h3 class="card-title"><button type="button" class="card-trigger" onclick="openModal('amazon', this)">Transforming Fulfillment: Amazon's Innovation in Motion</button></h3>
         <div class="card-tags">
           <span class="card-tag">Fulfillment</span>
           <span class="card-tag">Logistics</span>
         </div>
       </div>
-      <div class="card-arrow">↗</div>
+      <div class="card-arrow" aria-hidden="true">↗</div>
     </div>
 
   </div>
@@ -1096,38 +1110,38 @@ footer {
 <!-- ── PARTNER LOGOS ── -->
 <div class="logos-section">
   <div class="logos-head">
-    <span class="logos-head-label">Companies I've designed AI for</span>
+    <h2 class="logos-head-label">Companies I've designed AI for</h2>
   </div>
 
   <!-- Row 1: featured - side / center / side (3·6·3) -->
   <div class="logos-grid">
     <!-- Microsoft (left) -->
     <div class="logo-cell" style="border-right:1px solid var(--border-light)">
-      <img class="logo-img" src="logos/microsoft.svg" alt="Microsoft" style="height:30px">
+      <img class="logo-img" loading="lazy" decoding="async" src="logos/microsoft.svg" alt="Microsoft" style="height:30px">
     </div>
     <!-- Meta (center, featured) -->
     <div class="logo-cell" style="border-right:1px solid var(--border-light)">
-      <img class="logo-img" src="logos/meta.svg" alt="Meta" style="height:34px">
+      <img class="logo-img" loading="lazy" decoding="async" src="logos/meta.svg" alt="Meta" style="height:34px">
     </div>
     <!-- Amazon (right) -->
     <div class="logo-cell">
-      <img class="logo-img" src="logos/amazon.svg" alt="Amazon" style="height:32px">
+      <img class="logo-img" loading="lazy" decoding="async" src="logos/amazon.svg" alt="Amazon" style="height:32px">
     </div>
   </div>
 
   <!-- Row 2: also worked at - 4 equal columns -->
   <div class="logos-row2">
     <div class="logo-cell" style="border-right:1px solid var(--border-light)">
-      <img class="logo-img" src="logos/paypal.svg" alt="PayPal" style="height:26px">
+      <img class="logo-img" loading="lazy" decoding="async" src="logos/paypal.svg" alt="PayPal" style="height:26px">
     </div>
     <div class="logo-cell" style="border-right:1px solid var(--border-light)">
-      <img class="logo-img" src="logos/doordash.svg" alt="DoorDash" style="height:18px">
+      <img class="logo-img" loading="lazy" decoding="async" src="logos/doordash.svg" alt="DoorDash" style="height:18px">
     </div>
     <div class="logo-cell" style="border-right:1px solid var(--border-light)">
-      <img class="logo-img" src="logos/americanexpress.svg" alt="American Express" style="height:13px">
+      <img class="logo-img" loading="lazy" decoding="async" src="logos/americanexpress.svg" alt="American Express" style="height:13px">
     </div>
     <div class="logo-cell">
-      <img class="logo-img" src="logos/zendesk.svg" alt="Zendesk" style="height:24px">
+      <img class="logo-img" loading="lazy" decoding="async" src="logos/zendesk.svg" alt="Zendesk" style="height:24px">
     </div>
   </div>
 </div>
@@ -1142,15 +1156,15 @@ footer {
   </div>
   <div class="about-right">
     <div class="about-item">
-      <div class="about-item-title">Designing with Purpose, Not Just Pixels</div>
+      <h3 class="about-item-title">Designing with Purpose, Not Just Pixels</h3>
       <p class="about-item-desc">I love creating functional, impactful experiences (whether for consumers or engineers), making even complex tools intuitive and enjoyable to use.</p>
     </div>
     <div class="about-item">
-      <div class="about-item-title">Shipping Fast & Iterating</div>
+      <h3 class="about-item-title">Shipping Fast & Iterating</h3>
       <p class="about-item-desc">I believe in momentum. I work quickly, get real feedback, and refine, ensuring designs don't just look good but drive results.</p>
     </div>
     <div class="about-item">
-      <div class="about-item-title">Startup Agility with Enterprise Expertise</div>
+      <h3 class="about-item-title">Startup Agility with Enterprise Expertise</h3>
       <p class="about-item-desc">Whether it's scaling a design system or crafting a scrappy MVP, I adapt my approach to fit the needs of the product and team.</p>
     </div>
   </div>
@@ -1161,7 +1175,7 @@ footer {
   <div class="cta-inner">
     <div class="cta-l">
       <div class="cta-eyebrow"><span class="cta-arrow">&gt;&gt;&gt;</span> Let's work together</div>
-      <div class="cta-headline">Let's<br>talk</div>
+      <h2 class="cta-headline">Let's<br>talk</h2>
     </div>
     <div class="cta-r">
       <div class="cta-log">
@@ -1183,25 +1197,26 @@ footer {
 
 <!-- ── PASSWORD MODAL ── -->
 <div class="modal-backdrop" id="modal" onclick="handleBackdrop(event)">
-  <div class="modal">
-    <div class="corners">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="corners" aria-hidden="true">
       <svg class="c-tl" viewBox="0 0 13 13" fill="none"><path d="M0.5 12.5V0.5H12.5" stroke="#b0b5b1"/></svg>
       <svg class="c-tr" viewBox="0 0 13 13" fill="none"><path d="M0.5 12.5V0.5H12.5" stroke="#b0b5b1"/></svg>
       <svg class="c-bl" viewBox="0 0 13 13" fill="none"><path d="M0.5 12.5V0.5H12.5" stroke="#b0b5b1"/></svg>
       <svg class="c-br" viewBox="0 0 13 13" fill="none"><path d="M0.5 12.5V0.5H12.5" stroke="#b0b5b1"/></svg>
     </div>
-    <span class="modal-close" onclick="closeModal()">×</span>
+    <button type="button" class="modal-close" onclick="closeModal()" aria-label="Close dialog">×</button>
     <div class="modal-tag"><span class="m-arrow">&gt;&gt;&gt;</span> restricted</div>
-    <div class="modal-title" id="modal-title">Case study</div>
+    <h2 class="modal-title" id="modal-title">Case study</h2>
     <p class="modal-sub">
       Password is in the top right corner of my resume.<br>
       No resume? <a href="#" data-email>Email me ↗</a>
     </p>
     <div class="modal-row">
-      <input type="password" id="pw" class="modal-input" placeholder="enter password" autocomplete="off">
+      <input type="password" id="pw" class="modal-input" placeholder="enter password"
+             autocomplete="off" aria-label="Case study password" aria-describedby="modal-err">
       <button class="modal-btn" onclick="checkPW()">Enter →</button>
     </div>
-    <div class="modal-err" id="modal-err">&gt; incorrect password</div>
+    <div class="modal-err" id="modal-err" role="alert">&gt; incorrect password</div>
   </div>
 </div>
 
@@ -1217,45 +1232,53 @@ footer {
 
   const PASSWORD = '112233';
   let currentTarget = null;
+  let lastTrigger = null;                       // element to restore focus to on close
+  const modalEl = document.getElementById('modal');
+  const FOCUSABLE = 'a[href], button, input, [tabindex]:not([tabindex="-1"])';
 
   const destinations = {
     meta: 'https://adrianmucha.us/password',
-    microsoft: '#',
-    paypal: '#',
-    amazon: '#',
+    microsoft: '#',   // TODO: replace with the live Microsoft case-study URL
+    amazon: '#',      // TODO: replace with the live Amazon case-study URL
   };
 
   const titles = {
     meta: 'Meta · Data Center & AI Work',
     microsoft: 'Microsoft · Planner AI Features',
-    paypal: 'PayPal · AI in the Design Process',
     amazon: 'Amazon · Fulfillment Innovation',
   };
 
-  function openModal(id) {
+  function openModal(id, trigger) {
     currentTarget = id;
+    lastTrigger = trigger || null;
     document.getElementById('modal-title').textContent = titles[id];
-    document.getElementById('modal').classList.add('open');
+    modalEl.classList.add('open');
+    document.body.style.overflow = 'hidden';      // lock background scroll while open
     document.getElementById('pw').focus();
   }
 
   function closeModal() {
-    document.getElementById('modal').classList.remove('open');
-    document.getElementById('pw').value = '';
-    document.getElementById('pw').classList.remove('err');
+    modalEl.classList.remove('open');
+    document.body.style.overflow = '';
+    const input = document.getElementById('pw');
+    input.value = '';
+    input.classList.remove('err');
     document.getElementById('modal-err').style.display = 'none';
     currentTarget = null;
+    if (lastTrigger && typeof lastTrigger.focus === 'function') lastTrigger.focus();
+    lastTrigger = null;
   }
 
   function handleBackdrop(e) {
-    if (e.target === document.getElementById('modal')) closeModal();
+    if (e.target === modalEl) closeModal();
   }
 
   function checkPW() {
     const input = document.getElementById('pw');
     if (input.value.trim() === PASSWORD) {
+      const dest = destinations[currentTarget] || '#';   // read before closeModal clears target
       closeModal();
-      window.location.href = destinations[currentTarget] || '#';
+      window.location.href = dest;
     } else {
       input.classList.add('err');
       document.getElementById('modal-err').style.display = 'block';
@@ -1264,10 +1287,20 @@ footer {
     }
   }
 
-  document.getElementById('pw').addEventListener('keydown', e => {
-    if (e.key === 'Enter') checkPW();
-    if (e.key === 'Escape') closeModal();
+  // keyboard: submit on Enter, close on Escape, and trap Tab within the open dialog
+  modalEl.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { closeModal(); return; }
+    if (e.key === 'Enter' && e.target.id === 'pw') { checkPW(); return; }
+    if (e.key !== 'Tab') return;
+    const items = [...modalEl.querySelectorAll(FOCUSABLE)].filter(el => el.offsetParent !== null);
+    if (!items.length) return;
+    const first = items[0], last = items[items.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
   });
+
+  // honor reduced-motion: skip the typewriter loops, show steady text instead
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   // ── HERO TYPING ──
   const words = ['Meta', 'PayPal', 'Microsoft'];
@@ -1289,7 +1322,7 @@ footer {
       setTimeout(heroTick, 50);
     }
   }
-  setTimeout(heroTick, 2000);
+  if (!reduceMotion) setTimeout(heroTick, 2000);
 
   // ── STATUS TYPING ──
   const statuses = [
@@ -1314,7 +1347,8 @@ footer {
       setTimeout(statusTick, 18);
     }
   }
-  setTimeout(statusTick, 600);
+  if (reduceMotion) sEl.textContent = statuses[0];
+  else setTimeout(statusTick, 600);
 </script>
 
 </div><!-- /page-wrap -->
