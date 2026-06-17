@@ -249,7 +249,7 @@ nav {
   color: var(--muted);
 }
 .post-feat-coord b { color: var(--mid); font-weight: 600; }
-.post-feat-spec { display: flex; flex-direction: column; gap: 9px; }
+.post-feat-spec { display: flex; flex-direction: column; gap: 9px; margin-top: auto; }
 .pf-spec-row {
   display: grid;
   grid-template-columns: 76px 1fr;
@@ -427,26 +427,6 @@ nav {
   transition: color 0.15s, transform 0.15s;
 }
 .post:hover .post-arrow { color: var(--mid); transform: translate(3px,-3px); }
-
-/* ── POST MOTIF ── (small on-brand line-art tile — gives each row a non-text
-   anchor so the list reads as objects, not a wall of paragraphs) */
-.post-motif { width: 60px; height: 60px; margin-top: auto; flex-shrink: 0; }
-.post-motif * {
-  fill: none;
-  stroke: var(--border);
-  stroke-width: 1.5;
-  vector-effect: non-scaling-stroke;
-  transition: stroke 0.15s, fill 0.15s;
-}
-.post-motif .m-accent { stroke: var(--brand); }
-.post-motif .m-fill   { fill: var(--brand); stroke: var(--brand); }
-/* warm the line work up on hover */
-.post:hover .post-motif *, .post-feat:hover .post-motif * { stroke: var(--muted); }
-.post:hover .post-motif .m-accent, .post-feat:hover .post-motif .m-accent,
-.post:hover .post-motif .m-fill,   .post-feat:hover .post-motif .m-fill { stroke: var(--brand); }
-.post:hover .post-motif .m-fill,   .post-feat:hover .post-motif .m-fill { fill: var(--brand); }
-/* featured tile sits a touch larger, grouped with the spec list at the bottom */
-.post-feat-motif { width: 76px; height: 76px; margin-top: auto; }
 
 /* hidden by the category filter */
 .post.hide, .post-feat.hide { display: none; }
@@ -627,7 +607,6 @@ footer {
   }
   .post-body { padding: 24px 24px 30px; }
   .post-arrow { display: none; }
-  .post-motif { display: none; }   /* meta is a compact inline row on phones — no room for the tile */
   .cta-inner { grid-template-columns: 1fr; }
   .cta-l { border-right: none; border-bottom: 1px solid rgba(58,66,58,0.18); }
   .status-tag { padding: 14px 24px; }
@@ -699,13 +678,6 @@ footer {
   <div class="post-feat-meta">
     <span class="post-feat-flag">Latest</span>
     <span class="post-feat-coord"><b>001</b> &middot; June 2026</span>
-    <svg class="post-motif post-feat-motif" viewBox="0 0 60 60" aria-hidden="true">
-      <rect x="7" y="11" width="46" height="38"/>
-      <line x1="7" y1="21" x2="53" y2="21"/>
-      <line x1="13" y1="30" x2="35" y2="30"/>
-      <line x1="13" y1="38" x2="29" y2="38"/>
-      <rect class="m-fill" x="39" y="34" width="8" height="8"/>
-    </svg>
     <dl class="post-feat-spec">
       <div class="pf-spec-row"><dt>read</dt><dd>7 min</dd></div>
       <div class="pf-spec-row"><dt>topic</dt><dd>Design for AI</dd></div>
@@ -736,12 +708,6 @@ footer {
     <div class="post-meta">
       <span class="post-num">002 <span class="pn-slash">/</span></span>
       <span class="post-date">May 2026</span>
-      <svg class="post-motif" viewBox="0 0 60 60" aria-hidden="true">
-        <path d="M10 45 L30 37 L50 45"/>
-        <path d="M10 36 L30 28 L50 36"/>
-        <line class="m-accent" x1="30" y1="32" x2="30" y2="12"/>
-        <path class="m-accent" d="M24 18 L30 12 L36 18"/>
-      </svg>
     </div>
     <div class="post-body">
       <span class="post-cat">Ship with AI</span>
@@ -763,14 +729,6 @@ footer {
     <div class="post-meta">
       <span class="post-num">003 <span class="pn-slash">/</span></span>
       <span class="post-date">Apr 2026</span>
-      <svg class="post-motif" viewBox="0 0 60 60" aria-hidden="true">
-        <line x1="17" y1="19" x2="43" y2="19"/>
-        <line x1="17" y1="19" x2="30" y2="43"/>
-        <line x1="43" y1="19" x2="30" y2="43"/>
-        <circle cx="17" cy="19" r="4"/>
-        <circle cx="43" cy="19" r="4"/>
-        <circle class="m-fill" cx="30" cy="43" r="4"/>
-      </svg>
     </div>
     <div class="post-body">
       <span class="post-cat">Embed AI in teams</span>
@@ -792,14 +750,6 @@ footer {
     <div class="post-meta">
       <span class="post-num">004 <span class="pn-slash">/</span></span>
       <span class="post-date">Mar 2026</span>
-      <svg class="post-motif" viewBox="0 0 60 60" aria-hidden="true">
-        <rect x="11" y="11" width="38" height="38"/>
-        <line x1="11" y1="23.7" x2="49" y2="23.7"/>
-        <line x1="11" y1="36.3" x2="49" y2="36.3"/>
-        <line x1="23.7" y1="11" x2="23.7" y2="49"/>
-        <line x1="36.3" y1="11" x2="36.3" y2="49"/>
-        <line class="m-accent" x1="11" y1="49" x2="49" y2="11"/>
-      </svg>
     </div>
     <div class="post-body">
       <span class="post-cat">Process</span>
