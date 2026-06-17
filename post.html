@@ -563,10 +563,13 @@ footer {
   .crumb-path { display: none; }            /* drop the long file path on phones */
   .crumb-back { white-space: nowrap; }
   .art-title { font-size: clamp(26px, 7vw, 38px); max-width: 100%; }
-  .art-grid { grid-template-columns: 1fr; }
+  /* minmax(0,…) + min-width:0 stop the no-wrap code block from stretching the
+     track wider than the screen (which was dragging the whole page sideways) */
+  .art-grid { grid-template-columns: minmax(0, 1fr); }
   .art-toc { display: none; }   /* TOC rail collapses on mobile */
-  .art-prose { padding: 36px 24px 48px; }
+  .art-prose { padding: 36px 24px 48px; min-width: 0; }
   .art-prose > *, .art-quote, .art-code, .art-end { max-width: 100%; }
+  .art-code { overflow-x: auto; }   /* long lines scroll inside the block, not the page */
   .next { grid-template-columns: 1fr; }
   .next-lbl { border-right: none; border-bottom: 1px solid var(--border-light); padding: 28px 24px; }
   .next-body { padding: 28px 24px; }
