@@ -133,6 +133,18 @@ nav { display: flex; align-items: center; justify-content: space-between; paddin
 .lyear-label { font-family: var(--mono); font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink); }
 .lyear-count { margin-left: auto; font-family: var(--mono); font-size: 11px; color: var(--muted); }
 
+/* ── END-OF-LEDGER CONSOLE SIGNOFF ── (bridges the table into the dark CTA) */
+.ledger-end { padding: 44px 40px; background: var(--soft); border-bottom: 1px solid var(--border-light); display: flex; flex-direction: column; gap: 14px; }
+.le-prompt { font-family: var(--mono); font-size: 13px; color: var(--mid); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.le-user { color: var(--accent); font-weight: 600; }
+.le-path { color: var(--border); }
+.le-sym { color: var(--accent); font-weight: 600; }
+.le-cmd { color: var(--ink); }
+.le-out { font-family: var(--mono); font-size: 15px; font-weight: 500; color: var(--ink); line-height: 1.5; display: flex; align-items: center; gap: 9px; flex-wrap: wrap; }
+.le-out .p { color: var(--accent); font-weight: 600; }
+.le-mark { background: var(--mark); color: var(--ink); padding: 0 0.18em; }
+.le-caret { display: inline-block; width: 8px; height: 15px; background: var(--accent); vertical-align: -2px; animation: caret 1s steps(1) infinite; }
+
 /* ── CTA ── dark console ── */
 .cta { border-top: 1px solid var(--border-light); background: var(--ink); position: relative; overflow: hidden; }
 .cta::before {
@@ -162,14 +174,14 @@ footer { padding: 22px 40px; display: flex; align-items: center; justify-content
 .foot-links a:hover { color: var(--accent); }
 
 @media (prefers-reduced-motion: reduce) {
-  .s-dot, .cta-headline .caret { animation: none; opacity: 1; }
+  .s-dot, .cta-headline .caret, .le-caret { animation: none; opacity: 1; }
   * { scroll-behavior: auto !important; }
 }
 
 @media (max-width: 900px) {
   .rail-left, .rail-right { display: none; }
   .page-wrap { margin-left: 0; margin-right: 0; }
-  nav, .hero, footer { padding-left: 24px; padding-right: 24px; }
+  nav, .hero, footer, .ledger-end { padding-left: 24px; padding-right: 24px; }
   .nav-sep, .nav-role { display: none; }
   .nav-links { gap: 16px; }
   .sec-hdr { padding-left: 24px; padding-right: 24px; flex-wrap: wrap; gap: 8px; }
@@ -414,6 +426,17 @@ footer { padding: 22px 40px; display: flex; align-items: center; justify-content
     <div class="lrow-org">Independent</div>
     <div class="lrow-date">2022</div>
   </div>
+</div>
+
+<!-- ── END OF LEDGER (console signoff) ── -->
+<div class="ledger-end">
+  <div class="le-prompt">
+    <span class="le-user">adrian@la</span>
+    <span class="le-path">~/ledger</span>
+    <span class="le-sym">$</span>
+    <span class="le-cmd">tail -f record.log</span>
+  </div>
+  <div class="le-out"><span class="p">///</span> 16 records and counting · the next one's already <span class="le-mark">in&nbsp;progress</span><span class="le-caret" aria-hidden="true"></span></div>
 </div>
 
 </main>
