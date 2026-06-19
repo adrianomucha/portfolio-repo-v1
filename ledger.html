@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ledger · Adrian Mucha</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;450;500;600&display=swap" rel="stylesheet">
+<style>
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --field: #e9ecf1;
+  --paper: #ffffff;
+  --soft: #f5f6f9;
+  --ink: #16181d;
+  --mid: #2c2f37;
+  --muted: #686d78;
+  --border: #d5dae2;
+  --border-light: #e7eaf0;
+  --accent: #2f43e0;
+  --accent-soft: rgba(47,67,224,0.07);
+  --mark: #d6fb46;
+  --mono: "IBM Plex Mono", ui-monospace, monospace;
+  --sans: "IBM Plex Sans", system-ui, sans-serif;
+  --rail: 44px;
+}
+
+html { scroll-behavior: smooth; }
+html, body {
+  background: var(--field);
+  color: var(--mid);
+  font-family: var(--sans);
+  font-size: 17px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  text-wrap: pretty;
+}
+.hero h1, .cta-headline { text-wrap: balance; }
+.hero-bio { text-wrap: balance; }
+a { text-decoration: none; color: inherit; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+img, svg { display: block; }
+
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+:focus:not(:focus-visible) { outline: none; }
+
+/* ── SIDE RAILS ── */
+.rail-left, .rail-right { position: fixed; top: 0; bottom: 0; width: var(--rail); z-index: 300; pointer-events: none; background: var(--field); }
+.rail-left  { left: 0;  border-right: 1px solid var(--border); }
+.rail-right { right: 0; border-left: 1px solid var(--border); }
+.page-wrap { margin-left: var(--rail); margin-right: var(--rail); background: var(--paper); }
+
+/* ── EYEBROW ── */
+.eyebrow { display: inline-flex; align-items: center; gap: 10px; font-family: var(--mono); font-size: 12px; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; color: var(--mid); }
+.eyebrow .p { color: var(--accent); font-weight: 600; }
+
+/* ── NAV ── */
+nav { display: flex; align-items: center; justify-content: space-between; padding: 0 40px; height: 60px; border-bottom: 1px solid var(--border-light); position: sticky; top: 0; background: var(--paper); z-index: 250; }
+.nav-logo { font-family: var(--mono); font-size: 14px; font-weight: 600; letter-spacing: -0.01em; color: var(--ink); display: flex; align-items: center; gap: 9px; }
+.nav-logo .sq { width: 9px; height: 9px; background: var(--accent); }
+.nav-role { font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); font-weight: 400; }
+.nav-sep { color: var(--border); }
+.nav-links { display: flex; gap: 28px; align-items: center; }
+.nav-link { font-family: var(--mono); font-size: 12px; letter-spacing: 0.04em; font-weight: 400; color: var(--muted); display: flex; gap: 8px; align-items: center; padding: 12px 2px; position: relative; transition: color 0.15s; }
+.nav-link::after { content: ''; position: absolute; left: 2px; right: 2px; bottom: 6px; height: 2px; background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform 0.18s ease; }
+.nav-link:hover::after, .nav-link.current::after { transform: scaleX(1); }
+.nav-link:hover { color: var(--ink); }
+.nav-num { color: var(--border); }
+.nav-link:hover .nav-num, .nav-link.current .nav-num { color: var(--accent); }
+.nav-link.current { color: var(--ink); font-weight: 500; }
+
+/* ── HERO ── */
+.hero { padding: 64px 40px 0; border-bottom: 1px solid var(--border-light); position: relative; }
+.hero-inner { padding: 60px 0 64px; }
+.hero-eyebrow { margin-bottom: 28px; }
+.hero h1 { font-family: var(--mono); font-size: clamp(32px, 4.4vw, 58px); font-weight: 600; line-height: 1.08; letter-spacing: -0.03em; color: var(--ink); max-width: 18ch; margin-bottom: 28px; }
+.hero h1 .cycle { background: var(--mark); color: var(--ink); padding: 0 0.12em; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+.hero-bio { font-family: var(--sans); font-size: 19px; font-weight: 400; color: var(--muted); line-height: 1.6; max-width: 56ch; }
+
+/* ── STATUS BAR ── */
+.status-bar { display: flex; align-items: center; border-bottom: 1px solid var(--border-light); background: var(--soft); }
+.status-tag { padding: 14px 40px; border-right: 1px solid var(--border-light); font-family: var(--mono); font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); white-space: nowrap; display: flex; align-items: center; gap: 9px; flex-shrink: 0; }
+.s-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); animation: blink 2s steps(1) infinite; }
+@keyframes blink { 0%,55%{opacity:1} 56%,100%{opacity:0.3} }
+@keyframes caret { 0%,49%{opacity:1} 50%,100%{opacity:0} }
+.status-line { padding: 14px 28px; font-family: var(--mono); font-size: 12.5px; color: var(--ink); flex: 1; display: flex; gap: 9px; align-items: center; }
+.status-line .p { color: var(--accent); font-weight: 600; }
+
+/* ── SECTION HEADER ── */
+.sec-hdr { display: flex; align-items: baseline; gap: 14px; padding: 28px 40px 0; }
+.sec-idx { font-family: var(--mono); font-size: 12px; font-weight: 600; letter-spacing: 0.05em; color: var(--accent); }
+.sec-name { font-family: var(--mono); font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink); }
+.sec-meta { font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; color: var(--muted); margin-left: auto; }
+
+/* ── LEDGER TABLE ── */
+.lhead {
+  display: grid; grid-template-columns: minmax(0,1fr) 172px 136px 64px;
+  grid-template-areas: "name type org date"; gap: 20px;
+  padding: 20px 40px 12px; margin-top: 16px;
+  border-bottom: 1px solid var(--border-light);
+}
+.lhead span { font-family: var(--mono); font-size: 10.5px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+.lhead .lh-date { text-align: right; }
+
+.ltable { border-bottom: 1px solid var(--border-light); }
+.lrow {
+  display: grid; grid-template-columns: minmax(0,1fr) 172px 136px 64px;
+  grid-template-areas: "name type org date"; gap: 20px; align-items: baseline;
+  padding: 16px 40px; border-bottom: 1px solid var(--border-light);
+  position: relative; transition: background 0.15s;
+}
+.ltable .lrow:last-child { border-bottom: none; }
+.lrow:hover { background: var(--soft); }
+.lrow:focus-within { outline: 2px solid var(--accent); outline-offset: -2px; }
+.lrow-name { grid-area: name; font-family: var(--mono); font-size: 15px; font-weight: 600; color: var(--ink); letter-spacing: -0.01em; line-height: 1.35; }
+.lrow-name a { color: inherit; }
+.lrow-name a::after { content: ''; position: absolute; inset: 0; z-index: 1; }   /* stretched row link */
+.lrow-type { grid-area: type; font-family: var(--mono); font-size: 11px; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); display: flex; align-items: center; gap: 8px; }
+.lrow-type::before { content: ''; width: 6px; height: 6px; background: var(--border); flex-shrink: 0; }
+.lrow-type.t-feat { color: var(--ink); }
+.lrow-type.t-feat::before { background: var(--mark); }
+.lrow-type.t-career::before { background: var(--accent); }
+.lrow-org { grid-area: org; font-family: var(--mono); font-size: 12.5px; color: var(--mid); }
+.lrow-date { grid-area: date; font-family: var(--mono); font-size: 12.5px; color: var(--muted); text-align: right; }
+
+/* year sub-header inside the all-records list */
+.lyear { display: flex; align-items: baseline; gap: 12px; padding: 30px 40px 8px; }
+.lyear-num { font-family: var(--mono); font-size: 13px; font-weight: 600; color: var(--accent); letter-spacing: 0.02em; }
+.lyear-label { font-family: var(--mono); font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink); }
+.lyear-count { margin-left: auto; font-family: var(--mono); font-size: 11px; color: var(--muted); }
+
+/* ── CTA ── dark console ── */
+.cta { border-top: 1px solid var(--border-light); background: var(--ink); position: relative; overflow: hidden; }
+.cta::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none; opacity: 0.5;
+  background-image:
+    repeating-linear-gradient(to right, rgba(255,255,255,0.04) 0, rgba(255,255,255,0.04) 1px, transparent 1px, transparent 56px),
+    repeating-linear-gradient(to bottom, rgba(255,255,255,0.04) 0, rgba(255,255,255,0.04) 1px, transparent 1px, transparent 56px);
+}
+.cta-inner { display: grid; grid-template-columns: 1fr 1fr; min-height: 280px; position: relative; z-index: 2; }
+.cta-l { padding: 56px 40px; border-right: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; justify-content: space-between; }
+.cta-eyebrow { color: rgba(255,255,255,0.65); margin-bottom: 16px; }
+.cta-eyebrow .p { color: var(--mark); }
+.cta-headline { font-family: var(--mono); font-size: clamp(40px, 5.4vw, 72px); font-weight: 600; letter-spacing: -0.03em; line-height: 1; color: #fff; }
+.cta-headline .caret { display: inline-block; width: 0.5em; height: 0.86em; margin-left: 0.08em; background: var(--mark); vertical-align: -0.1em; animation: caret 1s steps(1) infinite; }
+.cta-r { padding: 56px 40px; display: flex; flex-direction: column; justify-content: space-between; }
+.cta-log { display: flex; flex-direction: column; gap: 10px; margin-bottom: 30px; font-family: var(--mono); font-size: 14px; color: rgba(255,255,255,0.82); }
+.cta-log-line { display: flex; gap: 10px; }
+.cta-log .p { color: var(--mark); flex-shrink: 0; }
+.cta-btn { display: inline-flex; align-items: center; gap: 9px; font-family: var(--mono); font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; background: var(--mark); color: var(--ink); padding: 14px 24px; width: fit-content; transition: gap 0.16s, filter 0.16s; }
+.cta-btn:hover { gap: 14px; filter: brightness(0.94); }
+
+/* ── FOOTER ── */
+footer { padding: 22px 40px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; background: var(--paper); }
+.foot-l { font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; color: var(--muted); }
+.foot-links { display: flex; gap: 22px; }
+.foot-links a { font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; color: var(--muted); }
+.foot-links a:hover { color: var(--accent); }
+
+@media (prefers-reduced-motion: reduce) {
+  .s-dot, .cta-headline .caret { animation: none; opacity: 1; }
+  * { scroll-behavior: auto !important; }
+}
+
+@media (max-width: 900px) {
+  .rail-left, .rail-right { display: none; }
+  .page-wrap { margin-left: 0; margin-right: 0; }
+  nav, .hero, footer { padding-left: 24px; padding-right: 24px; }
+  .nav-sep, .nav-role { display: none; }
+  .nav-links { gap: 16px; }
+  .sec-hdr { padding-left: 24px; padding-right: 24px; flex-wrap: wrap; gap: 8px; }
+  .hero h1 { max-width: 100%; }
+  .hero-inner { padding: 36px 0 44px; }
+  .status-tag, .status-line { padding-left: 24px; padding-right: 24px; }
+  .lhead { display: none; }
+  .lrow {
+    grid-template-columns: 1fr auto;
+    grid-template-areas: "name date" "type org";
+    gap: 6px 16px; padding: 18px 24px;
+  }
+  .lrow-date { font-size: 12px; }
+  .lyear { padding-left: 24px; padding-right: 24px; }
+  .cta-inner { grid-template-columns: 1fr; }
+  .cta-l { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.1); }
+}
+</style>
+</head>
+<body>
+
+<div class="rail-left"  aria-hidden="true"></div>
+<div class="rail-right" aria-hidden="true"></div>
+
+<div class="page-wrap">
+
+<!-- ── NAV ── -->
+<nav>
+  <a href="https://adrianmucha.us" class="nav-logo">
+    <span class="sq" aria-hidden="true"></span> Adrian Mucha
+    <span class="nav-sep" aria-hidden="true">/</span>
+    <span class="nav-role">Product Designer</span>
+  </a>
+  <div class="nav-links">
+    <a href="index.html" class="nav-link"><span class="nav-num" aria-hidden="true">00</span> Work</a>
+    <a href="about.html" class="nav-link"><span class="nav-num" aria-hidden="true">01</span> About</a>
+    <a href="blog.html" class="nav-link"><span class="nav-num" aria-hidden="true">02</span> Blog</a>
+    <a href="ledger.html" class="nav-link current" aria-current="page"><span class="nav-num" aria-hidden="true">03</span> Ledger</a>
+  </div>
+</nav>
+
+<main>
+
+<!-- ── HERO ── -->
+<div class="hero">
+  <div class="hero-inner">
+    <span class="eyebrow hero-eyebrow"><span class="p">&gt;&gt;&gt;</span> Career · side projects · writing</span>
+    <h1>A running record of the <span class="cycle">work</span>.</h1>
+    <p class="hero-bio">
+      Every project, launch, and side quest worth noting, newest first. A living ledger I keep more
+      honestly than a résumé. Placeholder entries for now, swap in the real ones.
+    </p>
+  </div>
+</div>
+
+<!-- ── STATUS BAR ── -->
+<div class="status-bar">
+  <div class="status-tag"><span class="s-dot"></span> Ledger</div>
+  <div class="status-line"><span class="p">///</span> Last updated June 2026 · newest first · placeholder data</div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════
+     PLACEHOLDER DATA — replace each .lrow with a real entry.
+     Columns: name (link) · type · org · year
+     ════════════════════════════════════════════════════════════════ -->
+
+<!-- ── FEATURED ── -->
+<div class="sec-hdr">
+  <span class="sec-idx">[01]</span>
+  <span class="sec-name">Featured</span>
+  <span class="sec-meta">Selected highlights</span>
+</div>
+<div class="lhead">
+  <span class="lh-name">Item</span>
+  <span class="lh-type">Type</span>
+  <span class="lh-org">Org</span>
+  <span class="lh-date lh-date">Year</span>
+</div>
+<div class="ltable">
+  <div class="lrow">
+    <div class="lrow-name"><a href="#">Placeholder · flagship product launch</a></div>
+    <div class="lrow-type t-feat">Featured</div>
+    <div class="lrow-org">Meta</div>
+    <div class="lrow-date">2026</div>
+  </div>
+  <div class="lrow">
+    <div class="lrow-name"><a href="#">Placeholder · led an end-to-end redesign</a></div>
+    <div class="lrow-type t-career">Career</div>
+    <div class="lrow-org">Amazon</div>
+    <div class="lrow-date">2024</div>
+  </div>
+  <div class="lrow">
+    <div class="lrow-name"><a href="#">Placeholder · open-sourced a design kit</a></div>
+    <div class="lrow-type">Side project</div>
+    <div class="lrow-org">Independent</div>
+    <div class="lrow-date">2023</div>
+  </div>
+  <div class="lrow">
+    <div class="lrow-name"><a href="#">Placeholder · conference talk on AI UX</a></div>
+    <div class="lrow-type">Talk</div>
+    <div class="lrow-org">Config</div>
+    <div class="lrow-date">2023</div>
+  </div>
+  <div class="lrow">
+    <div class="lrow-name"><a href="#">Placeholder · award-winning case study</a></div>
+    <div class="lrow-type t-feat">Featured</div>
+    <div class="lrow-org">PayPal</div>
+    <div class="lrow-date">2022</div>
+  </div>
+  <div class="lrow">
+    <div class="lrow-name"><a href="#">Placeholder · scaled a design system</a></div>
+    <div class="lrow-type t-career">Career</div>
+    <div class="lrow-org">Microsoft</div>
+    <div class="lrow-date">2021</div>
+  </div>
+</div>
+
+<!-- ── ALL RECORDS ── -->
+<div class="sec-hdr">
+  <span class="sec-idx">[02]</span>
+  <span class="sec-name">All records</span>
+  <span class="sec-meta" id="rec-count">16 entries</span>
+</div>
+<div class="lhead">
+  <span class="lh-name">Item</span>
+  <span class="lh-type">Type</span>
+  <span class="lh-org">Org</span>
+  <span class="lh-date">Year</span>
+</div>
+
+<div class="lyear"><span class="lyear-num">2026</span><span class="lyear-label">/// This year</span><span class="lyear-count">4 entries</span></div>
+<div class="ltable">
+  <div class="lrow">
+    <div class="lrow-name"><a href="#">Placeholder · shipped a new AI surface</a></div>
+    <div class="lrow-type t-career">Career</div>
+    <div class="lrow-org">Meta</div>
+    <div class="lrow-date">2026</div>
+  </div>
+  <div class="lrow">
+    <div class="lrow-name"><a href="#">Placeholder · wrote a field note</a></div>
+    <div class="lrow-type">Writing</div>
+    <div class="lrow-org">Blog</div>
+    <div class="lrow-date">2026</div>
+  </div>
+  <div class="lrow">
+    <div class="lrow-name"><a href="#">Placeholder · prototype experiment</a></div>
+    <div class="lrow-type">Side project</div>
+    <div class="lrow-org">Independent</div>
+    <div class="lrow-date">2026</div>
+  </div>
+  <div class="lrow">
+    <div class="lrow-name"><a href="#">Placeholder · mentored a design cohort</a></div>
+    <div class="lrow-type">Community</div>
+    <div class="lrow-org">ADPList</div>
+    <div class="lrow-date">2026</div>
+  </div>
+</div>
+
+<div class="lyear"><span class="lyear-num">2025</span><span class="lyear-label">/// Last year</span><span class="lyear-count">3 entries</span></div>
+<div class="ltable">
+  <div class="lrow">
+    <div class="lrow-name"><a href="#">Placeholder · launched an internal tool</a></div>
+    <div class="lrow-type t-career">Career</div>
+    <div class="lrow-org">Meta</div>
+    <div class="lrow-date">2025</div>
+  </div>
+  <div class="lrow">
+    <div class="lrow-name"><a href="#">Placeholder · spoke on a podcast</a></div>
+    <div class="lrow-type">Talk</div>
+    <div class="lrow-org">Podcast</div>
+    <div class="lrow-date">2025</div>
+  </div>
+  <div class="lrow">
+    <div class="lrow-name"><a href="#">Placeholder · shipped a portfolio rebuild</a></div>
+    <div class="lrow-type">Side project</div>
+    <div class="lrow-org">Independent</div>
+    <div class="lrow-date">2025</div>
+  </div>
+</div>
+
+<div class="lyear"><span class="lyear-num">2024</span><span class="lyear-label">/// Earlier</span><span class="lyear-count">3 entries</span></div>
+<div class="ltable">
+  <div class="lrow">
+    <div class="lrow-name"><a href="#">Placeholder · end-to-end redesign</a></div>
+    <div class="lrow-type t-career">Career</div>
+    <div class="lrow-org">Amazon</div>
+    <div class="lrow-date">2024</div>
+  </div>
+  <div class="lrow">
+    <div class="lrow-name"><a href="#">Placeholder · research initiative</a></div>
+    <div class="lrow-type">Major contribution</div>
+    <div class="lrow-org">Amazon</div>
+    <div class="lrow-date">2024</div>
+  </div>
+  <div class="lrow">
+    <div class="lrow-name"><a href="#">Placeholder · published an essay</a></div>
+    <div class="lrow-type">Writing</div>
+    <div class="lrow-org">Blog</div>
+    <div class="lrow-date">2024</div>
+  </div>
+</div>
+
+<div class="lyear"><span class="lyear-num">2023</span><span class="lyear-label">/// Earlier</span><span class="lyear-count">3 entries</span></div>
+<div class="ltable">
+  <div class="lrow">
+    <div class="lrow-name"><a href="#">Placeholder · open-sourced a design kit</a></div>
+    <div class="lrow-type">Side project</div>
+    <div class="lrow-org">Independent</div>
+    <div class="lrow-date">2023</div>
+  </div>
+  <div class="lrow">
+    <div class="lrow-name"><a href="#">Placeholder · conference talk on AI UX</a></div>
+    <div class="lrow-type">Talk</div>
+    <div class="lrow-org">Config</div>
+    <div class="lrow-date">2023</div>
+  </div>
+  <div class="lrow">
+    <div class="lrow-name"><a href="#">Placeholder · joined a new team</a></div>
+    <div class="lrow-type t-career">Career</div>
+    <div class="lrow-org">Meta</div>
+    <div class="lrow-date">2023</div>
+  </div>
+</div>
+
+<div class="lyear"><span class="lyear-num">2022</span><span class="lyear-label">/// Earlier</span><span class="lyear-count">3 entries</span></div>
+<div class="ltable">
+  <div class="lrow">
+    <div class="lrow-name"><a href="#">Placeholder · award-winning case study</a></div>
+    <div class="lrow-type t-feat">Featured</div>
+    <div class="lrow-org">PayPal</div>
+    <div class="lrow-date">2022</div>
+  </div>
+  <div class="lrow">
+    <div class="lrow-name"><a href="#">Placeholder · launched a feature</a></div>
+    <div class="lrow-type t-career">Career</div>
+    <div class="lrow-org">PayPal</div>
+    <div class="lrow-date">2022</div>
+  </div>
+  <div class="lrow">
+    <div class="lrow-name"><a href="#">Placeholder · side experiment</a></div>
+    <div class="lrow-type">Side project</div>
+    <div class="lrow-org">Independent</div>
+    <div class="lrow-date">2022</div>
+  </div>
+</div>
+
+</main>
+
+<!-- ── CTA ── -->
+<div class="cta">
+  <div class="cta-inner">
+    <div class="cta-l">
+      <span class="eyebrow cta-eyebrow"><span class="p">&gt;&gt;&gt;</span> Want the full story?</span>
+      <h2 class="cta-headline">Let's talk<span class="caret" aria-hidden="true"></span></h2>
+    </div>
+    <div class="cta-r">
+      <div class="cta-log">
+        <span class="cta-log-line"><span class="p">///</span> The list is the short version.</span>
+        <span class="cta-log-line"><span class="p">///</span> Happy to walk through any of it.</span>
+        <span class="cta-log-line"><span class="p">///</span> Reach out any time.</span>
+      </div>
+      <a href="#" class="cta-btn" data-email>Contact me →</a>
+    </div>
+  </div>
+</div>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <span class="foot-l">Adrian Mucha · © 2026 · Los Angeles</span>
+  <div class="foot-links">
+    <a href="index.html">Work</a>
+    <a href="about.html">About</a>
+    <a href="blog.html">Blog</a>
+    <a href="#" data-email>Email</a>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    const user = 'adrian', domain = 'adrianmucha' + '.' + 'us';
+    const addr = user + '@' + domain;
+    document.querySelectorAll('[data-email]').forEach(function (el) { el.setAttribute('href', 'mailto:' + addr); });
+  })();
+</script>
+
+</div><!-- /page-wrap -->
+
+</body>
+</html>
