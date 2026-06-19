@@ -152,11 +152,6 @@ nav {
 .art-end .end-caret { display: inline-block; width: 7px; height: 14px; background: var(--accent); animation: caret 1s steps(1) infinite; vertical-align: -2px; }
 @keyframes caret { 0%,49%{opacity:1} 50%,100%{opacity:0} }
 
-/* ── TAGS ── */
-.art-tags { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; padding: 22px 40px; border-bottom: 1px solid var(--border-light); }
-.art-tags-lbl { font-family: var(--mono); font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink); margin-right: 6px; }
-.art-tag { font-family: var(--mono); font-size: 10px; font-weight: 400; letter-spacing: 0.06em; text-transform: uppercase; padding: 4px 9px; border: 1px solid var(--border-light); color: var(--muted); }
-
 /* ── NEXT ── */
 .next { display: grid; grid-template-columns: 3fr 9fr; border-bottom: 1px solid var(--border-light); cursor: pointer; transition: background 0.15s; }
 .next:hover { background: var(--soft); }
@@ -207,7 +202,7 @@ footer { padding: 22px 40px; display: flex; align-items: center; justify-content
 @media (max-width: 900px) {
   .rail-left, .rail-right { display: none; }
   .page-wrap { margin-left: 0; margin-right: 0; }
-  nav, .crumb, .art-head, .art-byline, .art-tags, footer { padding-left: 24px; padding-right: 24px; }
+  nav, .crumb, .art-head, .art-byline, footer { padding-left: 24px; padding-right: 24px; }
   .nav-sep, .nav-role { display: none; }
   .nav-links { gap: 18px; }
   .crumb-path { display: none; }
@@ -356,15 +351,6 @@ footer { padding: 22px 40px; display: flex; align-items: center; justify-content
       <span class="p">///</span> End of note. Thanks for reading.<span class="end-caret"></span>
     </div>
   </article>
-</div>
-
-<!-- ── TAGS ── -->
-<div class="art-tags">
-  <span class="art-tags-lbl">Tags</span>
-  <span class="art-tag">AI Interface</span>
-  <span class="art-tag">Trust</span>
-  <span class="art-tag">Internal Tooling</span>
-  <span class="art-tag">Meta</span>
 </div>
 
 <!-- ── NEXT ── -->
