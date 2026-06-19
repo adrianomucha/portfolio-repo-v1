@@ -69,7 +69,7 @@ nav { display: flex; align-items: center; justify-content: space-between; paddin
 .nav-link::after { content: ''; position: absolute; left: 2px; right: 2px; bottom: 6px; height: 2px; background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform 0.18s ease; }
 .nav-link:hover::after, .nav-link.current::after { transform: scaleX(1); }
 .nav-link:hover { color: var(--ink); }
-.nav-num { color: var(--border); }
+.nav-num { color: var(--muted); }
 .nav-link:hover .nav-num, .nav-link.current .nav-num { color: var(--accent); }
 .nav-link.current { color: var(--ink); font-weight: 500; }
 
@@ -93,7 +93,7 @@ nav { display: flex; align-items: center; justify-content: space-between; paddin
 /* ── SECTION HEADER ── */
 .sec-hdr { display: flex; align-items: baseline; gap: 14px; padding: 28px 40px 0; }
 .sec-idx { font-family: var(--mono); font-size: 12px; font-weight: 600; letter-spacing: 0.05em; color: var(--accent); }
-.sec-name { font-family: var(--mono); font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink); }
+.sec-name { font-family: var(--mono); font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink); margin: 0; }
 .sec-meta { font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; color: var(--muted); margin-left: auto; }
 
 /* ── LEDGER TABLE ── */
@@ -137,7 +137,7 @@ nav { display: flex; align-items: center; justify-content: space-between; paddin
 .ledger-end { padding: 44px 40px; background: var(--soft); border-bottom: 1px solid var(--border-light); display: flex; flex-direction: column; gap: 14px; }
 .le-prompt { font-family: var(--mono); font-size: 13px; color: var(--mid); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .le-user { color: var(--accent); font-weight: 600; }
-.le-path { color: var(--border); }
+.le-path { color: var(--muted); }
 .le-sym { color: var(--accent); font-weight: 600; }
 .le-cmd { color: var(--ink); }
 .le-out { font-family: var(--mono); font-size: 15px; font-weight: 500; color: var(--ink); line-height: 1.5; display: flex; align-items: center; gap: 9px; flex-wrap: wrap; }
@@ -188,7 +188,7 @@ footer { padding: 22px 40px; display: flex; align-items: center; justify-content
   .hero h1 { max-width: 100%; }
   .hero-inner { padding: 36px 0 44px; }
   .status-tag, .status-line { padding-left: 24px; padding-right: 24px; }
-  .lhead { display: none; }
+  .lhead { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
   .lrow {
     grid-template-columns: 1fr auto;
     grid-template-areas: "name date" "type org";
@@ -251,181 +251,185 @@ footer { padding: 22px 40px; display: flex; align-items: center; justify-content
 <!-- ── FEATURED ── -->
 <div class="sec-hdr">
   <span class="sec-idx">[01]</span>
-  <span class="sec-name">Featured</span>
+  <h2 class="sec-name">Featured</h2>
   <span class="sec-meta">Selected highlights</span>
 </div>
-<div class="lhead">
-  <span class="lh-name">Item</span>
-  <span class="lh-type">Type</span>
-  <span class="lh-org">Org</span>
-  <span class="lh-date lh-date">Year</span>
+<div class="ledger-table" role="table" aria-label="Featured records">
+<div class="lhead" role="row">
+  <span class="lh-name" role="columnheader">Item</span>
+  <span class="lh-type" role="columnheader">Type</span>
+  <span class="lh-org" role="columnheader">Org</span>
+  <span class="lh-date" role="columnheader">Year</span>
 </div>
-<div class="ltable">
-  <div class="lrow">
-    <div class="lrow-name"><a href="#">Placeholder · flagship product launch</a></div>
-    <div class="lrow-type t-feat">Featured</div>
-    <div class="lrow-org">Meta</div>
-    <div class="lrow-date">2026</div>
+<div class="ltable" role="rowgroup">
+  <div class="lrow" role="row">
+    <div class="lrow-name" role="cell"><a href="#">Placeholder · flagship product launch</a></div>
+    <div class="lrow-type t-feat" role="cell">Featured</div>
+    <div class="lrow-org" role="cell">Meta</div>
+    <div class="lrow-date" role="cell">2026</div>
   </div>
-  <div class="lrow">
-    <div class="lrow-name"><a href="#">Placeholder · led an end-to-end redesign</a></div>
-    <div class="lrow-type t-career">Career</div>
-    <div class="lrow-org">Amazon</div>
-    <div class="lrow-date">2024</div>
+  <div class="lrow" role="row">
+    <div class="lrow-name" role="cell"><a href="#">Placeholder · led an end-to-end redesign</a></div>
+    <div class="lrow-type t-career" role="cell">Career</div>
+    <div class="lrow-org" role="cell">Amazon</div>
+    <div class="lrow-date" role="cell">2024</div>
   </div>
-  <div class="lrow">
-    <div class="lrow-name"><a href="#">Placeholder · open-sourced a design kit</a></div>
-    <div class="lrow-type">Side project</div>
-    <div class="lrow-org">Independent</div>
-    <div class="lrow-date">2023</div>
+  <div class="lrow" role="row">
+    <div class="lrow-name" role="cell"><a href="#">Placeholder · open-sourced a design kit</a></div>
+    <div class="lrow-type" role="cell">Side project</div>
+    <div class="lrow-org" role="cell">Independent</div>
+    <div class="lrow-date" role="cell">2023</div>
   </div>
-  <div class="lrow">
-    <div class="lrow-name"><a href="#">Placeholder · conference talk on AI UX</a></div>
-    <div class="lrow-type">Talk</div>
-    <div class="lrow-org">Config</div>
-    <div class="lrow-date">2023</div>
+  <div class="lrow" role="row">
+    <div class="lrow-name" role="cell"><a href="#">Placeholder · conference talk on AI UX</a></div>
+    <div class="lrow-type" role="cell">Talk</div>
+    <div class="lrow-org" role="cell">Config</div>
+    <div class="lrow-date" role="cell">2023</div>
   </div>
-  <div class="lrow">
-    <div class="lrow-name"><a href="#">Placeholder · award-winning case study</a></div>
-    <div class="lrow-type t-feat">Featured</div>
-    <div class="lrow-org">PayPal</div>
-    <div class="lrow-date">2022</div>
+  <div class="lrow" role="row">
+    <div class="lrow-name" role="cell"><a href="#">Placeholder · award-winning case study</a></div>
+    <div class="lrow-type t-feat" role="cell">Featured</div>
+    <div class="lrow-org" role="cell">PayPal</div>
+    <div class="lrow-date" role="cell">2022</div>
   </div>
-  <div class="lrow">
-    <div class="lrow-name"><a href="#">Placeholder · scaled a design system</a></div>
-    <div class="lrow-type t-career">Career</div>
-    <div class="lrow-org">Microsoft</div>
-    <div class="lrow-date">2021</div>
+  <div class="lrow" role="row">
+    <div class="lrow-name" role="cell"><a href="#">Placeholder · scaled a design system</a></div>
+    <div class="lrow-type t-career" role="cell">Career</div>
+    <div class="lrow-org" role="cell">Microsoft</div>
+    <div class="lrow-date" role="cell">2021</div>
   </div>
+</div>
 </div>
 
 <!-- ── ALL RECORDS ── -->
 <div class="sec-hdr">
   <span class="sec-idx">[02]</span>
-  <span class="sec-name">All records</span>
+  <h2 class="sec-name">All records</h2>
   <span class="sec-meta" id="rec-count">16 entries</span>
 </div>
-<div class="lhead">
-  <span class="lh-name">Item</span>
-  <span class="lh-type">Type</span>
-  <span class="lh-org">Org</span>
-  <span class="lh-date">Year</span>
+<div class="ledger-table" role="table" aria-label="All records by year">
+<div class="lhead" role="row">
+  <span class="lh-name" role="columnheader">Item</span>
+  <span class="lh-type" role="columnheader">Type</span>
+  <span class="lh-org" role="columnheader">Org</span>
+  <span class="lh-date" role="columnheader">Year</span>
 </div>
 
-<div class="lyear"><span class="lyear-num">2026</span><span class="lyear-label">/// This year</span><span class="lyear-count">4 entries</span></div>
-<div class="ltable">
-  <div class="lrow">
-    <div class="lrow-name"><a href="#">Placeholder · shipped a new AI surface</a></div>
-    <div class="lrow-type t-career">Career</div>
-    <div class="lrow-org">Meta</div>
-    <div class="lrow-date">2026</div>
+<div class="ltable" role="rowgroup" aria-label="2026 records">
+  <div class="lyear" aria-hidden="true"><span class="lyear-num">2026</span><span class="lyear-label">/// This year</span><span class="lyear-count">4 entries</span></div>
+  <div class="lrow" role="row">
+    <div class="lrow-name" role="cell"><a href="#">Placeholder · shipped a new AI surface</a></div>
+    <div class="lrow-type t-career" role="cell">Career</div>
+    <div class="lrow-org" role="cell">Meta</div>
+    <div class="lrow-date" role="cell">2026</div>
   </div>
-  <div class="lrow">
-    <div class="lrow-name"><a href="#">Placeholder · wrote a field note</a></div>
-    <div class="lrow-type">Writing</div>
-    <div class="lrow-org">Blog</div>
-    <div class="lrow-date">2026</div>
+  <div class="lrow" role="row">
+    <div class="lrow-name" role="cell"><a href="#">Placeholder · wrote a field note</a></div>
+    <div class="lrow-type" role="cell">Writing</div>
+    <div class="lrow-org" role="cell">Blog</div>
+    <div class="lrow-date" role="cell">2026</div>
   </div>
-  <div class="lrow">
-    <div class="lrow-name"><a href="#">Placeholder · prototype experiment</a></div>
-    <div class="lrow-type">Side project</div>
-    <div class="lrow-org">Independent</div>
-    <div class="lrow-date">2026</div>
+  <div class="lrow" role="row">
+    <div class="lrow-name" role="cell"><a href="#">Placeholder · prototype experiment</a></div>
+    <div class="lrow-type" role="cell">Side project</div>
+    <div class="lrow-org" role="cell">Independent</div>
+    <div class="lrow-date" role="cell">2026</div>
   </div>
-  <div class="lrow">
-    <div class="lrow-name"><a href="#">Placeholder · mentored a design cohort</a></div>
-    <div class="lrow-type">Community</div>
-    <div class="lrow-org">ADPList</div>
-    <div class="lrow-date">2026</div>
-  </div>
-</div>
-
-<div class="lyear"><span class="lyear-num">2025</span><span class="lyear-label">/// Last year</span><span class="lyear-count">3 entries</span></div>
-<div class="ltable">
-  <div class="lrow">
-    <div class="lrow-name"><a href="#">Placeholder · launched an internal tool</a></div>
-    <div class="lrow-type t-career">Career</div>
-    <div class="lrow-org">Meta</div>
-    <div class="lrow-date">2025</div>
-  </div>
-  <div class="lrow">
-    <div class="lrow-name"><a href="#">Placeholder · spoke on a podcast</a></div>
-    <div class="lrow-type">Talk</div>
-    <div class="lrow-org">Podcast</div>
-    <div class="lrow-date">2025</div>
-  </div>
-  <div class="lrow">
-    <div class="lrow-name"><a href="#">Placeholder · shipped a portfolio rebuild</a></div>
-    <div class="lrow-type">Side project</div>
-    <div class="lrow-org">Independent</div>
-    <div class="lrow-date">2025</div>
+  <div class="lrow" role="row">
+    <div class="lrow-name" role="cell"><a href="#">Placeholder · mentored a design cohort</a></div>
+    <div class="lrow-type" role="cell">Community</div>
+    <div class="lrow-org" role="cell">ADPList</div>
+    <div class="lrow-date" role="cell">2026</div>
   </div>
 </div>
 
-<div class="lyear"><span class="lyear-num">2024</span><span class="lyear-label">/// Earlier</span><span class="lyear-count">3 entries</span></div>
-<div class="ltable">
-  <div class="lrow">
-    <div class="lrow-name"><a href="#">Placeholder · end-to-end redesign</a></div>
-    <div class="lrow-type t-career">Career</div>
-    <div class="lrow-org">Amazon</div>
-    <div class="lrow-date">2024</div>
+<div class="ltable" role="rowgroup" aria-label="2025 records">
+  <div class="lyear" aria-hidden="true"><span class="lyear-num">2025</span><span class="lyear-label">/// Last year</span><span class="lyear-count">3 entries</span></div>
+  <div class="lrow" role="row">
+    <div class="lrow-name" role="cell"><a href="#">Placeholder · launched an internal tool</a></div>
+    <div class="lrow-type t-career" role="cell">Career</div>
+    <div class="lrow-org" role="cell">Meta</div>
+    <div class="lrow-date" role="cell">2025</div>
   </div>
-  <div class="lrow">
-    <div class="lrow-name"><a href="#">Placeholder · research initiative</a></div>
-    <div class="lrow-type">Major contribution</div>
-    <div class="lrow-org">Amazon</div>
-    <div class="lrow-date">2024</div>
+  <div class="lrow" role="row">
+    <div class="lrow-name" role="cell"><a href="#">Placeholder · spoke on a podcast</a></div>
+    <div class="lrow-type" role="cell">Talk</div>
+    <div class="lrow-org" role="cell">Podcast</div>
+    <div class="lrow-date" role="cell">2025</div>
   </div>
-  <div class="lrow">
-    <div class="lrow-name"><a href="#">Placeholder · published an essay</a></div>
-    <div class="lrow-type">Writing</div>
-    <div class="lrow-org">Blog</div>
-    <div class="lrow-date">2024</div>
-  </div>
-</div>
-
-<div class="lyear"><span class="lyear-num">2023</span><span class="lyear-label">/// Earlier</span><span class="lyear-count">3 entries</span></div>
-<div class="ltable">
-  <div class="lrow">
-    <div class="lrow-name"><a href="#">Placeholder · open-sourced a design kit</a></div>
-    <div class="lrow-type">Side project</div>
-    <div class="lrow-org">Independent</div>
-    <div class="lrow-date">2023</div>
-  </div>
-  <div class="lrow">
-    <div class="lrow-name"><a href="#">Placeholder · conference talk on AI UX</a></div>
-    <div class="lrow-type">Talk</div>
-    <div class="lrow-org">Config</div>
-    <div class="lrow-date">2023</div>
-  </div>
-  <div class="lrow">
-    <div class="lrow-name"><a href="#">Placeholder · joined a new team</a></div>
-    <div class="lrow-type t-career">Career</div>
-    <div class="lrow-org">Meta</div>
-    <div class="lrow-date">2023</div>
+  <div class="lrow" role="row">
+    <div class="lrow-name" role="cell"><a href="#">Placeholder · shipped a portfolio rebuild</a></div>
+    <div class="lrow-type" role="cell">Side project</div>
+    <div class="lrow-org" role="cell">Independent</div>
+    <div class="lrow-date" role="cell">2025</div>
   </div>
 </div>
 
-<div class="lyear"><span class="lyear-num">2022</span><span class="lyear-label">/// Earlier</span><span class="lyear-count">3 entries</span></div>
-<div class="ltable">
-  <div class="lrow">
-    <div class="lrow-name"><a href="#">Placeholder · award-winning case study</a></div>
-    <div class="lrow-type t-feat">Featured</div>
-    <div class="lrow-org">PayPal</div>
-    <div class="lrow-date">2022</div>
+<div class="ltable" role="rowgroup" aria-label="2024 records">
+  <div class="lyear" aria-hidden="true"><span class="lyear-num">2024</span><span class="lyear-label">/// Earlier</span><span class="lyear-count">3 entries</span></div>
+  <div class="lrow" role="row">
+    <div class="lrow-name" role="cell"><a href="#">Placeholder · end-to-end redesign</a></div>
+    <div class="lrow-type t-career" role="cell">Career</div>
+    <div class="lrow-org" role="cell">Amazon</div>
+    <div class="lrow-date" role="cell">2024</div>
   </div>
-  <div class="lrow">
-    <div class="lrow-name"><a href="#">Placeholder · launched a feature</a></div>
-    <div class="lrow-type t-career">Career</div>
-    <div class="lrow-org">PayPal</div>
-    <div class="lrow-date">2022</div>
+  <div class="lrow" role="row">
+    <div class="lrow-name" role="cell"><a href="#">Placeholder · research initiative</a></div>
+    <div class="lrow-type" role="cell">Major contribution</div>
+    <div class="lrow-org" role="cell">Amazon</div>
+    <div class="lrow-date" role="cell">2024</div>
   </div>
-  <div class="lrow">
-    <div class="lrow-name"><a href="#">Placeholder · side experiment</a></div>
-    <div class="lrow-type">Side project</div>
-    <div class="lrow-org">Independent</div>
-    <div class="lrow-date">2022</div>
+  <div class="lrow" role="row">
+    <div class="lrow-name" role="cell"><a href="#">Placeholder · published an essay</a></div>
+    <div class="lrow-type" role="cell">Writing</div>
+    <div class="lrow-org" role="cell">Blog</div>
+    <div class="lrow-date" role="cell">2024</div>
   </div>
+</div>
+
+<div class="ltable" role="rowgroup" aria-label="2023 records">
+  <div class="lyear" aria-hidden="true"><span class="lyear-num">2023</span><span class="lyear-label">/// Earlier</span><span class="lyear-count">3 entries</span></div>
+  <div class="lrow" role="row">
+    <div class="lrow-name" role="cell"><a href="#">Placeholder · open-sourced a design kit</a></div>
+    <div class="lrow-type" role="cell">Side project</div>
+    <div class="lrow-org" role="cell">Independent</div>
+    <div class="lrow-date" role="cell">2023</div>
+  </div>
+  <div class="lrow" role="row">
+    <div class="lrow-name" role="cell"><a href="#">Placeholder · conference talk on AI UX</a></div>
+    <div class="lrow-type" role="cell">Talk</div>
+    <div class="lrow-org" role="cell">Config</div>
+    <div class="lrow-date" role="cell">2023</div>
+  </div>
+  <div class="lrow" role="row">
+    <div class="lrow-name" role="cell"><a href="#">Placeholder · joined a new team</a></div>
+    <div class="lrow-type t-career" role="cell">Career</div>
+    <div class="lrow-org" role="cell">Meta</div>
+    <div class="lrow-date" role="cell">2023</div>
+  </div>
+</div>
+
+<div class="ltable" role="rowgroup" aria-label="2022 records">
+  <div class="lyear" aria-hidden="true"><span class="lyear-num">2022</span><span class="lyear-label">/// Earlier</span><span class="lyear-count">3 entries</span></div>
+  <div class="lrow" role="row">
+    <div class="lrow-name" role="cell"><a href="#">Placeholder · award-winning case study</a></div>
+    <div class="lrow-type t-feat" role="cell">Featured</div>
+    <div class="lrow-org" role="cell">PayPal</div>
+    <div class="lrow-date" role="cell">2022</div>
+  </div>
+  <div class="lrow" role="row">
+    <div class="lrow-name" role="cell"><a href="#">Placeholder · launched a feature</a></div>
+    <div class="lrow-type t-career" role="cell">Career</div>
+    <div class="lrow-org" role="cell">PayPal</div>
+    <div class="lrow-date" role="cell">2022</div>
+  </div>
+  <div class="lrow" role="row">
+    <div class="lrow-name" role="cell"><a href="#">Placeholder · side experiment</a></div>
+    <div class="lrow-type" role="cell">Side project</div>
+    <div class="lrow-org" role="cell">Independent</div>
+    <div class="lrow-date" role="cell">2022</div>
+  </div>
+</div>
 </div>
 
 <!-- ── END OF LEDGER (console signoff) ── -->

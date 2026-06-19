@@ -87,7 +87,7 @@ nav {
 }
 .nav-link:hover::after, .nav-link.current::after { transform: scaleX(1); }
 .nav-link:hover { color: var(--ink); }
-.nav-num { color: var(--border); }
+.nav-num { color: var(--muted); }
 .nav-link:hover .nav-num, .nav-link.current .nav-num { color: var(--accent); }
 .nav-link.current { color: var(--ink); font-weight: 500; }
 
@@ -161,7 +161,7 @@ nav {
 /* ── LIST HEADER ── */
 .sec-hdr { display: flex; align-items: baseline; gap: 14px; padding: 26px 40px 22px; border-bottom: 1px solid var(--border-light); }
 .sec-idx { font-family: var(--mono); font-size: 12px; font-weight: 600; letter-spacing: 0.05em; color: var(--accent); }
-.sec-name { font-family: var(--mono); font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink); }
+.sec-name { font-family: var(--mono); font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink); margin: 0; }
 .sec-meta { font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; color: var(--muted); margin-left: auto; }
 
 /* ── POST LIST ── */
@@ -343,7 +343,7 @@ footer { padding: 22px 40px; display: flex; align-items: center; justify-content
 <!-- ── POST LIST ── -->
 <div class="sec-hdr">
   <span class="sec-idx">[02]</span>
-  <span class="sec-name">All notes</span>
+  <h2 class="sec-name">All notes</h2>
   <span class="sec-meta" id="post-count">004 entries</span>
 </div>
 
@@ -367,7 +367,7 @@ footer { padding: 22px 40px; display: flex; align-items: center; justify-content
         <span class="post-read">6 min read</span>
       </div>
     </div>
-    <span class="post-arrow">&#8599;</span>
+    <span class="post-arrow" aria-hidden="true">&#8599;</span>
   </article>
 
   <!-- 003 -->
@@ -388,7 +388,7 @@ footer { padding: 22px 40px; display: flex; align-items: center; justify-content
         <span class="post-read">8 min read</span>
       </div>
     </div>
-    <span class="post-arrow">&#8599;</span>
+    <span class="post-arrow" aria-hidden="true">&#8599;</span>
   </article>
 
   <!-- 004 -->
@@ -409,7 +409,7 @@ footer { padding: 22px 40px; display: flex; align-items: center; justify-content
         <span class="post-read">4 min read</span>
       </div>
     </div>
-    <span class="post-arrow">&#8599;</span>
+    <span class="post-arrow" aria-hidden="true">&#8599;</span>
   </article>
 
 </div>

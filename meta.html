@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Meta · Data Center Repairs — Case Study · Adrian Mucha</title>
-<meta name="description" content="Meta Server Repair Console — a platform to distribute knowledge, strengthen cross-team cooperation, and accelerate global server maintenance. Product design lead case study by Adrian Mucha.">
+<title>Meta · Data Center Repairs · Case Study · Adrian Mucha</title>
+<meta name="description" content="Meta Server Repair Console: a platform to distribute knowledge, strengthen cross-team cooperation, and accelerate global server maintenance. Product design lead case study by Adrian Mucha.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;450;500;600&display=swap" rel="stylesheet">
@@ -67,7 +67,7 @@ nav { display: flex; align-items: center; justify-content: space-between; paddin
 .nav-link::after { content: ''; position: absolute; left: 2px; right: 2px; bottom: 6px; height: 2px; background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform 0.18s ease; }
 .nav-link:hover::after, .nav-link.current::after { transform: scaleX(1); }
 .nav-link:hover { color: var(--ink); }
-.nav-num { color: var(--border); }
+.nav-num { color: var(--muted); }
 .nav-link:hover .nav-num, .nav-link.current .nav-num { color: var(--accent); }
 .nav-link.current { color: var(--ink); font-weight: 500; }
 
@@ -76,8 +76,8 @@ nav { display: flex; align-items: center; justify-content: space-between; paddin
 .crumb-back { font-family: var(--mono); font-size: 12px; font-weight: 500; letter-spacing: 0.04em; color: var(--muted); display: inline-flex; align-items: center; gap: 9px; transition: color 0.15s, gap 0.15s; }
 .crumb-back:hover { color: var(--ink); gap: 13px; }
 .crumb-back .cb-arrow { color: var(--accent); font-weight: 600; }
-.crumb-path { margin-left: auto; font-family: var(--mono); font-size: 12px; color: var(--border); white-space: nowrap; }
-.crumb-path b { color: var(--muted); font-weight: 500; }
+.crumb-path { margin-left: auto; font-family: var(--mono); font-size: 12px; color: var(--muted); white-space: nowrap; }
+.crumb-path b { color: var(--mid); font-weight: 500; }
 
 /* ── HEADER ── */
 .art-head { padding: 64px 40px 56px; border-bottom: 1px solid var(--border-light); }
@@ -114,14 +114,14 @@ nav { display: flex; align-items: center; justify-content: space-between; paddin
 .metric-lbl { font-family: var(--sans); font-size: 15px; font-weight: 400; color: rgba(255,255,255,0.78); line-height: 1.5; max-width: 32ch; }
 
 /* ── BODY ── */
-.art-grid { display: grid; grid-template-columns: 3fr 9fr; border-bottom: 1px solid var(--border-light); }
-.art-toc { border-right: 1px solid var(--border-light); padding: 56px 32px 56px 40px; }
-.art-toc-inner { position: sticky; top: 84px; display: flex; flex-direction: column; gap: 14px; }
+.art-grid { display: grid; grid-template-columns: minmax(264px, 2.4fr) 9.6fr; border-bottom: 1px solid var(--border-light); }
+.art-toc { border-right: 1px solid var(--border-light); padding: 44px 28px 44px 36px; }
+.art-toc-inner { position: sticky; top: 84px; display: flex; flex-direction: column; gap: 9px; }
 .art-toc-lbl { font-family: var(--mono); font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink); display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
 .art-toc-lbl .p { color: var(--accent); }
 .art-toc a { font-family: var(--mono); font-size: 13px; color: var(--muted); line-height: 1.4; display: flex; gap: 9px; transition: color 0.15s; }
 .art-toc a:hover, .art-toc a.active { color: var(--ink); }
-.art-toc a .tn { color: var(--border); flex-shrink: 0; }
+.art-toc a .tn { color: var(--muted); flex-shrink: 0; }
 .art-toc a:hover .tn, .art-toc a.active .tn { color: var(--accent); }
 
 .art-prose { padding: 76px 48px 112px; max-width: 100%; }
@@ -170,6 +170,19 @@ figure.fig img { width: 100%; height: auto; display: block; border: 1px solid va
 .fig-ph-label { font-family: var(--mono); font-size: 13px; font-weight: 500; color: var(--ink); letter-spacing: 0.02em; }
 .fig-ph-label .p { color: var(--accent); font-weight: 600; }
 .fig-ph-hint { font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: 0.04em; }
+
+/* ── STEPPER ── */
+.stepper { margin: 52px 0; }
+.stepper-tabs { display: flex; gap: 2px; border-bottom: 1px solid var(--border-light); flex-wrap: wrap; }
+.stepper-tab { font-family: var(--mono); font-size: 13px; font-weight: 500; color: var(--muted); display: inline-flex; align-items: center; gap: 9px; padding: 11px 18px; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: color 0.15s, border-color 0.15s; }
+.stepper-tab .tn { color: var(--border); font-weight: 600; flex-shrink: 0; }
+.stepper-tab:hover { color: var(--ink); }
+.stepper-tab:hover .tn { color: var(--accent); }
+.stepper-tab.is-active { color: var(--ink); border-bottom-color: var(--accent); }
+.stepper-tab.is-active .tn { color: var(--accent); }
+.stepper-panel { display: none; margin: 24px 0 0; }
+.stepper-panel.is-active { display: block; }
+.stepper-panel .fig-cap { margin-top: 14px; }
 
 /* signoff */
 .art-end { display: flex; align-items: center; gap: 12px; margin-top: 56px; padding-top: 40px; border-top: 1px solid var(--border-light); font-family: var(--mono); font-size: 13px; color: var(--muted); letter-spacing: 0.02em; }
@@ -289,7 +302,7 @@ footer { padding: 22px 40px; display: flex; align-items: center; justify-content
   <div class="art-cat">Design for AI</div>
   <h1 class="art-title">Changing practice and perspective in data center repairs</h1>
   <p class="art-dek">
-    The Meta Server Repair Console — a platform built to distribute knowledge, strengthen cross-team
+    The Meta Server Repair Console: a platform built to distribute knowledge, strengthen cross-team
     cooperation, and accelerate global server maintenance operations.
   </p>
 </header>
@@ -359,13 +372,13 @@ footer { padding: 22px 40px; display: flex; align-items: center; justify-content
 
   <article class="art-prose">
     <p class="lead">
-      I led the design of the Meta Server Repair Console — a platform built to streamline knowledge sharing,
+      I led the design of the Meta Server Repair Console: a platform built to streamline knowledge sharing,
       strengthen collaboration across teams, and make global server repairs faster and more efficient.
     </p>
 
     <h2 id="s1"><span class="h-num">01</span> Background</h2>
     <p>
-      At Meta, we're constantly pushing the boundaries of generative AI and VR — and all of it depends on
+      At Meta, we're constantly pushing the boundaries of generative AI and VR, and all of it depends on
       robust, reliable server infrastructure. As the company innovated faster, reliability and scale became
       mission-critical.
     </p>
@@ -378,7 +391,7 @@ footer { padding: 22px 40px; display: flex; align-items: center; justify-content
     <h2 id="s2"><span class="h-num">02</span> Finding the problem</h2>
     <p>
       Before reaching for a solution, I needed to find the right problem to solve. So I went to where the work
-      actually happened — the internal Facebook groups where technicians traded fixes, the engineers who owned
+      actually happened: the internal Facebook groups where technicians traded fixes, the engineers who owned
       the systems, and the technicians on the data center floor.
     </p>
     <div class="stat-row">
@@ -403,21 +416,21 @@ footer { padding: 22px 40px; display: flex; align-items: center; justify-content
 
     <h2 id="s3"><span class="h-num">03</span> The problem</h2>
     <p>
-      Engineers were constantly reinventing the wheel — re-solving the same issues because there was no
+      Engineers were constantly reinventing the wheel, re-solving the same issues because there was no
       accessible documentation of past problems and their solutions. With no structured way to capture and
       share knowledge, the same work got repeated and hard-won retention slipped out the door.
     </p>
     <ul>
-      <li><strong>Wasted time</strong> — hours spent re-diagnosing solved problems.</li>
-      <li><strong>Costly duplication</strong> — the same fix rebuilt across sites.</li>
-      <li><strong>Repeat failures</strong> — no signal when an issue kept recurring.</li>
-      <li><strong>Lost knowledge</strong> — fixes left with the people who knew them.</li>
+      <li><strong>Wasted time:</strong> hours spent re-diagnosing solved problems.</li>
+      <li><strong>Costly duplication:</strong> the same fix rebuilt across sites.</li>
+      <li><strong>Repeat failures:</strong> no signal when an issue kept recurring.</li>
+      <li><strong>Lost knowledge:</strong> fixes left with the people who knew them.</li>
     </ul>
 
     <div class="callout">
       <div class="callout-lbl"><span class="p">&gt;&gt;&gt;</span> Objective</div>
       <p>
-        Create a platform that ensures seamless knowledge sharing across teams — eliminating silos, enabling
+        Create a platform that ensures seamless knowledge sharing across teams, eliminating silos, enabling
         collaboration, and designing solutions that are easy to scale globally.
       </p>
     </div>
@@ -425,39 +438,57 @@ footer { padding: 22px 40px; display: flex; align-items: center; justify-content
     <h2 id="s4"><span class="h-num">04</span> The process</h2>
     <p>
       Over three months of discovery, I explored solutions for the core challenges across three connected
-      systems: ticketing, FSA, and the repair console. Through 1:1 sessions I engaged each group of users — who
-      were also key stakeholders — to gain deeper insights and refine the approach.
+      systems: ticketing, FSA, and the repair console. Through 1:1 sessions I engaged each group of users, who
+      were also key stakeholders, to gain deeper insights and refine the approach.
     </p>
 
     <figure class="fig">
-      <div class="fig-ph">
-        <div class="fig-ph-label"><span class="p">&gt;&gt;&gt;</span> Discovery flow</div>
-        <div class="fig-ph-hint">photos/meta-process.jpg</div>
-      </div>
-      <figcaption class="fig-cap"><span class="p">///</span> Mapping the discovery across ticketing, FSA, and the repair console.</figcaption>
+      <img src="photos/process.webp" alt="Discovery process mapped across ticketing, FSA, and the repair console">
+      <figcaption class="fig-cap"><span class="p">///</span> The legacy repair flow, mapped end to end. Every red flag marked a recurring failure, and a recurring cost to Meta.</figcaption>
     </figure>
 
     <h2 id="s5"><span class="h-num">05</span> Challenge 1 · Action Plan Repository</h2>
     <div class="challenge-sub">Consistency, standards, and self-service</div>
     <p>
       Many sites had their own way of writing action plans. I established a single, consistent repository and
-      self-service workflows so a proven fix is one search away — not one tribal-knowledge conversation away.
+      self-service workflows so a proven fix is one search away, not one tribal-knowledge conversation away.
     </p>
     <ul>
       <li>Fewer errors in published action plans.</li>
       <li>Fewer undiagnosed tickets.</li>
     </ul>
 
-    <figure class="fig">
-      <div class="fig-ph">
-        <div class="fig-ph-label"><span class="p">&gt;&gt;&gt;</span> Action plan — issue details</div>
-        <div class="fig-ph-hint">photos/meta-actionplan.jpg</div>
+    <div class="stepper" data-stepper>
+      <div class="stepper-tabs" role="tablist" aria-label="Action plan walkthrough">
+        <button class="stepper-tab is-active" role="tab" aria-selected="true" id="ap-tab-0" aria-controls="ap-panel-0" data-step="0"><span class="tn">01</span> Issue details</button>
+        <button class="stepper-tab" role="tab" aria-selected="false" tabindex="-1" id="ap-tab-1" aria-controls="ap-panel-1" data-step="1"><span class="tn">02</span> Action steps</button>
+        <button class="stepper-tab" role="tab" aria-selected="false" tabindex="-1" id="ap-tab-2" aria-controls="ap-panel-2" data-step="2"><span class="tn">03</span> Search &amp; reuse</button>
       </div>
-      <figcaption class="fig-cap"><span class="p">///</span> 01 — Find the issue details. The plan opens with the issue, scope, and key details, so you know what you're checking from the start.</figcaption>
-    </figure>
+
+      <figure class="fig stepper-panel is-active" role="tabpanel" id="ap-panel-0" aria-labelledby="ap-tab-0" data-panel="0">
+        <img src="photos/action_plan_1.avif" alt="Action plan screen showing the issue details, scope, and key information">
+        <figcaption class="fig-cap"><span class="p">///</span> 01 · Find the issue details. The plan opens with the issue, scope, and key details, so you know what you're checking from the start.</figcaption>
+      </figure>
+
+      <figure class="fig stepper-panel" role="tabpanel" id="ap-panel-1" aria-labelledby="ap-tab-1" data-panel="1" hidden>
+        <div class="fig-ph">
+          <div class="fig-ph-label"><span class="p">&gt;&gt;&gt;</span> Action plan · action steps</div>
+          <div class="fig-ph-hint">photos/action_plan_2.avif</div>
+        </div>
+        <figcaption class="fig-cap"><span class="p">///</span> 02 · Follow the proven steps. [Replace with the real caption for slide 2.]</figcaption>
+      </figure>
+
+      <figure class="fig stepper-panel" role="tabpanel" id="ap-panel-2" aria-labelledby="ap-tab-2" data-panel="2" hidden>
+        <div class="fig-ph">
+          <div class="fig-ph-label"><span class="p">&gt;&gt;&gt;</span> Action plan · search &amp; reuse</div>
+          <div class="fig-ph-hint">photos/action_plan_3.avif</div>
+        </div>
+        <figcaption class="fig-cap"><span class="p">///</span> 03 · Reuse a proven fix. [Replace with the real caption for slide 3.]</figcaption>
+      </figure>
+    </div>
 
     <h2 id="s6"><span class="h-num">06</span> Challenge 2 · Ticketing Platform</h2>
-    <div class="challenge-sub">Escaping Jira — routing every ticket to the right person</div>
+    <div class="challenge-sub">Escaping Jira: routing every ticket to the right person</div>
     <p>
       Jira wasn't built for repair work. I replaced it with a system that understands the domain: tickets are
       captured and routed to the right person automatically, so the path from report to resolution gets shorter.
@@ -469,10 +500,10 @@ footer { padding: 22px 40px; display: flex; align-items: center; justify-content
 
     <figure class="fig">
       <div class="fig-ph">
-        <div class="fig-ph-label"><span class="p">&gt;&gt;&gt;</span> Ticketing — queue view</div>
+        <div class="fig-ph-label"><span class="p">&gt;&gt;&gt;</span> Ticketing · queue view</div>
         <div class="fig-ph-hint">photos/meta-ticketing.jpg</div>
       </div>
-      <figcaption class="fig-cap"><span class="p">///</span> 01 — Stay on top of tickets. Technicians and engineers see what's assigned, its severity, and status — and act without leaving the console.</figcaption>
+      <figcaption class="fig-cap"><span class="p">///</span> 01 · Stay on top of tickets. Technicians and engineers see what's assigned, its severity, and status, and act without leaving the console.</figcaption>
     </figure>
 
     <h2 id="s7"><span class="h-num">07</span> Challenge 3 · Global Monitoring</h2>
@@ -488,16 +519,16 @@ footer { padding: 22px 40px; display: flex; align-items: center; justify-content
 
     <figure class="fig">
       <div class="fig-ph">
-        <div class="fig-ph-label"><span class="p">&gt;&gt;&gt;</span> Global monitoring — cluster view</div>
+        <div class="fig-ph-label"><span class="p">&gt;&gt;&gt;</span> Global monitoring · cluster view</div>
         <div class="fig-ph-hint">photos/meta-monitoring.jpg</div>
       </div>
-      <figcaption class="fig-cap"><span class="p">///</span> 01 — Tackle global issues. A live cluster view of the most common failure patterns across the fleet, updating in real time.</figcaption>
+      <figcaption class="fig-cap"><span class="p">///</span> 01 · Tackle global issues. A live cluster view of the most common failure patterns across the fleet, updating in real time.</figcaption>
     </figure>
 
     <h2 id="s8"><span class="h-num">08</span> Lessons</h2>
     <ul class="lessons">
       <li><strong>Adapt, adapt, adapt.</strong> Constant change taught me the value of quick thinking and flexibility. Working across three shifting systems, the designs that survived were the ones built to bend.</li>
-      <li><strong>Understand stakeholders, together.</strong> Expectations are clearest when you set them collaboratively, not by guessing — especially when your users are also your stakeholders.</li>
+      <li><strong>Understand stakeholders, together.</strong> Expectations are clearest when you set them collaboratively, not by guessing, especially when your users are also your stakeholders.</li>
       <li><strong>Remember to pause.</strong> Rapid iteration makes it easy to lose perspective. Stepping back to ask which details mattered now and which could wait kept the work honest.</li>
     </ul>
 
@@ -513,7 +544,7 @@ footer { padding: 22px 40px; display: flex; align-items: center; justify-content
   <div class="next-body">
     <span class="next-cat">Design for AI</span>
     <h3 class="next-title">Designing the interface an AI lives inside</h3>
-    <span class="next-arrow">&#8599;</span>
+    <span class="next-arrow" aria-hidden="true">&#8599;</span>
   </div>
 </a>
 
@@ -577,6 +608,31 @@ footer { padding: 22px 40px; display: flex; align-items: center; justify-content
       e.preventDefault();
       const y = target.getBoundingClientRect().top + window.scrollY - 80;
       window.scrollTo({ top: y, behavior: 'smooth' });
+    });
+  });
+
+  document.querySelectorAll('[data-stepper]').forEach(function (stepper) {
+    const tabs = Array.prototype.slice.call(stepper.querySelectorAll('.stepper-tab'));
+    const panels = Array.prototype.slice.call(stepper.querySelectorAll('.stepper-panel'));
+    function select(i, focus) {
+      tabs.forEach(function (t, j) {
+        const on = i === j;
+        t.classList.toggle('is-active', on);
+        t.setAttribute('aria-selected', on ? 'true' : 'false');
+        t.tabIndex = on ? 0 : -1;
+        panels[j].classList.toggle('is-active', on);
+        panels[j].hidden = !on;
+      });
+      if (focus) tabs[i].focus();
+    }
+    tabs.forEach(function (tab, i) {
+      tab.addEventListener('click', function () { select(i); });
+      tab.addEventListener('keydown', function (e) {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { e.preventDefault(); select((i + 1) % tabs.length, true); }
+        else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); select((i - 1 + tabs.length) % tabs.length, true); }
+        else if (e.key === 'Home') { e.preventDefault(); select(0, true); }
+        else if (e.key === 'End') { e.preventDefault(); select(tabs.length - 1, true); }
+      });
     });
   });
 </script>
