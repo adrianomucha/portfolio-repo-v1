@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AI Design Work · Adrian Mucha</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600&family=Geist:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 
@@ -27,6 +28,7 @@
   --rail: 40px;              /* width of each side rail */
 }
 
+html { scroll-behavior: smooth; }
 html, body {
   background: var(--white);
   color: var(--mid);
@@ -38,11 +40,9 @@ html, body {
   text-wrap: pretty;        /* inherited: avoids single-word widows in all body copy */
 }
 /* display headings: balance line lengths (also widow-free) */
-.pillars-lbl h2, .about-left h2, .cta-headline, .modal-title {
+.hero h1, .pillars-lbl h2, .about-left h2, .cta-headline, .modal-title {
   text-wrap: balance;
 }
-/* hero headline wraps plainly so the cycling word never re-balances the block */
-.hero h1 { text-wrap: wrap; }
 /* short body paragraphs: balance lines so the last line is never a lone widow */
 .hero-bio, .pillar-desc, .about-left p, .about-item-desc, .modal-sub {
   text-wrap: balance;
@@ -167,7 +167,7 @@ nav {
   gap: 10px;
   position: relative;
 }
-.hero-eyebrow::before { content:''; width:24px; height:1px; background:var(--border); }
+.hero-eyebrow .db-arrow { color: var(--brand); }   /* unified >>> prompt, matches every other eyebrow */
 .hero h1 {
   font-family: var(--mono);
   font-size: clamp(26px, 3.5vw, 48px);
@@ -192,35 +192,82 @@ nav {
   line-height: 1.65;
   max-width: 52ch;
   position: relative;
-  margin-bottom: 40px;
+  margin-bottom: 36px;
 }
+/* ── HERO CTA ── primary action, finally present above the fold */
+.hero-cta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.hero-cta-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: var(--accent);
+  color: var(--accent-dark);
+  border: 1px solid var(--accent-dark);
+  padding: 14px 24px;
+  transition: background 0.15s, color 0.15s, transform 0.15s;
+}
+.hero-cta-primary:hover { background: var(--accent-dark); color: var(--accent); }
+.hero-cta-primary .arrow { transition: transform 0.15s; }
+.hero-cta-primary:hover .arrow { transform: translateY(2px); }
+.hero-cta-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--mid);
+  padding: 14px 4px;
+  transition: gap 0.15s;
+}
+.hero-cta-secondary .arrow { color: var(--brand); }
+.hero-cta-secondary:hover { gap: 13px; }
+
+/* ── HERO STATS ── real outcomes, big numbers ── */
 .hero-stats {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   border-top: 1px solid var(--border-light);
   background: var(--white);
   position: relative;
-  margin-top: 40px;
+  margin-top: 44px;
   margin-left: -40px;
   margin-right: -40px;
 }
 .hero-stat {
-  padding: 20px 40px;
+  padding: 26px 40px;
   border-right: 1px solid var(--border-light);
 }
 .hero-stat:last-child { border-right: none; }
 .stat-val {
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
+  font-family: var(--mono);
+  font-size: 30px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1;
   color: var(--mid);
-  text-transform: uppercase;
-  margin-bottom: 4px;
+  margin-bottom: 10px;
 }
+.stat-val .accent { color: var(--brand); }
 .stat-lbl {
-  font-size: 13px;
-  font-weight: 400;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   color: var(--muted);
+  line-height: 1.45;
 }
 
 /* ── SECTION DIVIDER BAR ── (clean white band) */
@@ -229,8 +276,9 @@ nav {
   align-items: center;
   height: 96px;
   padding: 0 40px;
-  border-bottom: 1px solid var(--border-light);   /* top line is the hero's border-bottom - avoid doubling */
+  border-bottom: 1px solid var(--border-light);
 }
+.div-bar.topline { border-top: 1px solid var(--border-light); }
 .div-bar-label {
   font-size: 12px;          /* canonical section-label type */
   font-weight: 600;
@@ -319,7 +367,7 @@ nav {
   margin-top: 8px;           /* optically center the dot on the first line's text */
 }
 
-/* ── STATUS BAR ── */
+/* ── STATUS BAR ── (static — one concrete line, no competing typewriter) */
 .status-bar {
   display: flex;
   align-items: center;
@@ -345,39 +393,26 @@ nav {
   animation: blink 2s steps(1) infinite;
 }
 @keyframes blink { 0%,49%{opacity:1} 50%,100%{opacity:0.3} }
-.status-typing {
+.status-line {
   padding: 14px 24px;
   font-size: 13px;
   color: var(--dark);
   flex: 1;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
 }
 .s-prefix { color: var(--brand); font-weight: 600; }
 .s-arrow  { color: var(--brand); font-weight: 600; }
-/* blinking block cursor - terminal style */
-.s-text::after {
-  content: '';
-  display: inline-block;
-  width: 7px;
-  height: 14px;
-  margin-left: 3px;
-  vertical-align: -2px;
-  background: var(--brand);
-  animation: caret 0.9s steps(1) infinite;
-}
-@keyframes caret { 0%,49%{opacity:1} 50%,100%{opacity:0} }
 
 /* ── WORK SECTION ── */
-.work-section { padding: 0 0 80px; }
+.work-section { padding: 0; scroll-margin-top: 70px; }   /* cards' bottom rule meets the divider bar directly — no stranded gap */
 .work-hdr {
   display: flex;
-  align-items: center;
+  align-items: baseline;
   gap: 12px;
   padding: 28px 40px 24px;
   border-bottom: 1px solid var(--border-light);
-  margin-bottom: 0;
 }
 .work-hdr-title {
   font-size: 12px;          /* canonical section-label type */
@@ -441,13 +476,30 @@ nav {
   background: var(--accent);
   z-index: 2;
 }
+/* de-emphasized "protected" note — reads as a detail, not a locked door */
 .card-lock {
   position: absolute;
   top: 20px; left: 20px;
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 500;
   letter-spacing: 0.06em;
+  text-transform: uppercase;
   color: var(--muted);
+  opacity: 0.85;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  z-index: 2;
+}
+/* "open" affordance for the unlocked study — indigo, threads the accent into the work grid */
+.card-open {
+  position: absolute;
+  top: 20px; left: 20px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--brand);
   display: flex;
   align-items: center;
   gap: 5px;
@@ -503,6 +555,7 @@ nav {
   transition: color 0.15s, transform 0.15s;
 }
 .card:not(.soon):hover .card-arrow { color: var(--mid); transform: translate(3px,-3px); }
+.card.is-open .card-arrow { color: var(--brand); }   /* the live study signals itself */
 
 /* photo treatment: a defined image panel on top (monochrome), content panel below */
 .card.has-photo { justify-content: flex-start; padding: 0; }
@@ -527,8 +580,9 @@ nav {
   transform: scale(1.04);
 }
 .card.has-photo .card-body { padding: 26px 32px 30px; }
-.card.has-photo .card-lock {        /* frosted backdrop so the lock reads over the image */
-  background: rgba(255,255,255,0.72);
+.card.has-photo .card-lock,
+.card.has-photo .card-open {        /* frosted backdrop so the label reads over the image */
+  background: rgba(255,255,255,0.78);
   -webkit-backdrop-filter: blur(4px);
   backdrop-filter: blur(4px);
   padding: 4px 8px;
@@ -604,9 +658,7 @@ nav {
 .logo-cell:last-child { border-right: none; }
 .logo-cell svg, .logo-cell img { max-width: 100%; height: auto; }
 
-/* Real brand logos: monochrome ink at rest, true brand color on hover.
-   Per-logo heights are set inline so the mixed aspect ratios read at one
-   optical size (wordmarks wider, symbols taller). */
+/* Real brand logos: monochrome ink at rest, true brand color on hover. */
 .logo-img {
   width: auto;
   max-width: 82%;
@@ -630,7 +682,6 @@ nav {
   justify-content: center;   /* center the trimmed block so the column breathes evenly */
   gap: 24px;
 }
-/* eyebrow label — matches the right column's item titles, anchors the left column */
 .about-eyebrow {
   font-family: var(--mono);
   font-size: 12px;          /* canonical section-label type */
@@ -689,7 +740,8 @@ nav {
 
 /* ── CTA ── */
 .cta {
-  border-bottom: 1px solid var(--border-light);   /* top line comes from .about-strip's border-bottom — avoid doubling */
+  border-bottom: 1px solid var(--border-light);
+  border-top: 1px solid var(--border-light);
   background: var(--accent);
   position: relative;
   overflow: hidden;
@@ -733,6 +785,7 @@ nav {
   background: var(--accent-dark);
   animation: caret 0.9s steps(1) infinite;
 }
+@keyframes caret { 0%,49%{opacity:1} 50%,100%{opacity:0} }
 .cta-r {
   padding: 48px 40px;
   display: flex;
@@ -769,7 +822,7 @@ nav {
 
 /* ── FOOTER ── */
 footer {
-  padding: 20px 40px;   /* top line comes from .cta's border-bottom — avoid doubling */
+  padding: 20px 40px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -800,7 +853,7 @@ footer {
   max-width: 520px;
   position: relative;
 }
-.modal-tag {                /* canonical section-label, like every eyebrow on the page */
+.modal-tag {
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.1em;
@@ -809,7 +862,7 @@ footer {
   margin-bottom: 22px;
 }
 .modal-tag .m-arrow { color: var(--brand); }   /* indigo >>> prompt */
-.modal-title {              /* sans display heading, matches .about-left h2 / card titles */
+.modal-title {
   font-family: var(--sans);
   font-size: 30px;
   font-weight: 500;
@@ -818,7 +871,7 @@ footer {
   color: var(--mid);
   margin-bottom: 16px;
 }
-.modal-sub {                /* sans body copy, like all descriptions on the page */
+.modal-sub {
   font-family: var(--sans);
   font-size: 16px;
   color: var(--muted);
@@ -829,7 +882,7 @@ footer {
 .modal-row { display: flex; gap: 10px; margin-bottom: 12px; }
 .modal-input {
   flex: 1;
-  min-width: 0;            /* allow the input to shrink so the row never overflows */
+  min-width: 0;
   padding: 15px 18px;
   font-family: var(--mono);
   font-size: 16px;
@@ -863,7 +916,7 @@ footer {
 .modal-close {
   position: absolute;
   top: 12px; right: 12px;
-  width: 44px; height: 44px;   /* full-size tap target */
+  width: 44px; height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -875,9 +928,9 @@ footer {
 }
 .modal-close:hover { color: var(--dark); }
 
-/* ── REDUCED MOTION ── steady the blinking cursors, photo zoom, and typewriters */
+/* ── REDUCED MOTION ── steady the cursors + photo zoom */
 @media (prefers-reduced-motion: reduce) {
-  .s-dot, .s-text::after, .cta-headline::after { animation: none; opacity: 1; }
+  .s-dot, .cta-headline::after { animation: none; opacity: 1; }
   .card-photo { transition: filter 0.3s ease, opacity 0.3s ease; }
   .card.has-photo:hover .card-photo { transform: none; }
   * { scroll-behavior: auto !important; }
@@ -888,7 +941,7 @@ footer {
   .rail-left, .rail-right { display: none; }
   .page-wrap { margin-left: 0; margin-right: 0; }
   nav, .hero, footer { padding-left: 24px; padding-right: 24px; }
-  .nav-sep, .nav-role { display: none; }   /* free up room so all 3 links fit on phones */
+  .nav-sep, .nav-role { display: none; }
   .nav-links { gap: 18px; }
   .work-hdr { padding-left: 24px; padding-right: 24px; }
   .hero h1 { font-size: clamp(24px, 7vw, 38px); max-width: 100%; }
@@ -915,7 +968,7 @@ footer {
   footer { flex-direction: column; gap: 8px; align-items: flex-start; }
   .div-bar { padding: 0 24px; }
   .status-tag { padding: 14px 24px; }
-  /* modal: breathing room on small screens without overflowing */
+  .status-line { padding: 14px 24px; }
   .modal-backdrop { padding: 20px; }
   .modal { padding: 36px 28px; }
   .modal-title { font-size: 26px; }
@@ -938,7 +991,7 @@ footer {
     <span class="nav-role">Product Designer</span>
   </a>
   <div class="nav-links">
-    <a href="index.html" class="nav-link current" aria-current="page">
+    <a href="homepagev1.html" class="nav-link current" aria-current="page">
       <span class="nav-num" aria-hidden="true">00</span> Work
     </a>
     <a href="about.html" class="nav-link">
@@ -954,7 +1007,7 @@ footer {
 
 <!-- ── HERO ── -->
 <div class="hero">
-  <div class="hero-eyebrow">AI Design Work</div>
+  <div class="hero-eyebrow"><span class="db-arrow">&gt;&gt;&gt;</span> AI design work</div>
   <h1>
     I design AI products<br>
     and ship them at<br>
@@ -964,23 +1017,115 @@ footer {
     Designing where systems, AI, and usability meet, across Meta, PayPal, and Microsoft.
     The goal is always the same: powerful tools that feel effortless to use.
   </p>
+  <div class="hero-cta">
+    <a href="#work" class="hero-cta-primary">View the work <span class="arrow">&darr;</span></a>
+    <a href="#" class="hero-cta-secondary" data-email>Get in touch <span class="arrow">&rarr;</span></a>
+  </div>
   <div class="hero-stats">
     <div class="hero-stat">
-      <div class="stat-val">AI products</div>
-      <div class="stat-lbl">Tools + interfaces</div>
+      <div class="stat-val">$10M<span class="accent">+</span></div>
+      <div class="stat-lbl">saved per month<br>Meta repair console</div>
     </div>
     <div class="hero-stat">
-      <div class="stat-val">3 pillars</div>
-      <div class="stat-lbl">Design · Ship · Embed</div>
+      <div class="stat-val">75%</div>
+      <div class="stat-lbl">fewer repeat<br>repair tickets</div>
     </div>
     <div class="hero-stat">
-      <div class="stat-val">All showable</div>
-      <div class="stat-lbl">Screens + outcomes</div>
+      <div class="stat-val">7</div>
+      <div class="stat-lbl">brands shipped for<br>Meta to Zendesk</div>
     </div>
     <div class="hero-stat">
-      <div class="stat-val">Based in</div>
-      <div class="stat-lbl">Los Angeles, CA</div>
+      <div class="stat-val">LA</div>
+      <div class="stat-lbl">based in<br>Los Angeles, CA</div>
     </div>
+  </div>
+</div>
+
+<!-- ── STATUS BAR ── (static, concrete) -->
+<div class="status-bar">
+  <div class="status-tag">
+    <span class="s-dot"></span>
+    SYSTEM STATUS <span class="s-arrow">&gt;&gt;&gt;</span>
+  </div>
+  <div class="status-line">
+    <span class="s-prefix">///</span>
+    Currently designing AI tooling at Meta scale, and shipping it solo with Claude Code.
+  </div>
+</div>
+
+<!-- ── WORK CARDS ── (promoted: proof comes right after the hero) -->
+<div class="work-section" id="work">
+  <div class="work-hdr">
+    <h2 class="work-hdr-title">Selected work</h2>
+    <span class="work-hdr-count">03 case studies · 01 in progress</span>
+  </div>
+  <div class="cards">
+
+    <!-- Meta — public, links straight through -->
+    <a class="card has-photo is-open" href="meta.html" aria-label="Open the Meta case study">
+      <div class="card-media"><img class="card-photo" src="photos/meta-1.jpg" alt="" aria-hidden="true" loading="lazy" decoding="async"></div>
+      <div class="card-badge">Design for AI</div>
+      <div class="card-open">↗ Open case study</div>
+      <div class="card-body">
+        <div class="card-co">Meta · Full-time</div>
+        <h3 class="card-title">Changing practice and perspective in data center repairs</h3>
+        <div class="card-tags">
+          <span class="card-tag">Product Design</span>
+          <span class="card-tag">User Research</span>
+          <span class="card-tag">Workshops</span>
+        </div>
+      </div>
+      <div class="card-arrow" aria-hidden="true">↗</div>
+    </a>
+
+    <!-- Microsoft — by request -->
+    <div class="card has-photo">
+      <div class="card-media"><img class="card-photo" src="photos/microsoft.jpeg" alt="" aria-hidden="true" loading="lazy" decoding="async"></div>
+      <div class="card-badge">Design for AI</div>
+      <div class="card-lock">🔒 By request</div>
+      <div class="card-body">
+        <div class="card-co">Microsoft · Contract</div>
+        <h3 class="card-title"><button type="button" class="card-trigger" onclick="openModal('microsoft', this)">Evolving Microsoft Planner into a Trusted AI PM Agent</button></h3>
+        <div class="card-tags">
+          <span class="card-tag">AI Features</span>
+          <span class="card-tag">Product Design</span>
+          <span class="card-tag">Contract</span>
+        </div>
+      </div>
+      <div class="card-arrow" aria-hidden="true">↗</div>
+    </div>
+
+    <!-- Amazon — by request -->
+    <div class="card has-photo">
+      <div class="card-media"><img class="card-photo" src="photos/amazon.avif" alt="" aria-hidden="true" loading="lazy" decoding="async"></div>
+      <div class="card-badge">Product Innovation</div>
+      <div class="card-lock">🔒 By request</div>
+      <div class="card-body">
+        <div class="card-co">Amazon · Contract</div>
+        <h3 class="card-title"><button type="button" class="card-trigger" onclick="openModal('amazon', this)">Transforming Fulfillment: Amazon's Innovation in Motion</button></h3>
+        <div class="card-tags">
+          <span class="card-tag">Fulfillment</span>
+          <span class="card-tag">Logistics</span>
+        </div>
+      </div>
+      <div class="card-arrow" aria-hidden="true">↗</div>
+    </div>
+
+    <!-- PayPal — case study in progress -->
+    <div class="card has-photo soon">
+      <div class="card-media"><img class="card-photo" src="photos/paypal.jpg" alt="" aria-hidden="true" loading="lazy" decoding="async"></div>
+      <div class="card-badge">Embed AI in teams</div>
+      <div class="card-body">
+        <div class="card-co">PayPal · Full-time</div>
+        <h3 class="card-title">Case study coming soon</h3>
+        <div class="card-tags">
+          <span class="card-tag">Workflow Design</span>
+          <span class="card-tag">AI Tooling</span>
+          <span class="card-tag">Product Features</span>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>
 
@@ -1025,94 +1170,6 @@ footer {
   </div>
 </div>
 
-<!-- ── STATUS BAR ── -->
-<div class="status-bar">
-  <div class="status-tag">
-    <span class="s-dot"></span>
-    SYSTEM STATUS <span class="s-arrow">&gt;&gt;&gt;</span>
-  </div>
-  <div class="status-typing">
-    <span class="s-prefix">///</span>
-    <span class="s-text" id="s-text"></span>
-  </div>
-</div>
-
-<!-- ── WORK CARDS ── -->
-<div class="work-section">
-  <div class="work-hdr">
-    <h2 class="work-hdr-title">Case studies</h2>
-    <span class="work-hdr-count">004 items</span>
-  </div>
-  <div class="cards">
-
-    <!-- Meta -->
-    <div class="card has-photo">
-      <div class="card-media"><img class="card-photo" src="photos/meta-1.jpg" alt="" aria-hidden="true" loading="lazy" decoding="async"></div>
-      <div class="card-badge">Design for AI</div>
-      <div class="card-lock">🔒 Password protected</div>
-      <div class="card-body">
-        <div class="card-co">Meta · Full-time</div>
-        <h3 class="card-title"><button type="button" class="card-trigger" onclick="openModal('meta', this)">Changing practice and perspective in data center repairs</button></h3>
-        <div class="card-tags">
-          <span class="card-tag">Product Design</span>
-          <span class="card-tag">User Research</span>
-          <span class="card-tag">Workshops</span>
-        </div>
-      </div>
-      <div class="card-arrow" aria-hidden="true">↗</div>
-    </div>
-
-    <!-- Microsoft -->
-    <div class="card has-photo">
-      <div class="card-media"><img class="card-photo" src="photos/microsoft.jpeg" alt="" aria-hidden="true" loading="lazy" decoding="async"></div>
-      <div class="card-badge">Design for AI</div>
-      <div class="card-lock">🔒 Password protected</div>
-      <div class="card-body">
-        <div class="card-co">Microsoft · Contract</div>
-        <h3 class="card-title"><button type="button" class="card-trigger" onclick="openModal('microsoft', this)">Evolving Microsoft Planner into a Trusted AI PM Agent</button></h3>
-        <div class="card-tags">
-          <span class="card-tag">AI Features</span>
-          <span class="card-tag">Product Design</span>
-          <span class="card-tag">Contract</span>
-        </div>
-      </div>
-      <div class="card-arrow" aria-hidden="true">↗</div>
-    </div>
-
-    <!-- PayPal — case study in progress -->
-    <div class="card has-photo soon">
-      <div class="card-media"><img class="card-photo" src="photos/paypal.jpg" alt="" aria-hidden="true" loading="lazy" decoding="async"></div>
-      <div class="card-badge">Embed AI in teams</div>
-      <div class="card-body">
-        <div class="card-co">PayPal · Full-time</div>
-        <h3 class="card-title">Case study coming soon</h3>
-        <div class="card-tags">
-          <span class="card-tag">Workflow Design</span>
-          <span class="card-tag">AI Tooling</span>
-          <span class="card-tag">Product Features</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Amazon -->
-    <div class="card has-photo">
-      <div class="card-media"><img class="card-photo" src="photos/amazon.avif" alt="" aria-hidden="true" loading="lazy" decoding="async"></div>
-      <div class="card-badge">Product Innovation</div>
-      <div class="card-lock">🔒 Password protected</div>
-      <div class="card-body">
-        <div class="card-co">Amazon · Contract</div>
-        <h3 class="card-title"><button type="button" class="card-trigger" onclick="openModal('amazon', this)">Transforming Fulfillment: Amazon's Innovation in Motion</button></h3>
-        <div class="card-tags">
-          <span class="card-tag">Fulfillment</span>
-          <span class="card-tag">Logistics</span>
-        </div>
-      </div>
-      <div class="card-arrow" aria-hidden="true">↗</div>
-    </div>
-
-  </div>
-</div>
-
 <!-- ── PARTNER LOGOS ── -->
 <div class="logos-section">
   <div class="logos-head">
@@ -1121,15 +1178,12 @@ footer {
 
   <!-- Row 1: featured - side / center / side (3·6·3) -->
   <div class="logos-grid">
-    <!-- Microsoft (left) -->
     <div class="logo-cell" style="border-right:1px solid var(--border-light)">
       <img class="logo-img" loading="lazy" decoding="async" src="logos/microsoft.svg" alt="Microsoft" style="height:30px">
     </div>
-    <!-- Meta (center, featured) -->
     <div class="logo-cell" style="border-right:1px solid var(--border-light)">
       <img class="logo-img" loading="lazy" decoding="async" src="logos/meta.svg" alt="Meta" style="height:34px">
     </div>
-    <!-- Amazon (right) -->
     <div class="logo-cell">
       <img class="logo-img" loading="lazy" decoding="async" src="logos/amazon.svg" alt="Amazon" style="height:32px">
     </div>
@@ -1210,7 +1264,7 @@ footer {
       <svg class="c-br" viewBox="0 0 13 13" fill="none"><path d="M0.5 12.5V0.5H12.5" stroke="#b0b5b1"/></svg>
     </div>
     <button type="button" class="modal-close" onclick="closeModal()" aria-label="Close dialog">×</button>
-    <div class="modal-tag"><span class="m-arrow">&gt;&gt;&gt;</span> restricted</div>
+    <div class="modal-tag"><span class="m-arrow">&gt;&gt;&gt;</span> by request</div>
     <h2 class="modal-title" id="modal-title">Case study</h2>
     <p class="modal-sub">
       Password is in the top right corner of my resume.<br>
@@ -1242,13 +1296,11 @@ footer {
   const FOCUSABLE = 'a[href], button, input, [tabindex]:not([tabindex="-1"])';
 
   const destinations = {
-    meta: 'meta.html',
     microsoft: '#',   // TODO: replace with the live Microsoft case-study URL
     amazon: '#',      // TODO: replace with the live Amazon case-study URL
   };
 
   const titles = {
-    meta: 'Meta · Data Center Repairs',
     microsoft: 'Microsoft · Planner AI Features',
     amazon: 'Amazon · Fulfillment Innovation',
   };
@@ -1304,56 +1356,27 @@ footer {
     else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
   });
 
-  // honor reduced-motion: skip the typewriter loops, show steady text instead
+  // ── HERO TYPING ── (the one and only typewriter on the page)
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  // ── HERO TYPING ──
   const words = ['Meta', 'PayPal', 'Microsoft'];
   const el = document.getElementById('cycle-word');
   let wi = 0, ci = words[0].length, del = false;
-  // start already showing first word
   el.textContent = words[0];
   function heroTick() {
     const w = words[wi];
     if (!del) {
       ci++;
       el.textContent = w.slice(0, ci);
-      if (ci >= w.length) { del = true; setTimeout(heroTick, 2600); return; }   // hold the full word
-      setTimeout(heroTick, 130 + Math.random() * 45);
+      if (ci >= w.length) { del = true; setTimeout(heroTick, 1400); return; }
+      setTimeout(heroTick, 80 + Math.random() * 30);
     } else {
       ci--;
       el.textContent = w.slice(0, ci);
-      if (ci <= 0) { del = false; wi = (wi + 1) % words.length; setTimeout(heroTick, 550); return; }
-      setTimeout(heroTick, 70);
+      if (ci <= 0) { del = false; wi = (wi + 1) % words.length; setTimeout(heroTick, 300); return; }
+      setTimeout(heroTick, 50);
     }
   }
   if (!reduceMotion) setTimeout(heroTick, 2000);
-
-  // ── STATUS TYPING ──
-  const statuses = [
-    'AI interface design · Meta scale',
-    'Workflow implementation · PayPal design org',
-    'AI features shipped · Microsoft Planner',
-    'Independent build · AI coding tools · in progress',
-  ];
-  const sEl = document.getElementById('s-text');
-  let si = 0, sci = 0, sdel = false;
-  function statusTick() {
-    const s = statuses[si];
-    if (!sdel) {
-      sci++;
-      sEl.textContent = s.slice(0, sci);
-      if (sci >= s.length) { sdel = true; setTimeout(statusTick, 2200); return; }
-      setTimeout(statusTick, 35 + Math.random() * 20);
-    } else {
-      sci--;
-      sEl.textContent = s.slice(0, sci);
-      if (sci <= 0) { sdel = false; si = (si + 1) % statuses.length; setTimeout(statusTick, 250); return; }
-      setTimeout(statusTick, 18);
-    }
-  }
-  if (reduceMotion) sEl.textContent = statuses[0];
-  else setTimeout(statusTick, 600);
 </script>
 
 </div><!-- /page-wrap -->
